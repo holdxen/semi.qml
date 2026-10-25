@@ -1784,460 +1784,322 @@
                     ],
                     "api": [
                         {
-                            "name": "autoAdjustOverflow",
-                            "desc": "浮层被遮挡时是否自动调整方向",
-                            "type": "boolean",
-                            "default": "true"
-                        },
-                        {
-                            "name": "autoFocus",
-                            "desc": "自动获取焦点",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "autoSwitchDate",
-                            "desc": "通过面板上方左右按钮、下拉菜单更改年月时，自动切换日期。仅对 date type 生效。",
-                            "type": "boolean",
-                            "default": "true"
-                        },
-                        {
-                            "name": "borderless",
-                            "desc": "无边框模式",
-                            "type": "boolean",
-                            "default": ""
-                        },
-                        {
-                            "name": "bottomSlot",
-                            "desc": "渲染底部额外区域",
-                            "type": "ReactNode",
-                            "default": ""
-                        },
-                        {
-                            "name": "className",
-                            "desc": "类名",
-                            "type": "string",
-                            "default": "-"
-                        },
-                        {
-                            "name": "clearIcon",
-                            "desc": "可用于自定义清除按钮, showClear为true时有效",
-                            "type": "ReactNode",
-                            "default": ""
-                        },
-                        {
-                            "name": "defaultOpen",
-                            "desc": "面板默认显示或隐藏",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "defaultPickerValue",
-                            "desc": "默认面板日期",
-                            "type": "ValueType",
-                            "default": ""
-                        },
-                        {
-                            "name": "defaultValue",
-                            "desc": "默认值",
-                            "type": "ValueType",
-                            "default": ""
-                        },
-                        {
-                            "name": "density",
-                            "desc": "面板的尺寸，可选值：default, compact",
-                            "type": "string",
-                            "default": "default"
-                        },
-                        {
-                            "name": "disabled",
-                            "desc": "是否禁用",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "disabledDate",
-                            "desc": "日期禁止判断方法，返回为 true 时禁止该日期，options 参数 1.9.0 后支持，其中 rangeEnd 1.29 后支持，rangeInputFocus 2.22 后支持",
-                            "type": "boolean'>(date, options) => boolean",
-                            "default": "\"rangeEnd\" \\"
-                        },
-                        {
-                            "name": "disabledTime",
-                            "desc": "时间禁止配置，返回值将会作为参数透传给 TimePicker",
-                            "type": "({ disabledHours:() => number[], disabledMinutes: (hour: number) => number[], disabledSeconds: (hour: number, minute: number) => number[] })'>(date, panelType) => object",
-                            "default": "() => false"
-                        },
-                        {
-                            "name": "disabledTimePicker",
-                            "desc": "是否禁止时间选择",
-                            "type": "boolean",
-                            "default": ""
-                        },
-                        {
-                            "name": "dropdownClassName",
-                            "desc": "下拉列表的 CSS 类名",
-                            "type": "string",
-                            "default": ""
-                        },
-                        {
-                            "name": "dropdownStyle",
-                            "desc": "下拉列表的内联样式",
-                            "type": "object",
-                            "default": ""
-                        },
-                        {
-                            "name": "dropdownMargin",
-                            "desc": "下拉列表算溢出时的增加的冗余值，详见issue#549，作用同 Tooltip margin",
-                            "type": "object\\",
-                            "default": "number"
-                        },
-                        {
-                            "name": "endDateOffset",
-                            "desc": "type 为 dateRange 时，设置单击选择范围的结束日期",
-                            "type": "(selectedDate?: Date) => Date;",
-                            "default": "-"
-                        },
-                        {
-                            "name": "format",
-                            "desc": "在输入框内展现的日期串格式",
-                            "type": "string",
-                            "default": "与 type 对应：详见日期时间格式"
-                        },
-                        {
-                            "name": "getPopupContainer",
-                            "desc": "指定父级 DOM，弹层将会渲染至该 DOM 中，自定义需要设置 position: relative 这会改变浮层 DOM 树位置，但不会改变视图渲染位置。",
-                            "type": "function():HTMLElement",
-                            "default": "() => document.body"
-                        },
-                        {
-                            "name": "hideDisabledOptions",
-                            "desc": "隐藏禁止选择的时间",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "insetInput",
-                            "desc": "面板中是否嵌入输入框，InsetInputProps 类型 v2.29 支持",
-                            "type": "boolean \\",
-                            "default": "InsetInputProps"
-                        },
-                        {
-                            "name": "inputReadOnly",
-                            "desc": "文本框是否 readonly",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "inputStyle",
-                            "desc": "输入框样式",
-                            "type": "object",
-                            "default": ""
-                        },
-                        {
-                            "name": "leftSlot",
-                            "desc": "渲染左侧额外区域",
-                            "type": "ReactNode",
-                            "default": ""
-                        },
-                        {
-                            "name": "max",
-                            "desc": "multiple 为 true 时，多选的数目,不传或者值为 null\\",
-                            "type": "undefined 的话无限制",
-                            "default": "number"
-                        },
-                        {
-                            "name": "motion",
-                            "desc": "是否开启面板展开的动画",
-                            "type": "boolean",
-                            "default": "true"
-                        },
-                        {
-                            "name": "multiple",
-                            "desc": "是否可以选择多个，仅支持 type=\"date\"",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "needConfirm",
-                            "desc": "是否需要“确认选择”，仅 type=\"dateTime\"\\",
-                            "type": "\"dateTimeRange\" 时有效",
-                            "default": "boolean"
-                        },
-                        {
-                            "name": "open",
-                            "desc": "面板显示或隐藏的受控属性",
-                            "type": "boolean",
-                            "default": ""
-                        },
-                        {
-                            "name": "placeholder",
-                            "desc": "输入框提示文字",
-                            "type": "string\\",
-                            "default": "string[]"
-                        },
-                        {
-                            "name": "position",
-                            "desc": "浮层位置，可选值同Popover#API 参考·position 参数",
-                            "type": "string",
-                            "default": "'bottomLeft'"
-                        },
-                        {
-                            "name": "prefix",
-                            "desc": "前缀内容",
-                            "type": "string\\",
-                            "default": "ReactNode"
-                        },
-                        {
-                            "name": "presets",
-                            "desc": "日期时间快捷方式, start 和 end 在 v2.52 版本支持函数类型",
-                            "type": "BaseValueType); end?: BaseValueType | (() => BaseValueType); text?: string }; type PresetsType = Array<PresetType | (() => PresetType)>;'>Array",
-                            "default": "(() => BaseValueType); end?: BaseValueType \\"
-                        },
-                        {
-                            "name": "preventScroll",
-                            "desc": "指示浏览器是否应滚动文档以显示新聚焦的元素，作用于组件内的 focus 方法",
-                            "type": "boolean",
-                            "default": ""
-                        },
-                        {
-                            "name": "presetPosition",
-                            "desc": "日期时间快捷方式面板位置, 可选值'left', 'right', 'top', 'bottom'",
-                            "type": "string",
-                            "default": "'bottom'"
-                        },
-                        {
-                            "name": "rangeSeparator",
-                            "desc": "自定义范围类型输入框的日期分隔符",
-                            "type": "string",
-                            "default": "'~'"
-                        },
-                        {
-                            "name": "rangeSeparatorNode",
-                            "desc": "自定义范围类型输入框分隔符的渲染节点（仅影响 UI 渲染，字符串解析仍使用 rangeSeparator）",
-                            "type": "ReactNode",
-                            "default": "-"
-                        },
-                        {
-                            "name": "renderDate",
-                            "desc": "自定义日期显示内容",
-                            "type": "(dayNumber, fullDate) => ReactNode",
-                            "default": "-"
-                        },
-                        {
-                            "name": "renderFullDate",
-                            "desc": "自定义显示日期格子内容",
-                            "type": "(dayNumber, fullDate, dayStatus) => ReactNode",
-                            "default": "-"
-                        },
-                        {
-                            "name": "rightSlot",
-                            "desc": "渲染右侧额外区域",
-                            "type": "ReactNode",
-                            "default": ""
-                        },
-                        {
-                            "name": "showClear",
-                            "desc": "是否显示清除按钮",
-                            "type": "boolean",
-                            "default": "true"
-                        },
-                        {
-                            "name": "size",
-                            "desc": "尺寸，可选值：\"small\", \"default\", \"large\"",
-                            "type": "string",
-                            "default": "'default'"
-                        },
-                        {
-                            "name": "spacing",
-                            "desc": "浮层与 trigger 的距离",
-                            "type": "number",
-                            "default": "4"
-                        },
-                        {
-                            "name": "startDateOffset",
-                            "desc": "type 为 dateRange 时，设置单击选择范围的开始日期",
-                            "type": "Date '>(selectedDate) => Date",
-                            "default": "-"
-                        },
-                        {
-                            "name": "startYear",
-                            "desc": "滚轮的开始年",
-                            "type": "number",
-                            "default": "当前年前 100 年"
-                        },
-                        {
-                            "name": "endYear",
-                            "desc": "滚轮的结束年，结束年需要大于开始年",
-                            "type": "number",
-                            "default": "当前年后 100 年"
-                        },
-                        {
-                            "name": "stopPropagation",
-                            "desc": "是否阻止弹出层上的点击事件冒泡",
-                            "type": "boolean",
-                            "default": "true"
-                        },
-                        {
-                            "name": "style",
-                            "desc": "自定义样式",
-                            "type": "CSSProperties",
-                            "default": ""
-                        },
-                        {
-                            "name": "syncSwitchMonth",
-                            "desc": "在范围选择的场景中，支持同步切换双面板的月份",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "timePickerOpts",
-                            "desc": "其他可以透传给时间选择器的参数，详见 TimePicker·API 参考",
-                            "type": "",
-                            "default": "object"
-                        },
-                        {
-                            "name": "topSlot",
-                            "desc": "渲染顶部额外区域",
-                            "type": "ReactNode",
-                            "default": ""
-                        },
-                        {
-                            "name": "triggerRender",
-                            "desc": "自定义触发器渲染方法，第一个参数是个 Object，详情看下方类型定义",
-                            "type": "(props) => ReactNode",
-                            "default": ""
-                        },
-                        {
-                            "name": "type",
-                            "desc": "类型，可选值：\"date\", \"dateRange\", \"dateTime\", \"dateTimeRange\", \"month\", \"monthRange\"",
-                            "type": "string",
-                            "default": "'date'"
-                        },
-                        {
-                            "name": "validateStatus",
-                            "desc": "校验状态，可选值 default、error、warning，默认 default。仅影响展示样式",
-                            "type": "string",
-                            "default": ""
-                        },
-                        {
-                            "name": "value",
-                            "desc": "受控的值",
-                            "type": "ValueType",
-                            "default": ""
-                        },
-                        {
-                            "name": "weekStartsOn",
-                            "desc": "以周几作为每周第一天，0 代表周日，1 代表周一，以此类推",
-                            "type": "number",
-                            "default": "0"
-                        },
-                        {
-                            "name": "zIndex",
-                            "desc": "弹出面板的 zIndex",
-                            "type": "number",
-                            "default": "1030"
-                        },
-                        {
-                            "name": "onBlur",
-                            "desc": "失去焦点时的回调，范围选择时不推荐使用",
-                            "type": "(e: event) => void",
-                            "default": "() => {}"
-                        },
-                        {
-                            "name": "onCancel",
-                            "desc": "取消选择时的回调，入参为上次确认选择的值，仅 type=\"dateTime\"\\",
-                            "type": "\"dateTimeRange\" 且 needConfirm=true 时有效。 0.x版本入参顺序与新版有所不同",
-                            "default": "void'>(date, dateString) => void"
-                        },
-                        {
-                            "name": "onChange",
-                            "desc": "值变化时的回调。 0.x版本入参顺序与新版有所不同",
-                            "type": "void'>(date, dateString) => void",
-                            "default": ""
-                        },
-                        {
-                            "name": "onChangeWithDateFirst",
-                            "desc": "0.x 中 onChange(string, Date), 1.0 后(Date, string)。此开关设为 false 时，入参顺序将与 0.x 版本保持一致",
-                            "type": "boolean",
-                            "default": "true"
-                        },
-                        {
-                            "name": "onClear",
-                            "desc": "点击 clear 按钮时触发",
-                            "type": "(e: event) => void",
-                            "default": "() => {}"
-                        },
-                        {
-                            "name": "onClickOutSide",
-                            "desc": "当弹出层处于展示状态，点击非弹出层、触发器的回调, event 参数自 2.68.0 支持",
-                            "type": "(event: React.mouseEvent) => void",
-                            "default": "() => {}"
-                        },
-                        {
-                            "name": "onConfirm",
-                            "desc": "确认选择时的回调，入参为当前选择的值，仅 type=\"dateTime\"\\",
-                            "type": "\"dateTimeRange\" 且 needConfirm=true 时有效。 0.x版本入参顺序与新版有所不同",
-                            "default": "void'>(date, dateString) => void"
-                        },
-                        {
-                            "name": "onFocus",
-                            "desc": "获得焦点时的回调，范围选择时不推荐使用",
-                            "type": "(e: event) => void",
-                            "default": "() => {}"
-                        },
-                        {
-                            "name": "onOpenChange",
-                            "desc": "面板显示或隐藏状态切换的回调",
-                            "type": "void'>(isOpen) => void",
-                            "default": ""
-                        },
-                        {
-                            "name": "onPanelChange",
-                            "desc": "切换面板的年份或者日期时的回调",
-                            "type": "void'>(date, dateStr) => void",
-                            "default": "DateType[], dateStr: StringType \\"
-                        },
-                        {
-                            "name": "onPresetClick",
-                            "desc": "点击快捷选择按钮的回调",
-                            "type": "void'>(item, e) => void",
-                            "default": "() => {}"
-                        },
-                        {
-                            "name": "yearAndMonthOpts",
-                            "desc": "其他可以透传给年月选择器的参数，详见 ScrollList#API",
-                            "type": "",
-                            "default": "object"
-                        },
-                        {
-                            "name": "— Methods —",
+                            "name": "— DatePicker —",
                             "desc": "",
                             "type": "",
                             "default": ""
                         },
                         {
+                            "name": "type",
+                            "desc": "类型：Enums.DatePickerType（date / dateTime / 各 range 档）",
+                            "type": "int",
+                            "default": "Enums.TypeDate"
+                        },
+                        {
+                            "name": "value",
+                            "desc": "受控的值：Date 或 [起, 止]",
+                            "type": "var",
+                            "default": "-"
+                        },
+                        {
+                            "name": "defaultValue",
+                            "desc": "非受控初值",
+                            "type": "var",
+                            "default": "-"
+                        },
+                        {
+                            "name": "format",
+                            "desc": "显示格式；空串按 type 取缺省",
+                            "type": "string",
+                            "default": "\"\"                  // 空 = 按 type 取默认"
+                        },
+                        {
+                            "name": "rangeSeparator",
+                            "desc": "range 档分隔符（展示时两侧各补空格）",
+                            "type": "string",
+                            "default": "\"~\"         // constants.ts:47，展示时两侧各补一个空格"
+                        },
+                        {
+                            "name": "weekStartsOn",
+                            "desc": "周起始日 0..6",
+                            "type": "int",
+                            "default": "0"
+                        },
+                        {
+                            "name": "size",
+                            "desc": "尺寸：Enums.Size",
+                            "type": "int",
+                            "default": "Enums.Default"
+                        },
+                        {
+                            "name": "topLeftRadius",
+                            "desc": "上左圆角（转给触发器）",
+                            "type": "alias",
+                            "default": "-"
+                        },
+                        {
+                            "name": "topRightRadius",
+                            "desc": "上右圆角（转给触发器）",
+                            "type": "alias",
+                            "default": "-"
+                        },
+                        {
+                            "name": "bottomLeftRadius",
+                            "desc": "下左圆角（转给触发器）",
+                            "type": "alias",
+                            "default": "-"
+                        },
+                        {
+                            "name": "bottomRightRadius",
+                            "desc": "下右圆角（转给触发器）",
+                            "type": "alias",
+                            "default": "-"
+                        },
+                        {
+                            "name": "density",
+                            "desc": "面板密度：Enums.Density",
+                            "type": "int",
+                            "default": "Enums.DensityDefault"
+                        },
+                        {
+                            "name": "disabled",
+                            "desc": "禁用",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "placeholder",
+                            "desc": "占位文字；range 档收 [起, 止]",
+                            "type": "var",
+                            "default": "-"
+                        },
+                        {
+                            "name": "inputReadOnly",
+                            "desc": "输入框只读",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "showClear",
+                            "desc": "有值时可清除",
+                            "type": "bool",
+                            "default": "true"
+                        },
+                        {
+                            "name": "multiple",
+                            "desc": "多选（仅 date 档）",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "max",
+                            "desc": "多选个数上限；0 不限",
+                            "type": "int",
+                            "default": "0"
+                        },
+                        {
+                            "name": "needConfirm",
+                            "desc": "要点确认才生效（dateTime 档）",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "presets",
+                            "desc": "快捷项：[{label, start, end}]",
+                            "type": "var",
+                            "default": "[]"
+                        },
+                        {
+                            "name": "presetPosition",
+                            "desc": "快捷项位置：Enums.PresetPosition",
+                            "type": "int",
+                            "default": "Enums.PresetBottom"
+                        },
+                        {
+                            "name": "syncSwitchMonth",
+                            "desc": "range 档两侧月份联动",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "defaultPickerValue",
+                            "desc": "面板初始显示的日期",
+                            "type": "var",
+                            "default": "-"
+                        },
+                        {
+                            "name": "autoSwitchDate",
+                            "desc": "敲完年/月自动切视图",
+                            "type": "bool",
+                            "default": "true"
+                        },
+                        {
+                            "name": "insetInput",
+                            "desc": "输入框内嵌",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "disabledDate",
+                            "desc": "禁用日期：(date, options) => bool",
+                            "type": "var",
+                            "default": "null"
+                        },
+                        {
+                            "name": "disabledTime",
+                            "desc": "禁用时间：(date, panelType) => {…}",
+                            "type": "var",
+                            "default": "null"
+                        },
+                        {
+                            "name": "hideDisabledOptions",
+                            "desc": "隐藏被禁的时间项",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "disabledTimePicker",
+                            "desc": "关掉时间选择",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "startDateOffset",
+                            "desc": "周选择档的起始偏移：(date) => Date",
+                            "type": "var",
+                            "default": "null"
+                        },
+                        {
+                            "name": "endDateOffset",
+                            "desc": "周选择档的结束偏移",
+                            "type": "var",
+                            "default": "null"
+                        },
+                        {
+                            "name": "startYear",
+                            "desc": "面板起始年；0 = 今年 −100",
+                            "type": "int",
+                            "default": "0"
+                        },
+                        {
+                            "name": "endYear",
+                            "desc": "面板结束年；0 = 今年 +100",
+                            "type": "int",
+                            "default": "0"
+                        },
+                        {
+                            "name": "triggerRender",
+                            "desc": "触发器自定义内容：Component",
+                            "type": "Component",
+                            "default": "null"
+                        },
+                        {
+                            "name": "renderDate",
+                            "desc": "单日格渲染：Component",
+                            "type": "Component",
+                            "default": "null"
+                        },
+                        {
+                            "name": "renderFullDate",
+                            "desc": "完整日期渲染：Component",
+                            "type": "Component",
+                            "default": "null"
+                        },
+                        {
+                            "name": "topSlot",
+                            "desc": "面板顶部插槽：Component",
+                            "type": "Component",
+                            "default": "null"
+                        },
+                        {
+                            "name": "bottomSlot",
+                            "desc": "面板底部插槽：Component",
+                            "type": "Component",
+                            "default": "null"
+                        },
+                        {
+                            "name": "leftSlot",
+                            "desc": "面板左侧插槽：Component",
+                            "type": "Component",
+                            "default": "null"
+                        },
+                        {
+                            "name": "rightSlot",
+                            "desc": "面板右侧插槽：Component",
+                            "type": "Component",
+                            "default": "null"
+                        },
+                        {
+                            "name": "position",
+                            "desc": "浮层方位：Enums.Position",
+                            "type": "int",
+                            "default": "Enums.BottomLeft"
+                        },
+                        {
+                            "name": "spacing",
+                            "desc": "面板内间距",
+                            "type": "real",
+                            "default": "4"
+                        },
+                        {
                             "name": "open",
-                            "desc": "调用时可以手动展开下拉列表 2.31.0",
-                            "type": "() => void",
-                            "default": ""
+                            "desc": "受控显隐；undefined 是非受控",
+                            "type": "var",
+                            "default": "-"
                         },
                         {
-                            "name": "close",
-                            "desc": "调用时可以手动关闭下拉列表 2.31.0",
-                            "type": "() => void",
-                            "default": ""
+                            "name": "defaultOpen",
+                            "desc": "非受控的初值是开着",
+                            "type": "bool",
+                            "default": "false"
                         },
                         {
-                            "name": "focus",
-                            "desc": "调用时可以手动聚焦输入框 2.31.0",
-                            "type": "(focusType?: 'rangeStart' | 'rangeEnd') => void",
-                            "default": ""
+                            "name": "validateStatus",
+                            "desc": "校验态：Enums.StatusType",
+                            "type": "int",
+                            "default": "Enums.StatusDefault"
                         },
                         {
-                            "name": "blur",
-                            "desc": "调用时可以手动失焦输入框 2.31.0",
-                            "type": "() => void",
-                            "default": ""
+                            "name": "onChanged",
+                            "desc": "值变化时发：(date, dateString)",
+                            "type": "signal changed(var date, var dateString)",
+                            "default": "-"
+                        },
+                        {
+                            "name": "onOpenChange",
+                            "desc": "显隐变化时发",
+                            "type": "signal openChange(bool isOpen)",
+                            "default": "-"
+                        },
+                        {
+                            "name": "onPanelChanged",
+                            "desc": "面板翻页 / 换年月时发",
+                            "type": "signal panelChanged(var date, var dateString)",
+                            "default": "-"
+                        },
+                        {
+                            "name": "onConfirmed",
+                            "desc": "点确认时发",
+                            "type": "signal confirmed(var date, var dateString)",
+                            "default": "-"
+                        },
+                        {
+                            "name": "onCancelled",
+                            "desc": "点取消时发",
+                            "type": "signal cancelled(var date, var dateString)",
+                            "default": "-"
+                        },
+                        {
+                            "name": "onCleared",
+                            "desc": "点清除时发",
+                            "type": "signal",
+                            "default": "-"
+                        },
+                        {
+                            "name": "onPresetClicked",
+                            "desc": "点快捷项时发",
+                            "type": "signal presetClicked(var item)",
+                            "default": "-"
                         }
                     ],
                     "guidelines": [
@@ -7479,454 +7341,376 @@
                     ],
                     "api": [
                         {
-                            "name": "accept",
-                            "desc": "html 原生属性，接受上传的文件类型。 accept 的值为你允许选择文件的MIME types 字符串或文件后缀（.jpg等）",
-                            "type": "string",
-                            "default": ""
-                        },
-                        {
-                            "name": "action",
-                            "desc": "文件上传地址，必填",
-                            "type": "string",
-                            "default": ""
-                        },
-                        {
-                            "name": "addOnPasting",
-                            "desc": "按下 ctrl/command + v时，是否自动将剪贴板中的文件添加至 fileList，当前仅支持图片类型; 需用户授权同意",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "afterUpload",
-                            "desc": "文件上传后的钩子，根据 return 的 object 更新文件状态",
-                            "type": "function(auProps) => afterUploadResult",
-                            "default": ""
-                        },
-                        {
-                            "name": "beforeClear",
-                            "desc": "清空文件前回调，按照返回值来判断是否继续移除，返回false、Promise.resolve(false)、Promise.reject()会阻止移除",
-                            "type": "(fileList: Array<FileItem \\>) => boolean\\",
-                            "default": "Promise"
-                        },
-                        {
-                            "name": "beforeCrop",
-                            "desc": "图片裁切前的回调。返回 false 可跳过裁切直接上传，返回 true 或不返回则继续裁切。支持异步返回",
-                            "type": "(file: File, fileList: File[]) => boolean \\",
-                            "default": "Promise\\<boolean\\>"
-                        },
-                        {
-                            "name": "beforeRemove",
-                            "desc": "移除文件前的回调，按照返回值来判断是否继续移除，返回false、Promise.resolve(false)、Promise.reject()会阻止移除",
-                            "type": "(file: <FileItem\\>, fileList: Array<FileItem \\>) => boolean\\",
-                            "default": "Promise"
-                        },
-                        {
-                            "name": "beforeUpload",
-                            "desc": "上传文件前的钩子，根据 return 的 object 更新文件状态，控制是否上传",
-                            "type": "function(buProps) => beforeUploadResult \\",
-                            "default": "Promise \\"
-                        },
-                        {
-                            "name": "capture",
-                            "desc": "文件上传控件中媒体拍摄的方式",
-                            "type": "boolean\\",
-                            "default": "string\\"
-                        },
-                        {
-                            "name": "className",
-                            "desc": "类名",
-                            "type": "string",
-                            "default": ""
-                        },
-                        {
-                            "name": "crop",
-                            "desc": "启用图片裁切功能。传入 true 使用默认配置，传入对象可自定义裁切参数。支持所有上传入口（点击选择、拖拽、粘贴、替换）的图片裁切",
-                            "type": "boolean \\",
-                            "default": "CropProps"
-                        },
-                        {
-                            "name": "cropModalProps",
-                            "desc": "自定义裁切弹窗的属性，可配置弹窗的样式、宽度等",
-                            "type": "ModalReactProps",
-                            "default": ""
-                        },
-                        {
-                            "name": "customRequest",
-                            "desc": "自定义上传使用的异步请求方法",
-                            "type": "(object: customRequestArgs) => void",
-                            "default": ""
-                        },
-                        {
-                            "name": "data",
-                            "desc": "上传时附带的额外参数或返回上传额外参数的方法",
-                            "type": "object\\",
-                            "default": "(file: File) => object"
-                        },
-                        {
-                            "name": "defaultFileList",
-                            "desc": "已上传的文件列表",
-                            "type": "Array<FileItem\\>",
-                            "default": "[]"
-                        },
-                        {
-                            "name": "directory",
-                            "desc": "文件夹类型上传",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "disabled",
-                            "desc": "是否禁用",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "dragIcon",
-                            "desc": "拖拽区左侧 Icon",
-                            "type": "ReactNode",
-                            "default": "<IconUpload />"
-                        },
-                        {
-                            "name": "dragMainText",
-                            "desc": "拖拽区主文本",
-                            "type": "ReactNode",
-                            "default": "'点击上传文件或拖拽文件到这里'"
-                        },
-                        {
-                            "name": "dragSubText",
-                            "desc": "拖拽区帮助文本",
-                            "type": "ReactNode",
-                            "default": "''"
-                        },
-                        {
-                            "name": "draggable",
-                            "desc": "是否支持拖拽上传",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "fileList",
-                            "desc": "已上传的文件列表，传入该值时，upload 即为受控组件",
-                            "type": "Array<FileItem\\>",
-                            "default": ""
-                        },
-                        {
-                            "name": "fileListTitle",
-                            "desc": "自定义文件列表标题区域。支持两种形式： 1. 传入 ReactNode 时，仅替换标题文字，清空按钮保持默认样式 2. 传入函数时，可完全自定义标题区域（包括清空按钮），函数参数为 { fileList, onClear, clearText }",
-                            "type": "ReactNode \\",
-                            "default": "(props: RenderFileListTitleProps) => ReactNode"
-                        },
-                        {
-                            "name": "fileName",
-                            "desc": "作用与 name 相同，主要在 Form.Upload 中使用，为了避免与 Field 的 props.name 冲突，此处另外提供一个重命名的 props",
-                            "type": "string",
-                            "default": ""
-                        },
-                        {
-                            "name": "headers",
-                            "desc": "上传时附带的 headers 或返回上传额外 headers 的方法",
-                            "type": "object\\",
-                            "default": "(file: File) => object"
-                        },
-                        {
-                            "name": "hotSpotLocation",
-                            "desc": "照片墙点击热区的放置位置，可选值 start, end",
-                            "type": "string",
-                            "default": "'end'"
-                        },
-                        {
-                            "name": "itemStyle",
-                            "desc": "fileCard 的内联样式",
-                            "type": "CSSProperties",
-                            "default": ""
-                        },
-                        {
-                            "name": "limit",
-                            "desc": "最大允许上传文件个数",
-                            "type": "number",
-                            "default": ""
-                        },
-                        {
-                            "name": "listType",
-                            "desc": "文件列表展示类型，可选picture、list",
-                            "type": "string",
-                            "default": "'list'"
-                        },
-                        {
-                            "name": "maxSize",
-                            "desc": "文件体积最大限制，单位 KB",
-                            "type": "number",
-                            "default": ""
-                        },
-                        {
-                            "name": "minSize",
-                            "desc": "文件体积最小限制，单位 KB",
-                            "type": "number",
-                            "default": ""
-                        },
-                        {
-                            "name": "multiple",
-                            "desc": "是否允许单次选中多个文件",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "name",
-                            "desc": "上传时使用的文件名",
-                            "type": "string",
-                            "default": "''"
-                        },
-                        {
-                            "name": "onAcceptInvalid",
-                            "desc": "当接收到的文件不符合accept规范时触发（一般是因为文件夹选择了全部类型文件/拖拽不符合格式的文件时触发）",
-                            "type": "(files: File[]) => void",
-                            "default": ""
-                        },
-                        {
-                            "name": "onChange",
-                            "desc": "文件状态发生变化时调用，包括上传成功，失败，上传中，回调入参为 Object，包含 fileList、currentFile 等值",
-                            "type": "({fileList: Array<FileItem\\>, currentFile?: FileItem}) => void",
-                            "default": ""
-                        },
-                        {
-                            "name": "onClear",
-                            "desc": "点击清空时的回调",
-                            "type": "() => void",
-                            "default": ""
-                        },
-                        {
-                            "name": "onCropError",
-                            "desc": "图片裁切失败时的回调",
-                            "type": "(error: Error) => void",
-                            "default": ""
-                        },
-                        {
-                            "name": "onDrop",
-                            "desc": "当拖拽的元素在拖拽区上被释放时触发",
-                            "type": "(e, files: Array<File\\>, fileList: Array<FileItem\\>) => void",
-                            "default": ""
-                        },
-                        {
-                            "name": "onError",
-                            "desc": "上传错误时的回调",
-                            "type": "(error: Error, file: File, fileList: Array<FileItem\\>, xhr: XMLHttpRequest) => void",
-                            "default": ""
-                        },
-                        {
-                            "name": "onExceed",
-                            "desc": "上传文件总数超出 limit 时的回调",
-                            "type": "(fileList:Array<FileItem\\>) => void",
-                            "default": ""
-                        },
-                        {
-                            "name": "onFileChange",
-                            "desc": "选中文件后的回调",
-                            "type": "(Array<File\\>) => void",
-                            "default": ""
-                        },
-                        {
-                            "name": "onOpenFileDialog",
-                            "desc": "打开系统文系统文件选择弹窗时触发",
-                            "type": "() => void",
-                            "default": ""
-                        },
-                        {
-                            "name": "onPreviewClick",
-                            "desc": "点击文件卡片时的回调",
-                            "type": "(fileItem: FileItem) => void",
-                            "default": ""
-                        },
-                        {
-                            "name": "onProgress",
-                            "desc": "上传文件时的回调",
-                            "type": "(percent: number, file: File, fileList: Array<FileItem\\>) => void",
-                            "default": ""
-                        },
-                        {
-                            "name": "onPastingError",
-                            "desc": "addOnPasting为true时，粘贴读取失败时的回调",
-                            "type": "(Error\\",
-                            "default": "PermissionState)"
-                        },
-                        {
-                            "name": "onRemove",
-                            "desc": "移除文件的回调",
-                            "type": "(currentFile: File, fileList:Array<FileItem\\>, currentFileItem: FileItem) => void",
-                            "default": ""
-                        },
-                        {
-                            "name": "onRetry",
-                            "desc": "上传重试的回调",
-                            "type": "(file: <FileItem\\>) => void",
-                            "default": ""
-                        },
-                        {
-                            "name": "onSizeError",
-                            "desc": "文件尺寸非法的回调",
-                            "type": "(file:File, fileList:Array<FileItem\\>) => void",
-                            "default": ""
-                        },
-                        {
-                            "name": "onSuccess",
-                            "desc": "上传成功后的回调",
-                            "type": "(responseBody: object, file: File, fileList:Array<FileItem\\>) => void",
-                            "default": ""
-                        },
-                        {
-                            "name": "picHeight",
-                            "desc": "图片墙模式下，可通过该 API 定制图片展示高度",
-                            "type": "string\\",
-                            "default": "number"
-                        },
-                        {
-                            "name": "picWidth",
-                            "desc": "图片墙模式下，可通过该 API 定制图片展示宽度",
-                            "type": "string\\",
-                            "default": "number"
-                        },
-                        {
-                            "name": "previewFile",
-                            "desc": "自定义预览逻辑，该函数返回内容将会替换原缩略图",
-                            "type": "(fileItem: FileItem) => ReactNode",
-                            "default": ""
-                        },
-                        {
-                            "name": "prompt",
-                            "desc": "自定义插槽，可用于插入提示文本。与直接在 children 中写的区别时，prompt 的内容在点击时不会触发上传",
-                            "type": "ReactNode",
-                            "default": ""
-                        },
-                        {
-                            "name": "promptPosition",
-                            "desc": "提示文本的位置，当 listType 为 list 时，参照物为 children 元素；当 listType 为 picture 时，参照物为图片列表。可选值 left、right、bottom",
-                            "type": "string",
-                            "default": "'right'"
-                        },
-                        {
-                            "name": "renderFileItem",
-                            "desc": "fileCard 的自定义渲染",
-                            "type": "(renderProps: RenderFileItemProps) => ReactNode",
-                            "default": ""
-                        },
-                        {
-                            "name": "renderFileOperation",
-                            "desc": "自定义列表项操作区",
-                            "type": "(renderProps: RenderFileItemProps)=>ReactNode",
-                            "default": ""
-                        },
-                        {
-                            "name": "renderPicClose",
-                            "desc": "自定义照片墙 close 按钮，只在照片墙模式下有效",
-                            "type": "({className: string, remove: (e: MouseEvent) => void})=>ReactNode",
-                            "default": ""
-                        },
-                        {
-                            "name": "renderPicInfo",
-                            "desc": "自定义照片墙信息，只在照片墙模式下有效",
-                            "type": "(renderProps: RenderFileItemProps)=>ReactNode",
-                            "default": ""
-                        },
-                        {
-                            "name": "renderPicPreviewIcon",
-                            "desc": "自定义照片墙hover时展示的预览图标，只在照片墙模式下有效",
-                            "type": "(renderProps: RenderFileItemProps)=>ReactNode",
-                            "default": ""
-                        },
-                        {
-                            "name": "renderThumbnail",
-                            "desc": "自定义图片墙缩略图，只在照片墙模式下有效",
-                            "type": "(renderProps: RenderFileItemProps)=>ReactNode",
-                            "default": ""
-                        },
-                        {
-                            "name": "showClear",
-                            "desc": "在 limit 不为 1 且当前已上传文件数大于 1 时，是否展示清空按钮",
-                            "type": "boolean",
-                            "default": "true"
-                        },
-                        {
-                            "name": "showPicInfo",
-                            "desc": "是否显示图片信息，只在照片墙模式下有效",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "showReplace",
-                            "desc": "上传成功时，是否展示在 fileCard 内部展示替换按钮",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "showRetry",
-                            "desc": "上传失败时，是否展示在 fileCard 内部展示重试按钮",
-                            "type": "boolean",
-                            "default": "true"
-                        },
-                        {
-                            "name": "showTooltip",
-                            "desc": "文件名超长时，是否展示 tooltip 及相关配置: type，浮层内容承载的组件，支持 Tooltip \\",
-                            "type": "Popover；opts，其他需要透传给浮层组件的属性； renderTooltip，自定义渲染弹出层组件",
-                            "default": "boolean \\"
-                        },
-                        {
-                            "name": "showUploadList",
-                            "desc": "是否显示文件列表",
-                            "type": "boolean",
-                            "default": "true"
-                        },
-                        {
-                            "name": "style",
-                            "desc": "样式",
-                            "type": "CSSProperties",
-                            "default": ""
-                        },
-                        {
-                            "name": "transformFile",
-                            "desc": "选中文件后，上传文件前的回调函数，可用于对文件进行自定义转换处理",
-                            "type": "(file:File) => FileItem",
-                            "default": ""
-                        },
-                        {
-                            "name": "uploadTrigger",
-                            "desc": "触发上传时机，可选值 auto、custom",
-                            "type": "string",
-                            "default": "'auto'"
-                        },
-                        {
-                            "name": "validateMessage",
-                            "desc": "Upload 整体的错误信息",
-                            "type": "ReactNode",
-                            "default": ""
-                        },
-                        {
-                            "name": "withCredentials",
-                            "desc": "是否带上 Cookie 信息",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "— Methods —",
+                            "name": "— Upload —",
                             "desc": "",
                             "type": "",
                             "default": ""
                         },
                         {
-                            "name": "insert",
-                            "desc": "上传文件，当index传入时，会插入到指定位置，不传则插入到最后 2.2.0",
-                            "type": "(files: Array<File\\>, index?: number) => void",
-                            "default": ""
+                            "name": "action",
+                            "desc": "上传地址",
+                            "type": "string",
+                            "default": "\"\""
                         },
                         {
-                            "name": "upload",
-                            "desc": "手动开始上传，配合uploadTrigger=\"custom\"使用",
-                            "type": "() => void",
-                            "default": ""
+                            "name": "formData",
+                            "desc": "附加表单字段",
+                            "type": "var",
+                            "default": "({})"
                         },
                         {
-                            "name": "openFileDialog",
-                            "desc": "打开文件选择窗口 2.21.0",
-                            "type": "() => void",
-                            "default": ""
+                            "name": "headers",
+                            "desc": "请求头",
+                            "type": "var",
+                            "default": "({})"
+                        },
+                        {
+                            "name": "withCredentials",
+                            "desc": "带上 Cookie",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "timeout",
+                            "desc": "超时毫秒；0 不限",
+                            "type": "int",
+                            "default": "0"
+                        },
+                        {
+                            "name": "name",
+                            "desc": "上传表单的字段名",
+                            "type": "string",
+                            "default": "\"\"                      // 上传表单字段名"
+                        },
+                        {
+                            "name": "fileName",
+                            "desc": "name 的别名（避开与 Form 的 name 冲突）",
+                            "type": "string",
+                            "default": "\"\"                  // name 的别名，避开 Form 的 name 冲突"
+                        },
+                        {
+                            "name": "fileList",
+                            "desc": "受控的文件列表",
+                            "type": "var",
+                            "default": "-"
+                        },
+                        {
+                            "name": "defaultFileList",
+                            "desc": "非受控初值",
+                            "type": "var",
+                            "default": "[]"
+                        },
+                        {
+                            "name": "listType",
+                            "desc": "列表形态：list / picture / none",
+                            "type": "string",
+                            "default": "\"list\"              // list / picture / none"
+                        },
+                        {
+                            "name": "uploadTrigger",
+                            "desc": "auto 选完就传；custom 由按钮触发",
+                            "type": "string",
+                            "default": "\"auto\"         // auto / custom"
+                        },
+                        {
+                            "name": "showUploadList",
+                            "desc": "显示文件列表",
+                            "type": "bool",
+                            "default": "true"
+                        },
+                        {
+                            "name": "showClear",
+                            "desc": "列表可清空",
+                            "type": "bool",
+                            "default": "true"
+                        },
+                        {
+                            "name": "showPicInfo",
+                            "desc": "图片档显示尺寸信息",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "showReplace",
+                            "desc": "显示替换",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "showRetry",
+                            "desc": "显示重试",
+                            "type": "bool",
+                            "default": "true"
+                        },
+                        {
+                            "name": "showTooltip",
+                            "desc": "提示：true / false / {type, opts}",
+                            "type": "var",
+                            "default": "true"
+                        },
+                        {
+                            "name": "hotSpotLocation",
+                            "desc": "拖拽高亮位置：start / end",
+                            "type": "string",
+                            "default": "\"end\"        // start / end"
+                        },
+                        {
+                            "name": "validateMessage",
+                            "desc": "校验文案（只挂不判）",
+                            "type": "string",
+                            "default": "\"\""
+                        },
+                        {
+                            "name": "validateStatus",
+                            "desc": "校验态：官方四个值都没样式，纯挂点",
+                            "type": "string",
+                            "default": "\"default\"     // 官方四个值都没有样式，纯挂点"
+                        },
+                        {
+                            "name": "multiple",
+                            "desc": "多选文件",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "disabled",
+                            "desc": "禁用",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "draggable",
+                            "desc": "列表项可拖拽排序",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "directory",
+                            "desc": "选目录而不是文件",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "accept",
+                            "desc": "文件类型过滤",
+                            "type": "string",
+                            "default": "\"\"                    // 空串等价官方 undefined"
+                        },
+                        {
+                            "name": "limit",
+                            "desc": "个数上限；-1 不限",
+                            "type": "int",
+                            "default": "-1"
+                        },
+                        {
+                            "name": "maxSize",
+                            "desc": "单个上限（KB）；-1 不限",
+                            "type": "real",
+                            "default": "-1"
+                        },
+                        {
+                            "name": "minSize",
+                            "desc": "单个下限（KB）；-1 不限",
+                            "type": "real",
+                            "default": "-1"
+                        },
+                        {
+                            "name": "capture",
+                            "desc": "摄像头档：user / environment",
+                            "type": "string",
+                            "default": "\"\""
+                        },
+                        {
+                            "name": "promptPosition",
+                            "desc": "提示位置：left / right / bottom",
+                            "type": "string",
+                            "default": "\"right\"       // left / right / bottom"
+                        },
+                        {
+                            "name": "itemStyle",
+                            "desc": "列表项尺寸：{width, height}",
+                            "type": "var",
+                            "default": "-"
+                        },
+                        {
+                            "name": "picWidth",
+                            "desc": "缩略图宽；0 不限",
+                            "type": "int",
+                            "default": "0"
+                        },
+                        {
+                            "name": "picHeight",
+                            "desc": "缩略图高；0 不限",
+                            "type": "int",
+                            "default": "0"
+                        },
+                        {
+                            "name": "prompt",
+                            "desc": "提示：字符串或 Component",
+                            "type": "var",
+                            "default": "-"
+                        },
+                        {
+                            "name": "dragIcon",
+                            "desc": "拖拽区图标名",
+                            "type": "string",
+                            "default": "\"\"                  // 图标名，空则官方默认 upload"
+                        },
+                        {
+                            "name": "dragMainText",
+                            "desc": "拖拽区主文案",
+                            "type": "string",
+                            "default": "\"\"              // 空则官方文案「点击上传文件或拖拽文件到这里」"
+                        },
+                        {
+                            "name": "dragSubText",
+                            "desc": "拖拽区副文案",
+                            "type": "string",
+                            "default": "\"\""
+                        },
+                        {
+                            "name": "trigger",
+                            "desc": "触发器：Component",
+                            "type": "Component",
+                            "default": "null"
+                        },
+                        {
+                            "name": "dragIconComponent",
+                            "desc": "拖拽区图标：Component",
+                            "type": "Component",
+                            "default": "null"
+                        },
+                        {
+                            "name": "beforeUpload",
+                            "desc": "上传前：({file, fileList}) => bool / 物件 / Promise",
+                            "type": "var",
+                            "default": "null"
+                        },
+                        {
+                            "name": "beforeRemove",
+                            "desc": "删除前：(file, fileList) => bool",
+                            "type": "var",
+                            "default": "null"
+                        },
+                        {
+                            "name": "beforeClear",
+                            "desc": "清空前：(fileList) => bool",
+                            "type": "var",
+                            "default": "null"
+                        },
+                        {
+                            "name": "afterUpload",
+                            "desc": "上传后：({response, file, fileList}) => 物件",
+                            "type": "var",
+                            "default": "null"
+                        },
+                        {
+                            "name": "transformFile",
+                            "desc": "文件转换：(file) => file",
+                            "type": "var",
+                            "default": "null"
+                        },
+                        {
+                            "name": "customRequest",
+                            "desc": "自定义上传：(args) => void",
+                            "type": "var",
+                            "default": "null"
+                        },
+                        {
+                            "name": "fileListTitle",
+                            "desc": "列表标题：字符串或 Component",
+                            "type": "var",
+                            "default": "-"
+                        },
+                        {
+                            "name": "previewFile",
+                            "desc": "预览节点：Component",
+                            "type": "Component",
+                            "default": "null"
+                        },
+                        {
+                            "name": "renderFileItem",
+                            "desc": "列表项：Component",
+                            "type": "Component",
+                            "default": "null"
+                        },
+                        {
+                            "name": "renderFileOperation",
+                            "desc": "操作区：Component",
+                            "type": "Component",
+                            "default": "null"
+                        },
+                        {
+                            "name": "renderThumbnail",
+                            "desc": "缩略图：Component",
+                            "type": "Component",
+                            "default": "null"
+                        },
+                        {
+                            "name": "renderPicInfo",
+                            "desc": "图片信息：Component",
+                            "type": "Component",
+                            "default": "null"
+                        },
+                        {
+                            "name": "renderPicPreviewIcon",
+                            "desc": "预览图标：Component",
+                            "type": "Component",
+                            "default": "null"
+                        },
+                        {
+                            "name": "renderPicClose",
+                            "desc": "关闭图标：Component",
+                            "type": "Component",
+                            "default": "null"
+                        },
+                        {
+                            "name": "onRemove",
+                            "desc": "删除单个时发",
+                            "type": "signal remove(var currentFile, var fileList, var currentFileItem)",
+                            "default": "-"
+                        },
+                        {
+                            "name": "onExceed",
+                            "desc": "超出 limit 时发",
+                            "type": "signal exceed(var files)",
+                            "default": "-"
+                        },
+                        {
+                            "name": "onProgress",
+                            "desc": "上传进度：(percent, file, fileList)",
+                            "type": "signal progress(real percent, var file, var fileList)",
+                            "default": "-"
+                        },
+                        {
+                            "name": "onSuccess",
+                            "desc": "上传成功：(response, file, fileList)",
+                            "type": "signal success(var response, var file, var fileList)",
+                            "default": "-"
+                        },
+                        {
+                            "name": "onError",
+                            "desc": "上传失败：(err, file, fileList)",
+                            "type": "signal error(var err, var file, var fileList)",
+                            "default": "-"
+                        },
+                        {
+                            "name": "onSizeError",
+                            "desc": "超出 maxSize 时发",
+                            "type": "signal sizeError(var file, var fileList)",
+                            "default": "-"
+                        },
+                        {
+                            "name": "onAcceptInvalid",
+                            "desc": "类型不符时发",
+                            "type": "signal acceptInvalid(var files)",
+                            "default": "-"
+                        },
+                        {
+                            "name": "onPreviewClick",
+                            "desc": "点预览时发",
+                            "type": "signal previewClick(var fileItem)",
+                            "default": "-"
                         }
                     ],
                     "guidelines": [
