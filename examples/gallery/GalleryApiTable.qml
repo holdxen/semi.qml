@@ -3,10 +3,10 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import Semi
 
-// API 参考表。数据来自 docs.json 里从官网 markdown 解析出的表格。
+// API 参考表。数据来自 docs.json 的 api 数组 —— 那一栏由 scripts/gen-api-tables.py 从
+// src/<Type>.qml 直接抽（属性名 / QML 类型 / 缺省值 / 信号），说明列写在 scripts/api-notes.json。
 //
-// 内容是 React 版的 props，和本库的 QML 属性名不完全对应，
-// 所以标题上会说明这一点，不假装它等同于我们的属性。
+// 也就是说这张表讲的是**本库 QML 侧的属性面**，不是官网那版 React props。
 Item {
     id: control
 
@@ -39,7 +39,7 @@ Item {
             anchors.right: parent.right
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 14
-            text: qsTr("以下为官网的 React 版 API，QML 侧属性见各小节的示例")
+            text: qsTr("QML 属性与信号，取自 src/ 下的源码；信号一栏写的就是 QML 里的写法（onClicked 等）")
             color: Theme.current.colorText2
             font.pixelSize: Theme.current.fontSizeSmall
         }
@@ -63,7 +63,8 @@ Item {
             // 的量测，这里按它的口径开省略号收口。
             { title: qsTr("说明"), dataIndex: "desc", ellipsis: true },
             { title: qsTr("类型"), dataIndex: "type", width: 160 },
-            { title: qsTr("默认值"), dataIndex: "default", width: 120 }
+            // 缺省值可能是 `Enums.Default` / `colorText0` 这类表达式，列窄了要省略号收口
+            { title: qsTr("默认值"), dataIndex: "default", width: 120, ellipsis: true }
         ]
         dataSource: control.rows
         pagination: false

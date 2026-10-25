@@ -67,118 +67,100 @@
                             "default": ""
                         },
                         {
-                            "name": "aria-label",
-                            "desc": "按钮的标签",
+                            "name": "text",
+                            "desc": "按钮文字",
                             "type": "string",
-                            "default": "-"
+                            "default": "\"\""
                         },
                         {
-                            "name": "block",
-                            "desc": "将按钮设置为块级按钮",
+                            "name": "icon",
+                            "desc": "图标名（取值同 Icon.name）",
+                            "type": "string",
+                            "default": "\"\""
+                        },
+                        {
+                            "name": "iconPosition",
+                            "desc": "图标位置：left / right",
+                            "type": "string",
+                            "default": "\"left\""
+                        },
+                        {
+                            "name": "loading",
+                            "desc": "转圈并拦下点击",
                             "type": "bool",
                             "default": "false"
                         },
                         {
-                            "name": "className",
-                            "desc": "类名",
-                            "type": "string",
-                            "default": ""
-                        },
-                        {
-                            "name": "contentClassName",
-                            "desc": "内容区域 className",
-                            "type": "string",
-                            "default": "无"
-                        },
-                        {
-                            "name": "colorful",
-                            "desc": "多彩按钮，自 2.86.0 版本开始支持",
-                            "type": "boolean",
+                            "name": "block",
+                            "desc": "占满整行（宽跟父项）",
+                            "type": "bool",
                             "default": "false"
                         },
                         {
-                            "name": "disabled",
-                            "desc": "禁用状态",
-                            "type": "boolean",
+                            "name": "circle",
+                            "desc": "圆形按钮；官方的死 prop，本库不生效",
+                            "type": "bool",
                             "default": "false"
                         },
                         {
-                            "name": "htmlType",
-                            "desc": "设置 button 原生的 type 值，可选值：button、reset、submit",
-                            "type": "string",
-                            "default": "\"button\""
+                            "name": "tone",
+                            "desc": "色调：Enums.Tone",
+                            "type": "var",
+                            "default": "-"
                         },
                         {
-                            "name": "icon",
-                            "desc": "图标",
-                            "type": "ReactNode",
-                            "default": ""
-                        },
-                        {
-                            "name": "iconPosition",
-                            "desc": "图标位置，可选值：left\\",
-                            "type": "right",
-                            "default": "string"
-                        },
-                        {
-                            "name": "loading",
-                            "desc": "加载状态",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "noHorizontalPadding",
-                            "desc": "设置水平方向是否去掉内边距，只对设置了 icon 的 Button 有效。可选值：true（等效于 \\[\"left\", \"right\"\\]），\"left\"，\"right\"，\\[\"left\", \"right\"\\]",
-                            "type": "boolean\\",
-                            "default": "string\\"
+                            "name": "variant",
+                            "desc": "形态：Enums.Variant",
+                            "type": "var",
+                            "default": "-"
                         },
                         {
                             "name": "size",
-                            "desc": "按钮大小，可选值：large、default、small",
+                            "desc": "尺寸：Enums.Size",
+                            "type": "var",
+                            "default": "-"
+                        },
+                        {
+                            "name": "colorful",
+                            "desc": "彩色渐变底（Semi v2.65 起）",
+                            "type": "var",
+                            "default": "-"
+                        },
+                        {
+                            "name": "noHorizontalPadding",
+                            "desc": "去掉左右内边距",
+                            "type": "var",
+                            "default": "false"
+                        },
+                        {
+                            "name": "ariaLabel",
+                            "desc": "无障碍标签",
                             "type": "string",
-                            "default": "\"default\""
+                            "default": "\"\""
                         },
                         {
-                            "name": "style",
-                            "desc": "自定义样式",
-                            "type": "CSSProperties",
-                            "default": ""
-                        },
-                        {
-                            "name": "theme",
-                            "desc": "按钮主题，可选值：solid（有背景色）、 borderless（无背景色）、 light（浅背景色）、outline(边框模式)",
-                            "type": "string",
-                            "default": "\"light\""
-                        },
-                        {
-                            "name": "type",
-                            "desc": "类型，可选值：primary、secondary、tertiary、warning、 danger",
-                            "type": "string",
-                            "default": "\"primary\""
-                        },
-                        {
-                            "name": "onClick",
-                            "desc": "单击事件",
-                            "type": "function(MouseEvent)",
-                            "default": ""
+                            "name": "onClicked",
+                            "desc": "点击时发；禁用、loading 时不发",
+                            "type": "signal",
+                            "default": "-"
                         },
                         {
                             "name": "onMouseDown",
-                            "desc": "鼠标按下事件",
-                            "type": "function(MouseEvent)",
-                            "default": ""
+                            "desc": "按下就发，不等抬起",
+                            "type": "signal",
+                            "default": "-"
                         },
                         {
-                            "name": "onMouseEnter",
-                            "desc": "鼠标移入事件",
-                            "type": "function(MouseEvent)",
-                            "default": ""
+                            "name": "onMouseEntered",
+                            "desc": "指针进入时发",
+                            "type": "signal",
+                            "default": "-"
                         },
                         {
-                            "name": "onMouseLeave",
-                            "desc": "鼠标移出事件",
-                            "type": "function(MouseEvent)",
-                            "default": ""
+                            "name": "onMouseLeft",
+                            "desc": "指针离开时发",
+                            "type": "signal",
+                            "default": "-"
                         },
                         {
                             "name": "— ButtonGroup —",
@@ -187,76 +169,46 @@
                             "default": ""
                         },
                         {
-                            "name": "aria-label",
-                            "desc": "按钮组的标签",
-                            "type": "string",
+                            "name": "content",
+                            "desc": "默认子项：一组 Button",
+                            "type": "alias",
                             "default": "-"
                         },
                         {
-                            "name": "className",
-                            "desc": "自定义类名",
-                            "type": "string",
+                            "name": "size",
+                            "desc": "整组尺寸，给没自己设 size 的子按钮",
+                            "type": "var",
+                            "default": "-"
+                        },
+                        {
+                            "name": "tone",
+                            "desc": "整组色调，同上",
+                            "type": "var",
+                            "default": "-"
+                        },
+                        {
+                            "name": "variant",
+                            "desc": "整组形态，同上",
+                            "type": "var",
                             "default": "-"
                         },
                         {
                             "name": "colorful",
-                            "desc": "多彩按钮，自 2.86.0 版本开始支持",
-                            "type": "boolean",
-                            "default": "false"
+                            "desc": "整组彩色，同上",
+                            "type": "var",
+                            "default": "-"
                         },
                         {
                             "name": "disabled",
-                            "desc": "禁用状态",
-                            "type": "boolean",
+                            "desc": "整组禁用",
+                            "type": "bool",
                             "default": "false"
                         },
                         {
-                            "name": "size",
-                            "desc": "按钮大小，可选值：large、default、small",
+                            "name": "ariaLabel",
+                            "desc": "无障碍标签",
                             "type": "string",
-                            "default": "\"default\""
-                        },
-                        {
-                            "name": "style",
-                            "desc": "自定义样式",
-                            "type": "CSSProperties",
-                            "default": "-"
-                        },
-                        {
-                            "name": "theme",
-                            "desc": "按钮主题，可选值：solid（有背景色）、 borderless（无背景色）、 light（浅背景色）、outline(边框模式)",
-                            "type": "string",
-                            "default": "\"light\""
-                        },
-                        {
-                            "name": "type",
-                            "desc": "类型，可选值：primary、secondary、tertiary、warning、 danger",
-                            "type": "string",
-                            "default": "\"primary\""
-                        },
-                        {
-                            "name": "— SplitButtonGroup V1.12.0新增 —",
-                            "desc": "",
-                            "type": "",
-                            "default": ""
-                        },
-                        {
-                            "name": "aria-label",
-                            "desc": "分裂按钮组的标签",
-                            "type": "string",
-                            "default": "-"
-                        },
-                        {
-                            "name": "className",
-                            "desc": "自定义类名",
-                            "type": "string",
-                            "default": "-"
-                        },
-                        {
-                            "name": "style",
-                            "desc": "自定义样式",
-                            "type": "CSSProperties",
-                            "default": "-"
+                            "default": "\"\""
                         }
                     ],
                     "guidelines": [
@@ -369,46 +321,46 @@
                     ],
                     "api": [
                         {
-                            "name": "align",
-                            "desc": "带内容时，内容对齐方式 2.9.0",
-                            "type": "left | center | right",
-                            "default": "center"
+                            "name": "— Divider —",
+                            "desc": "",
+                            "type": "",
+                            "default": ""
                         },
                         {
-                            "name": "children",
-                            "desc": "内容 2.9.0",
-                            "type": "ReactNode",
-                            "default": "无"
-                        },
-                        {
-                            "name": "className",
-                            "desc": "类名 2.9.0",
-                            "type": "string",
-                            "default": "无"
-                        },
-                        {
-                            "name": "dashed",
-                            "desc": "是否为虚线 2.9.0",
-                            "type": "boolean",
+                            "name": "vertical",
+                            "desc": "竖向分隔（丢弃 content）",
+                            "type": "bool",
                             "default": "false"
                         },
                         {
-                            "name": "layout",
-                            "desc": "分割线方向 2.9.0",
-                            "type": "horizontal | vertical",
-                            "default": "horizontal"
+                            "name": "text",
+                            "desc": "分隔文字（字符串档）",
+                            "type": "string",
+                            "default": "\"\""
+                        },
+                        {
+                            "name": "content",
+                            "desc": "分隔内容：字符串或节点",
+                            "type": "var",
+                            "default": "-"
+                        },
+                        {
+                            "name": "dashed",
+                            "desc": "虚线段",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "align",
+                            "desc": "文字位置：left / center / right",
+                            "type": "string",
+                            "default": "\"center\""
                         },
                         {
                             "name": "margin",
-                            "desc": "分割线上下 margin (垂直方向时为左右 margin) 2.9.0",
-                            "type": "number | string",
-                            "default": "无"
-                        },
-                        {
-                            "name": "style",
-                            "desc": "自定义样式 2.9.0",
-                            "type": "CSSProperties",
-                            "default": "无"
+                            "desc": "外边距：数字或 [水平, 垂直]，烘进尺寸",
+                            "type": "var",
+                            "default": "-"
                         }
                     ],
                     "guidelines": [],
@@ -461,123 +413,57 @@
                             "default": ""
                         },
                         {
-                            "name": "badge",
-                            "desc": "徽章参数",
-                            "type": "BadgeProps",
-                            "default": "-"
-                        },
-                        {
-                            "name": "colorful",
-                            "desc": "多彩悬浮按钮",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "className",
-                            "desc": "样式类名",
-                            "type": "string",
-                            "default": "-"
-                        },
-                        {
-                            "name": "disabled",
-                            "desc": "禁用状态",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "href",
-                            "desc": "点击跳转的链接, 同 href",
-                            "type": "string",
-                            "default": "-"
-                        },
-                        {
                             "name": "icon",
-                            "desc": "显示图标",
-                            "type": "ReactNode",
-                            "default": "-"
-                        },
-                        {
-                            "name": "onClick",
-                            "desc": "点击回调函数",
-                            "type": "(e: React.MouseEvent)",
-                            "default": "-"
-                        },
-                        {
-                            "name": "shape",
-                            "desc": "样式，支持 round、 square",
+                            "desc": "图标名",
                             "type": "string",
-                            "default": "round"
+                            "default": "\"\""
+                        },
+                        {
+                            "name": "text",
+                            "desc": "文字（与 icon 并存）",
+                            "type": "string",
+                            "default": "\"\""
                         },
                         {
                             "name": "size",
-                            "desc": "尺寸，支持 default、small、large",
-                            "type": "string",
-                            "default": "default"
-                        },
-                        {
-                            "name": "style",
-                            "desc": "样式",
-                            "type": "CSSProperties",
-                            "default": "-"
-                        },
-                        {
-                            "name": "target",
-                            "desc": "指定在何处显示链接的 URL, 同 target",
-                            "type": "string",
-                            "default": "-"
-                        },
-                        {
-                            "name": "— FloatButtonGroupItem —",
-                            "desc": "",
-                            "type": "",
-                            "default": ""
-                        },
-                        {
-                            "name": "content",
-                            "desc": "文本内容",
-                            "type": "String",
-                            "default": "-"
-                        },
-                        {
-                            "name": "value",
-                            "desc": "item 的标识",
-                            "type": "String",
-                            "default": "-"
-                        },
-                        {
-                            "name": "— FloatButtonGroup —",
-                            "desc": "",
-                            "type": "",
-                            "default": ""
-                        },
-                        {
-                            "name": "className",
-                            "desc": "样式类名",
-                            "type": "string",
-                            "default": "-"
+                            "desc": "尺寸：Enums.Size",
+                            "type": "int",
+                            "default": "Enums.Default"
                         },
                         {
                             "name": "disabled",
-                            "desc": "禁用状态",
-                            "type": "boolean",
+                            "desc": "禁用",
+                            "type": "bool",
                             "default": "false"
                         },
                         {
-                            "name": "items",
-                            "desc": "单个子项的信息",
-                            "type": "FloatButtonGroupItem",
-                            "default": "-"
+                            "name": "circle",
+                            "desc": "圆形（缺省 true）",
+                            "type": "bool",
+                            "default": "true"
                         },
                         {
-                            "name": "onClick",
-                            "desc": "点击回调函数",
-                            "type": "(value: string, e: React.MouseEvent)",
-                            "default": "-"
+                            "name": "rightMargin",
+                            "desc": "距父项右缘",
+                            "type": "int",
+                            "default": "24"
                         },
                         {
-                            "name": "style",
-                            "desc": "样式",
-                            "type": "CSSProperties",
+                            "name": "bottomMargin",
+                            "desc": "距父项下缘",
+                            "type": "int",
+                            "default": "24"
+                        },
+                        {
+                            "name": "iconSize",
+                            "desc": "图标边长",
+                            "type": "int",
+                            "default": "widthIconMedium"
+                        },
+                        {
+                            "name": "onClicked",
+                            "desc": "点击时发",
+                            "type": "signal",
                             "default": "-"
                         }
                     ],
@@ -635,82 +521,28 @@
                             "default": ""
                         },
                         {
-                            "name": "className",
-                            "desc": "类名",
+                            "name": "name",
+                            "desc": "图标名（库内 SVG 资源）",
                             "type": "string",
-                            "default": "无"
+                            "default": "\"\""
                         },
                         {
-                            "name": "fill",
-                            "desc": "双色，多色图标的填充颜色",
-                            "type": "string | string[]",
-                            "default": "无"
-                        },
-                        {
-                            "name": "onClick",
-                            "desc": "单击图标的回调事件",
-                            "type": "(e: Event) => void",
-                            "default": "无"
-                        },
-                        {
-                            "name": "onMouseDown",
-                            "desc": "鼠标按钮按下的回调事件 >=v1.21",
-                            "type": "(e: Event) => void",
-                            "default": "无"
-                        },
-                        {
-                            "name": "onMouseEnter",
-                            "desc": "进入图标的回调事件",
-                            "type": "(e: Event) => void",
-                            "default": "无"
-                        },
-                        {
-                            "name": "onMouseLeave",
-                            "desc": "离开图标的回调事件",
-                            "type": "(e: Event) => void",
-                            "default": "无"
-                        },
-                        {
-                            "name": "onMouseMove",
-                            "desc": "移动鼠标的回调事件 >=v1.21",
-                            "type": "(e: Event) => void",
-                            "default": "无"
-                        },
-                        {
-                            "name": "onMouseUp",
-                            "desc": "鼠标按钮抬起的回调事件 >=v1.21",
-                            "type": "(e: Event) => void",
-                            "default": "无"
-                        },
-                        {
-                            "name": "rotate",
-                            "desc": "旋转度数",
-                            "type": "number",
-                            "default": ""
+                            "name": "color",
+                            "desc": "着色；缺省 colorText0",
+                            "type": "color",
+                            "default": "colorText0"
                         },
                         {
                             "name": "size",
-                            "desc": "尺寸，支持inherit，extra-small，small， default， large， extra-large",
-                            "type": "string",
-                            "default": "default"
+                            "desc": "边长；缺省 widthIconMedium",
+                            "type": "int",
+                            "default": "widthIconMedium"
                         },
                         {
-                            "name": "spin",
-                            "desc": "旋转动画",
-                            "type": "boolean",
-                            "default": ""
-                        },
-                        {
-                            "name": "style",
-                            "desc": "图标样式",
-                            "type": "CSSProperties",
-                            "default": "无"
-                        },
-                        {
-                            "name": "svg",
-                            "desc": "图标内容",
-                            "type": "ReactNode",
-                            "default": "无"
+                            "name": "tinted",
+                            "desc": "false 时用图标原色，不吃 color",
+                            "type": "bool",
+                            "default": "true"
                         }
                     ],
                     "guidelines": [
@@ -770,40 +602,46 @@
                     ],
                     "api": [
                         {
-                            "name": "align",
-                            "desc": "对齐方式, 支持 start、end、center、baseline =1.17.0",
-                            "type": "string",
-                            "default": "center"
-                        },
-                        {
-                            "name": "className",
-                            "desc": "样式类名 =1.17.0",
-                            "type": "string",
-                            "default": "-"
-                        },
-                        {
-                            "name": "spacing",
-                            "desc": "间距尺寸, 支持 loose、medium、tight 或 number、array =1.17.0",
-                            "type": "string|number|array",
-                            "default": "tight"
-                        },
-                        {
-                            "name": "style",
-                            "desc": "内联样式 =1.17.0",
-                            "type": "CSSProperties",
-                            "default": "-"
-                        },
-                        {
-                            "name": "vertical",
-                            "desc": "是否为垂直间距 =1.17.0",
-                            "type": "boolean",
-                            "default": "false"
+                            "name": "— Space —",
+                            "desc": "",
+                            "type": "",
+                            "default": ""
                         },
                         {
                             "name": "wrap",
-                            "desc": "是否自动换行 =1.17.0",
-                            "type": "boolean",
+                            "desc": "窄了换行",
+                            "type": "bool",
                             "default": "false"
+                        },
+                        {
+                            "name": "align",
+                            "desc": "交叉轴对齐：left / center / right / baseline",
+                            "type": "string",
+                            "default": "\"center\""
+                        },
+                        {
+                            "name": "vertical",
+                            "desc": "竖排（spacing 当行距）",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "spacing",
+                            "desc": "间距：tight / medium / large / 数字 / [水平, 垂直]",
+                            "type": "var",
+                            "default": "\"tight\""
+                        },
+                        {
+                            "name": "space",
+                            "desc": "spacing 的别名",
+                            "type": "alias",
+                            "default": "-"
+                        },
+                        {
+                            "name": "content",
+                            "desc": "默认子项：任意 Item",
+                            "type": "alias",
+                            "default": "-"
                         }
                     ],
                     "guidelines": [],
@@ -860,454 +698,22 @@
                     ],
                     "api": [
                         {
-                            "name": "— Typography.Text —",
+                            "name": "— Title —",
                             "desc": "",
                             "type": "",
                             "default": ""
                         },
                         {
-                            "name": "component",
-                            "desc": "自定义渲染元素",
-                            "type": "html element",
-                            "default": "span"
-                        },
-                        {
-                            "name": "code",
-                            "desc": "是否被 code 元素包裹",
-                            "type": "boolean",
-                            "default": "-"
-                        },
-                        {
-                            "name": "copyable",
-                            "desc": "是否可拷贝",
-                            "type": "boolean | object:Copyable Config",
-                            "default": "false"
-                        },
-                        {
-                            "name": "delete",
-                            "desc": "添加删除线样式",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "disabled",
-                            "desc": "禁用文本",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "ellipsis",
-                            "desc": "设置自动溢出省略",
-                            "type": "boolean|object:Ellipsis Config",
-                            "default": "false"
-                        },
-                        {
-                            "name": "icon",
-                            "desc": "前缀图标",
-                            "type": "ReactNode",
-                            "default": "-"
-                        },
-                        {
-                            "name": "link",
-                            "desc": "是否为链接，传object时，属性将透传给a标签",
-                            "type": "boolean|object",
-                            "default": "false"
-                        },
-                        {
-                            "name": "mark",
-                            "desc": "添加标记样式",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "size",
-                            "desc": "文本大小，可选normal，small，inherit",
-                            "type": "string",
-                            "default": "normal"
-                        },
-                        {
-                            "name": "strong",
-                            "desc": "是否加粗",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "type",
-                            "desc": "文本类型，可选 primary, secondary, warning, danger, tertiary(v>=1.2.0), quaternary(v>=1.2.0), success(v>=1.7.0)",
-                            "type": "string",
-                            "default": "primary"
-                        },
-                        {
-                            "name": "underline",
-                            "desc": "添加下划线样式",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "weight",
-                            "desc": "设置字重 2.34.0",
-                            "type": "number",
-                            "default": ""
-                        },
-                        {
-                            "name": "— Typography.Title —",
-                            "desc": "",
-                            "type": "",
-                            "default": ""
-                        },
-                        {
-                            "name": "component",
-                            "desc": "自定义渲染元素，默认由 heading 决定",
-                            "type": "html element",
-                            "default": "h1~h6"
-                        },
-                        {
-                            "name": "copyable",
-                            "desc": "是否可拷贝",
-                            "type": "boolean | object:Copyable Config",
-                            "default": "false"
-                        },
-                        {
-                            "name": "delete",
-                            "desc": "添加删除线样式",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "disabled",
-                            "desc": "禁用文本",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "ellipsis",
-                            "desc": "设置自动溢出省略",
-                            "type": "boolean|object:Ellipsis Config",
-                            "default": "false"
+                            "name": "level",
+                            "desc": "标题级别 1..6（历史名字，保留）",
+                            "type": "int",
+                            "default": "1"
                         },
                         {
                             "name": "heading",
-                            "desc": "标题级别，可选1， 2， 3，4，5，6，对应相应的标题",
-                            "type": "number",
-                            "default": "1"
-                        },
-                        {
-                            "name": "link",
-                            "desc": "是否为链接，传object时，属性将透传给a标签",
-                            "type": "boolean|object",
-                            "default": "false"
-                        },
-                        {
-                            "name": "mark",
-                            "desc": "添加标记样式",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "type",
-                            "desc": "文本类型，可选 primary, secondary, warning, danger, tertiary(v>=1.2.0), quaternary(v>=1.2.0), success(v>=1.7.0)",
-                            "type": "string",
-                            "default": "primary"
-                        },
-                        {
-                            "name": "underline",
-                            "desc": "添加下划线样式",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "weight",
-                            "desc": "设置字重, 可选 light, regular, medium, semibold, bold, default 2.34.0",
-                            "type": "string, number",
-                            "default": ""
-                        },
-                        {
-                            "name": "— Typography.Paragraph —",
-                            "desc": "",
-                            "type": "",
-                            "default": ""
-                        },
-                        {
-                            "name": "component",
-                            "desc": "自定义渲染元素",
-                            "type": "html element",
-                            "default": "p"
-                        },
-                        {
-                            "name": "copyable",
-                            "desc": "是否可拷贝",
-                            "type": "boolean | object:Copyable Config",
-                            "default": "false"
-                        },
-                        {
-                            "name": "delete",
-                            "desc": "添加删除线样式",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "disabled",
-                            "desc": "禁用文本",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "ellipsis",
-                            "desc": "设置自动溢出省略",
-                            "type": "boolean|object:Ellipsis Config",
-                            "default": "false"
-                        },
-                        {
-                            "name": "link",
-                            "desc": "是否为链接，传object时，属性将透传给a标签",
-                            "type": "boolean|object",
-                            "default": "false"
-                        },
-                        {
-                            "name": "mark",
-                            "desc": "添加标记样式",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "size",
-                            "desc": "文本大小，可选normal，small",
-                            "type": "string",
-                            "default": "normal"
-                        },
-                        {
-                            "name": "spacing",
-                            "desc": "行距大小，可选normal，extended",
-                            "type": "string",
-                            "default": "normal"
-                        },
-                        {
-                            "name": "strong",
-                            "desc": "是否加粗",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "type",
-                            "desc": "文本类型，可选 primary, secondary, warning, danger, tertiary(v>=1.2.0), quaternary(v>=1.2.0), success(v>=1.7.0)",
-                            "type": "string",
-                            "default": "primary"
-                        },
-                        {
-                            "name": "underline",
-                            "desc": "添加下划线样式",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "— Typography.Numeral —",
-                            "desc": "",
-                            "type": "",
-                            "default": ""
-                        },
-                        {
-                            "name": "rule",
-                            "desc": "解析规则，可选 text, numbers, bytes-decimal, bytes-binary, percentages, exponential 2.22.0",
-                            "type": "string",
-                            "default": "text"
-                        },
-                        {
-                            "name": "precision",
-                            "desc": "可以设置小数点后保留位数, 用于设置精度 2.22.0",
-                            "type": "number",
-                            "default": "0"
-                        },
-                        {
-                            "name": "truncate",
-                            "desc": "小数点后保留位截段取整方式，可选 ceil, floor, round，作用与 Math.ceil、Math.floor、Math.round 对齐 2.22.0",
-                            "type": "string",
-                            "default": "round"
-                        },
-                        {
-                            "name": "parser",
-                            "desc": "自定义数值解析函数 2.22.0",
-                            "type": "(str: string) => string",
-                            "default": "-"
-                        },
-                        {
-                            "name": "component",
-                            "desc": "自定义渲染元素 2.22.0",
-                            "type": "html element",
-                            "default": "span"
-                        },
-                        {
-                            "name": "code",
-                            "desc": "是否被 code 元素包裹 2.22.0",
-                            "type": "boolean",
-                            "default": "-"
-                        },
-                        {
-                            "name": "copyable",
-                            "desc": "是否可拷贝 2.22.0",
-                            "type": "boolean | object:Copyable Config",
-                            "default": "false"
-                        },
-                        {
-                            "name": "delete",
-                            "desc": "添加删除线样式 2.22.0",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "disabled",
-                            "desc": "禁用文本 2.22.0",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "ellipsis",
-                            "desc": "设置自动溢出省略 2.22.0",
-                            "type": "boolean| object:Ellipsis Config",
-                            "default": "false"
-                        },
-                        {
-                            "name": "icon",
-                            "desc": "前缀图标 2.22.0",
-                            "type": "ReactNode",
-                            "default": "-"
-                        },
-                        {
-                            "name": "link",
-                            "desc": "是否为链接，传object时，属性将透传给a标签 2.22.0",
-                            "type": "boolean|object",
-                            "default": "false"
-                        },
-                        {
-                            "name": "mark",
-                            "desc": "添加标记样式 2.22.0",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "size",
-                            "desc": "文本大小，可选normal，small 2.22.0",
-                            "type": "string",
-                            "default": "normal"
-                        },
-                        {
-                            "name": "strong",
-                            "desc": "是否加粗 2.22.0",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "type",
-                            "desc": "文本类型，可选 primary, secondary, warning, danger, tertiary, quaternary, success 2.22.0",
-                            "type": "string",
-                            "default": "primary"
-                        },
-                        {
-                            "name": "underline",
-                            "desc": "添加下划线样式 2.22.0",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "— Ellipsis Config —",
-                            "desc": "",
-                            "type": "",
-                            "default": ""
-                        },
-                        {
-                            "name": "collapseText",
-                            "desc": "折叠的展示文本",
-                            "type": "string",
-                            "default": "收起"
-                        },
-                        {
-                            "name": "collapsible",
-                            "desc": "是否支持折叠",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "expandText",
-                            "desc": "展开的展示文本",
-                            "type": "string",
-                            "default": "展开"
-                        },
-                        {
-                            "name": "expandable",
-                            "desc": "是否支持展开",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "pos",
-                            "desc": "省略截断的位置，支持末尾和中间截断：end, middle",
-                            "type": "string",
-                            "default": "end"
-                        },
-                        {
-                            "name": "rows",
-                            "desc": "省略溢出行数",
-                            "type": "number",
-                            "default": "1"
-                        },
-                        {
-                            "name": "showTooltip",
-                            "desc": "是否展示 tooltip 及相关配置: type，浮层内容承载的组件，支持 Tooltip| Popover；opts，其他需要透传给浮层组件的属性； renderTooltip，自定义渲染弹出层组件",
-                            "type": "boolean|{type: 'tooltip'|'popover', opts: object, renderTooltip: (content: ReactNode, children: ReactNode) => ReactNode}",
-                            "default": "false"
-                        },
-                        {
-                            "name": "suffix",
-                            "desc": "始终展示的后缀",
-                            "type": "string",
-                            "default": "-"
-                        },
-                        {
-                            "name": "onExpand",
-                            "desc": "展开/收起的回调",
-                            "type": "function(expanded: bool, Event: e)",
-                            "default": "-"
-                        },
-                        {
-                            "name": "— Copyable Config —",
-                            "desc": "",
-                            "type": "",
-                            "default": ""
-                        },
-                        {
-                            "name": "content",
-                            "desc": "复制出的文本",
-                            "type": "string",
-                            "default": "-"
-                        },
-                        {
-                            "name": "copyTip",
-                            "desc": "复制图标的 tooltip 展示内容",
-                            "type": "React.node",
-                            "default": "-"
-                        },
-                        {
-                            "name": "icon",
-                            "desc": "自定义渲染复制节点 2.31.0",
-                            "type": "React.node",
-                            "default": "-"
-                        },
-                        {
-                            "name": "onCopy",
-                            "desc": "复制回调",
-                            "type": "Function(e:Event, content:string, res:boolean)",
-                            "default": "-"
-                        },
-                        {
-                            "name": "render",
-                            "desc": "自定义渲染复制节点 2.65.0",
-                            "type": "void, configs: CopyableConfig) => React.ReactNode'>function(copied, doCopy, configs)",
-                            "default": "-"
-                        },
-                        {
-                            "name": "successTip",
-                            "desc": "复制成功的展示内容",
-                            "type": "React.node",
-                            "default": "-"
+                            "desc": "官方名；>0 时覆盖 level",
+                            "type": "int",
+                            "default": "-1"
                         }
                     ],
                     "guidelines": [

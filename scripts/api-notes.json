@@ -1,0 +1,77 @@
+{
+    "_comment": "API 说明列的人工维护文件。键是 QML 类型名，值里：属性名 -> 说明短句（表格「说明」列不换行，压到 20 字以内）；skip = 不进表的内部属性；extra = 额外补的行（默认属性等）。跑 scripts/gen-api-tables.py 生成 docs.json 的 api。",
+
+    "Button": {
+        "text": "按钮文字",
+        "icon": "图标名（取值同 Icon.name）",
+        "iconPosition": "图标位置：left / right",
+        "loading": "转圈并拦下点击",
+        "block": "占满整行（宽跟父项）",
+        "circle": "圆形按钮；官方的死 prop，本库不生效",
+        "tone": "色调：Enums.Tone",
+        "variant": "形态：Enums.Variant",
+        "size": "尺寸：Enums.Size",
+        "colorful": "彩色渐变底（Semi v2.65 起）",
+        "noHorizontalPadding": "去掉左右内边距",
+        "ariaLabel": "无障碍标签",
+        "onClicked": "点击时发；禁用、loading 时不发",
+        "onMouseDown": "按下就发，不等抬起",
+        "onMouseEntered": "指针进入时发",
+        "onMouseLeft": "指针离开时发",
+        "skip": ["groupPosition", "groupTone", "groupVariant", "groupSize", "groupColorful", "groupDisabled"]
+    },
+
+    "ButtonGroup": {
+        "content": "默认子项：一组 Button",
+        "size": "整组尺寸，给没自己设 size 的子按钮",
+        "tone": "整组色调，同上",
+        "variant": "整组形态，同上",
+        "colorful": "整组彩色，同上",
+        "disabled": "整组禁用",
+        "ariaLabel": "无障碍标签",
+        "skip": ["childItems"]
+    },
+
+    "Divider": {
+        "vertical": "竖向分隔（丢弃 content）",
+        "text": "分隔文字（字符串档）",
+        "content": "分隔内容：字符串或节点",
+        "dashed": "虚线段",
+        "align": "文字位置：left / center / right",
+        "margin": "外边距：数字或 [水平, 垂直]，烘进尺寸"
+    },
+
+    "FloatButton": {
+        "icon": "图标名",
+        "text": "文字（与 icon 并存）",
+        "size": "尺寸：Enums.Size",
+        "disabled": "禁用",
+        "circle": "圆形（缺省 true）",
+        "rightMargin": "距父项右缘",
+        "bottomMargin": "距父项下缘",
+        "iconSize": "图标边长",
+        "onClicked": "点击时发"
+    },
+
+    "Icon": {
+        "name": "图标名（库内 SVG 资源）",
+        "color": "着色；缺省 colorText0",
+        "size": "边长；缺省 widthIconMedium",
+        "tinted": "false 时用图标原色，不吃 color"
+    },
+
+    "Space": {
+        "content": "默认子项：任意 Item",
+        "wrap": "窄了换行",
+        "align": "交叉轴对齐：left / center / right / baseline",
+        "vertical": "竖排（spacing 当行距）",
+        "spacing": "间距：tight / medium / large / 数字 / [水平, 垂直]",
+        "space": "spacing 的别名",
+        "skip": ["lineStarts", "layoutHeight", "nodeWatchers"]
+    },
+
+    "Title": {
+        "level": "标题级别 1..6（历史名字，保留）",
+        "heading": "官方名；>0 时覆盖 level"
+    }
+}
