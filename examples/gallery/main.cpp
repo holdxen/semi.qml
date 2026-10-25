@@ -6,6 +6,7 @@
 #include <QQuickItem>
 #include <QQuickWindow>
 #include <QTimer>
+#include <QStyleHints>
 
 int main(int argc, char *argv[])
 {
@@ -18,6 +19,8 @@ int main(int argc, char *argv[])
     qputenv("QSG_FIXED_ANIMATION_STEP", "1");
 
     QGuiApplication app(argc, argv);
+
+    QGuiApplication::styleHints()->setWheelScrollLines(10);
 
     QQmlApplicationEngine engine;
     QObject::connect(
