@@ -1,0 +1,63 @@
+pragma ComponentBehavior: Bound
+
+import QtQuick
+import Semi
+
+// 标签页面板。对应 `packages/semi-ui/tabs/TabPane.tsx`（props :13-24、shouldRender :50-56、
+// render :58-116）+ `semi-foundation/tabs/tabs.scss` 的 `.semi-tabs-pane*`。
+//
+// 端口与官方的差异（逐条，都有测试盯着）：
+//   · 官方靠 `React.Children` 收集面板，QML 没有「宿主扫子项」的现成机制 ⇒ 沿用
+//     Descriptions / DescriptionsItem 那一套：子项自己声明 `isTabPane`，宿主 `collect()` 里
+//     认出来、写 `tabsHost` 反向引用，然后**就地**接管它的 x / y / 宽 / 高 / 可见性 ——
+//     不做 reparent（QML 里整批搬子项会把 `children` 名单和 childrenChanged 打乱）。
+//   · `className` / `style` 是 DOM 通道，不收。`tabIndex` 官方实现了（TabPane.tsx:60,96）
+//     但文档表里根本没有这一条 ⇒ 端口照实现走（给 `focus` 用），不写进 API 表。
+//   · 官方 `_active` 那枚「激活过一次就一直算激活」的实例字段（:50-56，**从不复位**）在端口
+//     是 `everActivated`，同样不复位。
+//   · **`lazyRender` 在 QML 里换不到「不实例化子树」那一档**：面板内容是声明期就建好的
+//     `data`，官方的等价物只有 `Loader.active`，而 Loader 吃不到本组件的默认属性槽 ⇒
+//     `keepDOM` / `lazyRender` 一律实现成 `visible` 闸门：对象照样创建，只是不参与绘制。
+//     官方 FAQ 里「keepDOM 会让省略号 / 折叠量不出来」那一类后果在端口不成立。
+Item {
+    id: control
+
+    /// 官方 itemKey：activeKey、aria-controls、id 全由它拼（TabPane.tsx:61,91-92）
+    property string itemKey: ""
+    /// 标签栏那一格显示什么（官方 ReactNode ⇒ 端口收字符串或 Component 两档）
+    property var tab: ""
+    property var icon: ""
+    property bool disabled: false
+    /// 官方只在 TabItem 里读这个标志画 ×，**不判 type**（文档却写「只有卡片式支持」）
+    /// ⇒ 端口同样不判 type，见 src/TabItem.qml
+    property bool closable: false
+
+    // ---- 与宿主的关系（TabPane.tsx 靠 context 拿 active / lazyRender，端口拿宿主引用）----
+    readonly property bool isTabPane: true
+    property var tabsHost: null
+    /// Repeater 造出来的面板不参与宿主的 children 扫描（同 DescriptionsItem 那条）
+    property bool fromRepeater: false
+
+    /// TabPane.tsx:50-56 那个从不复位的 `_active`
+    property bool everActivated: false
+
+    objectName: "tabPane"
+
+    // .semi-tabs-pane { width: 100%; overflow: hidden; color: text-0 }
+    clip: true
+    implicitWidth: contentSlot.childrenRect.width
+    implicitHeight: contentSlot.childrenRect.height
+
+    Item {
+        id: contentSlot
+
+        objectName: "tabPaneContent"
+
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.top: parent.top
+        height: contentSlot.childrenRect.height
+    }
+
+    default property alias content: contentSlot.data
+}

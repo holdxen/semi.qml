@@ -1,0 +1,776 @@
+pragma ComponentBehavior: Bound
+
+import QtQuick
+import Semi
+
+// 标签页。对应 `packages/semi-ui/tabs/{index.tsx,TabBar.tsx,TabItem.tsx,TabPane.tsx,
+// interface.ts,tabs-context.ts}` + `semi-foundation/tabs/{foundation.ts,constants.ts,
+// tabs.scss,variables.scss,animation.scss}`。
+//
+//     Tabs {
+//         type: "line"
+//         TabPane { itemKey: "a"; tab: "文档"; Text { text: "…" } }
+//         TabPane { itemKey: "b"; tab: "配置"; Text { text: "…" } }
+//         onChange: (key) => …
+//     }
+//
+// 身份是 **itemKey（字符串）**，不是下标：官方 activeKey / aria-controls / id 全由它拼
+// （index.tsx:111,235；TabPane.tsx:61,91-92）。旧端口那 `tabs` + `currentIndex` + `card`
+// 三条自造面已撤。
+//
+// ---------------------------------------------------------------- 与官方的口径差异（逐条）
+//   · 官方回调 → 信号：onChange→change、onTabClick→tabClick、onTabClose→tabClose、
+//     onVisibleTabsChange→visibleTabsChange。第一个入参那个 React 事件对象一律不带。
+//   · 官方 `ReactNode` 类的 prop（tab / icon / tabBarExtraContent / renderArrow /
+//     renderTabBar / more.render）在端口是「字符串或 Component」两档；Component 里自己声明
+//     同名属性，由本组件创建后写进去（同 OverflowList / Tree 的钩子口径）。
+//   · DOM / CSS 通道不收：`className`、`style`、`tabBarClassName`、`tabBarStyle`、
+//     `contentStyle`、`visibleTabsStyle`、`dropdownProps`、TabPane 的 `className` / `style`。
+//     其中 `dropdownClassName` / `dropdownStyle` / `TabBarProps.closable` 上游自己就是死通道
+//     （Tabs 从不往 TabBar 传，见 index.tsx:283-303）。
+//   · `lazyRender` / `keepDOM` 在 QML 换不到「子树不实例化」那一档（面板内容是声明期就建好的
+//     data，等价物只有 Loader.active，而 Loader 吃不到 TabPane 的默认属性槽）⇒ 两条都实现成
+//     `visible` 闸门。官方 FAQ 里「keepDOM 会让省略号量不出来」那一类后果在端口不成立。
+//   · 受控判定：官方三处写法还不一致（`_isInProps('activeKey')` / `'activeKey' in props` /
+//     `typeof props.activeKey !== 'undefined'`），端口按仓库统一口径 —— `undefined` 或 `null`
+//     即非受控。
+//   · `tabIndex`（TabPane.tsx:60,96 实现了、文档表里没有）端口用 `focusPolicy` 表达。
+//   · RTL（rtl.scss）端口不做，与全库一致。
+Item {
+    id: control
+
+    // ================================================================ 官方属性面
+    property var tabList: []                        // {itemKey, tab, icon, disabled, closable}
+    property var activeKey: undefined               // 给了就是受控
+    property var defaultActiveKey: undefined
+    property string type: "line"                    // line | card | button | slash
+    property string size: "large"                   // small | medium | large
+    property string tabPosition: "top"              // top | left
+    property bool keepDOM: true
+    property bool lazyRender: false
+    property bool tabPaneMotion: true
+    property var collapsible: false                 // true | false | "auto"
+    property var more: undefined                    // number | {count, render}
+    property bool showRestInDropdown: true
+    property string arrowPosition: "both"           // start | end | both
+    property bool preventScroll: false
+    property Component tabBarExtraContent: null
+    property Component renderArrow: null
+    property Component renderTabBar: null
+
+    // ================================================================ 官方回调
+    signal change(string activeKey)
+    signal tabClick(string activeKey)
+    signal tabClose(string itemKey)
+    signal visibleTabsChange(var visibleState)
+
+    // ================================================================ 内部状态
+    property var items: []                          // {itemKey, tab, icon, disabled, closable, pane}
+    property var currentKey: ""
+    property int lastActiveIndex: 0
+    property bool forceDisableMotion: false
+    property string prevActiveKey: ""
+    property string focusedKey: ""
+    property bool _mounted: false
+    property var _seenKeys: []
+    /// collapsible="auto" 那档自己量出来的「到底溢没溢出」（TabBar.tsx:100-120）
+    property bool autoCollapsed: false
+
+    // ================================================================ 派生
+    readonly property bool activeGiven: control.activeKey !== undefined && control.activeKey !== null
+    readonly property bool defaultGiven: control.defaultActiveKey !== undefined
+        && control.defaultActiveKey !== null
+    readonly property bool vertical: control.tabPosition === "left"
+    readonly property bool listMode: control.tabList !== undefined && control.tabList !== null
+        && control.tabList.length > 0
+    readonly property bool autoCollapse: control.collapsible === "auto"
+    /// TabBar.tsx:92-98：'auto' 看测量结果、true 直接算、其余不算
+    readonly property bool collapseOn: control.collapsible === true
+        || (control.autoCollapse && control.autoCollapsed)
+    /// TabBar.tsx:425 那三元的次序：collapsible 赢过 more
+    readonly property bool moreOn: !control.collapseOn
+        && (typeof control.more === "number" || (typeof control.more === "object"
+            && control.more !== null && control.more.count !== undefined))
+    readonly property int moreCount: typeof control.more === "number" ? control.more
+        : (control.moreOn ? Number(control.more.count) : 0)
+    readonly property string resolvedKey: control.activeGiven ? String(control.activeKey)
+        : String(control.currentKey)
+    readonly property int activeIndex: control.indexOfKey(control.resolvedKey)
+    readonly property var activePane: control.paneOf(control.resolvedKey)
+
+    // ---- 度量（逐档号在 src/TabItem.qml）----
+    readonly property real padTop: control.vertical ? (control.size === "small" ? 6
+        : (control.size === "medium" ? 10 : 12))
+        : (control.type === "line" ? (control.size === "small" ? 8 : (control.size === "medium" ? 12 : 16))
+            : (control.type === "slash" ? 12 : 8))
+    readonly property real padBottom: control.vertical ? control.padTop
+        : (control.type === "line" ? (control.size === "small" ? 6 : (control.size === "medium" ? 10 : 14))
+            : (control.type === "slash" ? 12 : 8))
+    readonly property real itemHeight: control.padTop + 20 + control.padBottom
+        + (control.type === "line" && !control.vertical ? 2 : 0)
+        + (control.type === "card" ? 1 : 0)
+    readonly property real barHeight: control.vertical ? 0 : itemHeight
+    readonly property real barWidth: control.vertical ? control.maxItemWidth() : 0
+    /// :not(:last-of-type) 那几条：line-top 24 / card 8 / button 8 / slash 16、line-left 0
+    readonly property real itemGap: control.vertical
+        ? (control.type === "line" ? 0 : 8)
+        : (control.type === "line" ? 24 : (control.type === "slash" ? 16 : 8))
+    /// button 与 slash **根本没有基线**
+    readonly property bool hasBaseline: control.type === "line" || control.type === "card"
+    readonly property real contentPadY: control.vertical ? 0 : 5
+    readonly property real contentPadX: control.vertical ? 5 : 0
+    readonly property real contentX: control.vertical ? control.barWidth + control.contentPadX : 0
+    readonly property real contentY: control.vertical ? control.contentPadY
+        : control.barHeight + control.contentPadY
+    readonly property real contentW: Math.max(0, control.width - control.contentX
+        - (control.vertical ? control.contentPadX : 0))
+    readonly property real contentH: control.activePane === null ? 0 : control.activePane.implicitHeight
+
+    implicitWidth: control.vertical ? control.barWidth + control.contentPadX * 2
+        + (control.activePane === null ? 0 : control.activePane.implicitWidth)
+        : Math.max(control.barNaturalWidth,
+            control.activePane === null ? 0 : control.activePane.implicitWidth)
+    implicitHeight: control.vertical ? Math.max(control.barLayout.height,
+            control.activePane === null ? 0 : control.activePane.implicitHeight)
+        : control.barHeight + control.contentPadY * 2
+            + (control.activePane === null ? 0 : control.activePane.implicitHeight)
+
+    /// 不折叠时标签栏的自然宽（Row 撑出来的）
+    readonly property real barNaturalWidth: control.vertical ? 0 : control.barLayout.width
+
+    function maxItemWidth() {
+        let m = 1;
+        for (let i = 0; i < barLayout.children.length; ++i) {
+            const c = barLayout.children[i];
+            if (c.isTabItem === true && c.implicitWidth > m)
+                m = c.implicitWidth;
+        }
+        return m;
+    }
+
+    // ================================================================ 收集与激活键
+    function realName(o, k, d) {
+        return (o !== undefined && o !== null && o[k] !== undefined) ? o[k] : d;
+    }
+
+    function indexOfKey(key) {
+        for (let i = 0; i < control.items.length; ++i)
+            if (control.items[i].itemKey === key)
+                return i;
+        return -1;
+    }
+
+    function paneOf(key) {
+        const i = control.indexOfKey(key);
+        return i < 0 ? null : control.items[i].pane;
+    }
+
+    function firstUsableKey() {
+        // index.tsx:127-137：第一个「不是 disabled」的 itemKey，全禁用退成空串
+        for (let i = 0; i < control.items.length; ++i)
+            if (control.items[i].disabled !== true)
+                return control.items[i].itemKey;
+        return "";
+    }
+
+    function collect() {
+        const out = [];
+        if (control.listMode) {
+            // tabList 那一档官方只出标签栏、没有面板（PlainTab 里根本没有内容字段）
+            for (let i = 0; i < control.tabList.length; ++i) {
+                const t = control.tabList[i];
+                if (t === undefined || t === null)
+                    continue;
+                out.push({
+                    itemKey: String(control.realName(t, "itemKey", "")),
+                    tab: control.realName(t, "tab", ""),
+                    icon: control.realName(t, "icon", ""),
+                    disabled: control.realName(t, "disabled", false) === true,
+                    closable: control.realName(t, "closable", false) === true,
+                    pane: null,
+                });
+            }
+            control.items = out;
+            return;
+        }
+        for (let i = 0; i < control.children.length; ++i) {
+            const k = control.children[i];
+            if (k.isTabPane !== true || k.fromRepeater === true)
+                continue;
+            k.tabsHost = control;
+            out.push({
+                itemKey: k.itemKey,
+                tab: k.tab,
+                icon: k.icon,
+                disabled: k.disabled === true,
+                closable: k.closable === true,
+                pane: k,
+            });
+        }
+        control.items = out;
+    }
+
+    /// index.tsx:102-117 collectActiveKey：不在表里就退成**第一项**（不是相邻项），
+    /// 而且**不发 change**（官方直接 setState，绕过 notifyChange）
+    function reseatActiveKey() {
+        if (control.activeGiven)
+            return;
+        if (control.indexOfKey(String(control.currentKey)) >= 0)
+            return;
+        control.currentKey = control.items.length > 0 ? control.items[0].itemKey : "";
+    }
+
+    function seedActiveKey() {
+        if (control.activeGiven) {
+            control.currentKey = String(control.activeKey);
+            return;
+        }
+        if (control.defaultGiven) {
+            control.currentKey = String(control.defaultActiveKey);
+            return;
+        }
+        control.currentKey = control.firstUsableKey();
+    }
+
+    function refresh() {
+        const before = control.items.length === 0 ? "" : control.resolvedKey;
+        control.collect();
+        if (!control._mounted) {
+            control.seedActiveKey();
+            control._mounted = true;
+        } else {
+            control.reseatActiveKey();
+        }
+        // index.tsx:173-179：这一轮才出现、且正好被激活的那一格不起动画
+        const key = control.resolvedKey;
+        control.forceDisableMotion = key !== "" && control._seenKeys.indexOf(key) < 0
+            && before !== key;
+        control.rememberKeys();
+        control.layoutPanes();
+    }
+
+    function rememberKeys() {
+        const out = [];
+        for (let i = 0; i < control.items.length; ++i)
+            out.push(control.items[i].itemKey);
+        control._seenKeys = out;
+    }
+
+    function layoutPanes() {
+        const key = control.resolvedKey;
+        for (let i = 0; i < control.items.length; ++i) {
+            const p = control.items[i].pane;
+            if (p === null)
+                continue;
+            if (p.itemKey === key)
+                p.everActivated = true;
+            p.x = control.contentX;
+            p.y = control.contentY;
+            p.width = control.contentW;
+            p.height = p.implicitHeight;
+            p.visible = p.itemKey === key;
+            p.hostShown = p.itemKey === key
+                || (control.keepDOM && !(control.lazyRender && !p.everActivated));
+        }
+    }
+
+    // ================================================================ 交互
+    function handleClick(key) {
+        const i = control.indexOfKey(key);
+        if (i < 0 || control.items[i].disabled === true)
+            return;
+        // foundation.ts:32-41：受控只通知、非受控先通知再改自己的 state
+        if (control.resolvedKey !== key) {
+            control.prevActiveKey = control.resolvedKey;
+            control.lastActiveIndex = control.activeIndex;
+            control.change(key);
+            if (!control.activeGiven)
+                control.currentKey = key;
+            control.startPaneMotion();
+        }
+        // notifyTabClick 在两条之后**无条件**发（重复点同一格也发）
+        control.tabClick(key);
+        control.focusedKey = key;
+        control.layoutPanes();
+    }
+
+    function handleDelete(key) {
+        // foundation.ts:131-142：只通知，**从不真的删**；然后焦点挪到下一格
+        control.tabClose(key);
+        const i = control.indexOfKey(key);
+        if (control.items.length === 1)
+            return;                                     // 官方这一档跳过挪焦点
+        const next = (i + 1 >= control.items.length) ? control.items[i - 1] : control.items[i + 1];
+        if (next !== undefined)
+            control.moveFocusTo(next.itemKey);
+    }
+
+    function usableKeys() {
+        // foundation.ts:83-85：方向键那套只在「不是 disabled」的格子间走
+        const out = [];
+        for (let i = 0; i < control.items.length; ++i)
+            if (control.items[i].disabled !== true)
+                out.push(control.items[i].itemKey);
+        return out;
+    }
+
+    function moveFocusTo(key) {
+        control.focusedKey = key;
+        if (!control.preventScroll)
+            control.scrollKeyIntoView(key);
+    }
+
+    function stepFocus(delta) {
+        const ks = control.usableKeys();
+        if (ks.length === 0)
+            return;
+        const at = ks.indexOf(control.focusedKey);
+        // 首尾绕回（foundation.ts:156-163）
+        let next = at + delta;
+        if (next >= ks.length)
+            next = 0;
+        if (next < 0)
+            next = ks.length - 1;
+        control.moveFocusTo(ks[next]);
+    }
+
+    function jumpFocus(last) {
+        const ks = control.usableKeys();
+        if (ks.length === 0)
+            return;
+        control.moveFocusTo(last ? ks[ks.length - 1] : ks[0]);
+    }
+
+    function scrollKeyIntoView(key) {
+        if (!control.collapseOn)
+            return;
+        const at = control.shownKeys().indexOf(key);
+        if (at >= 0)
+            overflow.positionView(at);
+    }
+
+    function shownKeys() {
+        const out = [];
+        for (let i = 0; i < control.items.length; ++i)
+            out.push(control.items[i].itemKey);
+        return out;
+    }
+
+    // ================================================================ 面板入场
+    // animation.scss:29-36 + semi.css:22345-22385：200ms ease-in-out、±60px、opacity 0→1、
+    // forwards。整个 Tabs 唯一有动画的就是这一条。
+    function prevActiveKeyGone() {
+        // TabPane.tsx:85 isActivatedBecauseOtherTabPaneRemoved
+        return control.prevActiveKey !== "" && control.indexOfKey(control.prevActiveKey) < 0;
+    }
+
+    readonly property bool paneMotionOn: control.tabPaneMotion && control.activePane !== null
+        && !control.forceDisableMotion && !control.prevActiveKeyGone()
+
+    function startPaneMotion() {
+        if (!control.paneMotionOn)
+            return;
+        const back = control.lastActiveIndex > control.activeIndex;
+        // 官方 leftShow = translateX(60)→0、rightShow = translateX(-60)→0；
+        // 竖排那两档换成 translateY，且 animation.scss:687,700 复用了 translateX 的令牌（同值）
+        paneAnimX.from = control.vertical ? 0 : (back ? -60 : 60);
+        paneAnimY.from = control.vertical ? (back ? -60 : 60) : 0;
+        paneFade.from = 0;
+        paneAnim.restart();
+    }
+
+    // ================================================================ 测试口子
+    readonly property var itemsView: control.items
+    readonly property string keyView: control.resolvedKey
+    readonly property int paneCount: control.items.length
+    readonly property real baselineHeight: control.hasBaseline ? 1 : 0
+    readonly property var barItem: barLayout
+    readonly property var extraLoaderRef: extraLoader
+    readonly property var tabBarHookLoader: tabBarLoader
+
+    // ================================================================ 生命周期
+    Component.onCompleted: control.refresh()
+    onChildrenChanged: control.refresh()
+    onTabListChanged: control.refresh()
+    onActiveKeyChanged: {
+        if (!control._mounted)
+            return;
+        control.prevActiveKey = control.resolvedKey;
+        control.lastActiveIndex = control.indexOfKey(control.resolvedKey);
+        control.layoutPanes();
+        control.startPaneMotion();
+    }
+    onKeepDomChanged: control.layoutPanes()
+    onLazyRenderChanged: control.layoutPanes()
+    onWidthChanged: control.layoutPanes()
+
+    // ================================================================ 视图
+    // renderTabBar 给了就整条标签栏换掉（官方是 renderTabBar(tabBarProps, TabBar)）
+    Loader {
+        id: tabBarLoader
+
+        objectName: "tabsBarHook"
+
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.top: parent.top
+        height: item === null ? 0 : (item.implicitHeight === undefined ? 0 : item.implicitHeight)
+        visible: active
+        active: control.renderTabBar !== null
+        sourceComponent: control.renderTabBar
+        onLoaded: control.injectBar(item)
+    }
+
+    function injectBar(item) {
+        if (item === null)
+            return;
+        control.give(item, "items", control.items);
+        control.give(item, "activeKey", control.resolvedKey);
+        control.give(item, "type", control.type);
+        control.give(item, "size", control.size);
+        control.give(item, "tabPosition", control.tabPosition);
+        control.give(item, "onTabClick", function (key) { control.handleClick(key); });
+        control.give(item, "onTabClose", function (key) { control.handleDelete(key); });
+    }
+
+    function give(item, name, value) {
+        if (item === null || item[name] === undefined)
+            return;
+        item[name] = value;
+    }
+
+    Item {
+        id: barHost
+
+        objectName: "tabsBar"
+
+        visible: !tabBarLoader.active
+        x: 0
+        y: 0
+        width: control.vertical ? control.barWidth : control.width
+        height: control.vertical ? control.barLayout.height : control.barHeight
+
+        // 溢出那一档交给 OverflowList —— 官方 TabBar 自己也是把它当子组件用的
+        Item {
+            id: overflow
+
+            objectName: "tabsOverflow"
+
+            anchors.fill: parent
+            visible: control.collapseOn
+
+            function positionView(at) {
+                list.positionViewAtIndex(at, ListView.Contain);
+            }
+
+            property var shownList: []
+            property var hiddenList: []
+
+            OverflowList {
+                id: list
+
+                objectName: "tabsOverflowList"
+
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.verticalCenter: parent.verticalCenter
+                height: control.barHeight
+                visible: control.showRestInDropdown || !control.collapseOn
+                items: control.items
+                itemKey: "itemKey"
+                renderMode: "scroll"                   // 官方 TabBar.tsx:330 写死 scroll
+                collapseFrom: "end"
+                threshold: 0.75
+
+                visibleItemRenderer: Component {
+                    TabItem {
+                        id: visTab
+
+                        objectName: "tabVisibleItem"
+
+                        readonly property bool isTabItem: true
+
+                        host: control
+                        itemKey: String(modelData.itemKey)
+                        label: modelData.tab
+                        iconValue: modelData.icon
+                        disabled: modelData.disabled === true
+                        closable: modelData.closable === true
+                        selected: control.resolvedKey === itemKey
+                        isFirst: index === 0
+                        isLast: index === control.items.length - 1
+                        height: control.barHeight
+                        onClicked: control.handleClick(itemKey)
+                        onCloseClicked: control.handleDelete(itemKey)
+                    }
+                }
+
+                overflowRenderer: Component {
+                    Item {
+                        objectName: "tabRest"
+
+                        implicitWidth: 0
+                        implicitHeight: 0
+                    }
+                }
+
+                onVisibleStateChangedExternally: {
+                    overflow.shownList = control.visibleKeys();
+                    control.visibleTabsChange(visibleState);
+                    // TabBar.tsx:338-348：只要还有一格露着就把 auto 那档解掉
+                    if (control.autoCollapse && control.anyVisible(visibleState))
+                        control.autoCollapsed = false;
+                }
+            }
+
+            function anyVisible(state) {
+                if (state === undefined || state === null)
+                    return false;
+                for (const k in state)
+                    if (state[k] === true)
+                        return true;
+                return false;
+            }
+        }
+
+        // ---- 不折叠那一档：Row / Column 直接排 ----
+        Row {
+            id: barLayout
+
+            objectName: "tabsBarLayout"
+
+            readonly property bool isTabItem: false
+
+            visible: !control.collapseOn
+            x: 0
+            y: 0
+            height: control.barHeight
+            spacing: control.itemGap
+
+            Repeater {
+                model: control.items
+
+                delegate: TabItem {
+                    id: tab
+
+                    objectName: "tabsTab"
+
+                    readonly property bool isTabItem: true
+
+                    required property var modelData
+                    required property int index
+
+                    host: control
+                    itemKey: String(modelData.itemKey)
+                    label: modelData.tab
+                    iconValue: modelData.icon
+                    disabled: modelData.disabled === true
+                    closable: modelData.closable === true
+                    selected: control.resolvedKey === itemKey
+                    focusVisible: control.focusedKey === itemKey
+                    isFirst: index === 0
+                    isLast: index === control.items.length - 1
+                    height: control.barHeight
+                    onClicked: control.handleClick(itemKey)
+                    onCloseClicked: control.handleDelete(itemKey)
+                }
+            }
+        }
+
+        // ---- more 那一档：把尾巴收进一个 hover 下拉 ----
+        Loader {
+            id: moreLoader
+
+            objectName: "tabsMoreTrigger"
+
+            visible: control.moreOn
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+            sourceComponent: control.moreOn ? moreComp : null
+        }
+
+        Component {
+            id: moreComp
+
+            Item {
+                implicitWidth: moreRow.width
+                implicitHeight: control.barHeight
+
+                Row {
+                    id: moreRow
+
+                    y: control.type === "line" ? (control.size === "small" ? 8
+                        : (control.size === "medium" ? 12 : 16)) : 8
+
+                    spacing: 0
+
+                    Text {
+                        objectName: "tabsMoreText"
+
+                        text: qsTr("更多")
+                        color: Theme.current.colorText2
+                        font.pixelSize: Theme.current.fontSizeRegular
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+
+                    Icon {
+                        objectName: "tabsMoreIcon"
+
+                        name: "chevron_down"
+                        size: Theme.current.widthIconMedium
+                        color: Theme.current.colorText2
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+                }
+            }
+        }
+
+        // ---- tabBarExtraContent：官方 float:right，排在所有格之后 ----
+        Loader {
+            id: extraLoader
+
+            objectName: "tabsBarExtra"
+
+            visible: active
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+            height: control.extraHeight
+            sourceComponent: control.tabBarExtraContent
+        }
+
+        // ---- 基线：line 是 bar 的 border、card 是 ::before；button / slash 没有 ----
+        Rectangle {
+            objectName: "tabsBaseline"
+
+            visible: control.hasBaseline
+            width: control.vertical ? 1 : parent.width
+            height: control.vertical ? parent.height : 1
+            x: control.vertical ? parent.width - 1 : 0
+            y: control.vertical ? 0 : parent.height - 1
+            color: Theme.current.colorBorder
+        }
+    }
+
+    /// 官方 .semi-tabs-bar-line .semi-tabs-bar-extra { height: 50 }，
+    /// 只有 line+small 那档改 36 ⇒ line 档下 extra 与 52 的格子差 2px（上游就这样）
+    readonly property real extraHeight: control.type === "line"
+        ? (control.size === "small" ? 36 : 50) : 0
+
+    // ================================================================ 内容区
+    Item {
+        objectName: "tabsContent"
+
+        x: control.contentX - control.contentPadX
+        y: control.contentY - control.contentPadY
+        width: control.contentW + control.contentPadX * 2
+        height: control.contentH + control.contentPadY * 2
+    }
+
+    ParallelAnimation {
+        id: paneAnim
+
+        objectName: "tabsPaneMotion"
+
+        NumberAnimation {
+            id: paneAnimX
+
+            target: control.activePane
+            property: "motionX"
+            to: 0
+            duration: 200
+            easing.type: Easing.InOutQuad
+        }
+
+        NumberAnimation {
+            id: paneAnimY
+
+            target: control.activePane
+            property: "motionY"
+            to: 0
+            duration: 200
+            easing.type: Easing.InOutQuad
+        }
+
+        NumberAnimation {
+            id: paneFade
+
+            target: control.activePane
+            property: "motionOpacity"
+            to: 1
+            duration: 200
+            easing.type: Easing.InOutQuad
+        }
+    }
+
+    // ================================================================ 键盘
+    // foundation.ts:81-166。三条官方口径照抄：
+    //   · 方向键**只挪焦点、不激活、不发 onChange**（文档「键盘和焦点」那句「左右箭头切换选项」
+    //     读起来像切面板，其实代码里不切）
+    //   · 横排只认 ←/→、竖排只认 ↑/↓，另一对**静默吞掉**（determineOrientation :114-129）
+    //   · Enter / Space 才真的激活，而这一条**不判 disabled**（:98-102 少了 TabItem.tsx:65
+    //     那句判定）⇒ 端口照抄
+    focus: true
+    Keys.onLeftPressed: {
+        if (control.vertical) {
+            event.accepted = true;                      // 竖排吞掉 ←/→
+            return;
+        }
+        control.stepFocus(-1);
+        event.accepted = true;
+    }
+    Keys.onRightPressed: {
+        if (control.vertical) {
+            event.accepted = true;
+            return;
+        }
+        control.stepFocus(1);
+        event.accepted = true;
+    }
+    Keys.onUpPressed: {
+        if (!control.vertical) {
+            event.accepted = true;                      // 横排吞掉 ↑/↓
+            return;
+        }
+        control.stepFocus(-1);
+        event.accepted = true;
+    }
+    Keys.onDownPressed: {
+        if (!control.vertical) {
+            event.accepted = true;
+            return;
+        }
+        control.stepFocus(1);
+        event.accepted = true;
+    }
+    Keys.onHomePressed: {
+        control.jumpFocus(false);
+        event.accepted = true;
+    }
+    Keys.onEndPressed: {
+        control.jumpFocus(true);
+        event.accepted = true;
+    }
+    Keys.onReturnPressed: {
+        control.handleClick(control.focusedKey);
+        event.accepted = true;
+    }
+    Keys.onSpacePressed: {
+        control.handleClick(control.focusedKey);
+        event.accepted = true;
+    }
+    Keys.onDeletePressed: {
+        control.requestClose();
+        event.accepted = true;
+    }
+    Keys.onBackspacePressed: {
+        control.requestClose();
+        event.accepted = true;
+    }
+
+    function requestClose() {
+        const i = control.indexOfKey(control.focusedKey);
+        if (i < 0 || control.items[i].closable !== true)
+            return;
+        control.handleDelete(control.focusedKey);
+    }
+}

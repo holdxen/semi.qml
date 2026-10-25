@@ -1,0 +1,2 @@
+Tabs 重写中的草稿放在同目录的 Tabs.qml.draft / TabItem.qml.draft / TabPane.qml.draft。
+这三份没有登记进 src/CMakeLists.txt，不参与构建。

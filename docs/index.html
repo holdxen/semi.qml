@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Semi Design → QML 复刻计划</title>
+        <link rel="stylesheet" href="./style.css" />
+    </head>
+    <body>
+        <header class="topbar">
+            <span class="topbar__title">Semi Design → QML 复刻计划</span>
+            <span class="topbar__sub">semi.qml</span>
+            <span class="topbar__spacer"></span>
+            <button class="theme-toggle" id="themeToggle" type="button">
+                <span id="themeLabel">深色</span>
+            </button>
+        </header>
+
+        <div class="shell">
+            <nav class="toc">
+                <div class="toc__label">目录</div>
+                <a href="#scale">1 · 工程量</a>
+                <a href="#tokens">2 · 令牌体系</a>
+                <a href="#arch">3 · QML 架构</a>
+                <a href="#roadmap">4 · 分期路线</a>
+                <a href="#risks">5 · 难点与风险</a>
+                <a href="#decisions">6 · 待你拍板</a>
+                <a href="#scaffold">7 · 现有脚手架</a>
+            </nav>
+
+            <main>
+                <h1>把 Semi Design 复刻成 QML 组件库</h1>
+                <p class="lede">
+                    源库是 Semi Design 官方 monorepo（
+                    <code>~/Documents/Code/Html/semi-design</code>）。目标是在现有的
+                    <code>semi.qml</code> 工程里，用 Qt Quick 重建它的令牌体系与组件。下面是读完源库之后的评估、架构与分期计划，还没有写任何代码。
+                </p>
+
+                <!-- ========== 1 ========== -->
+                <h2 id="scale">1 · 先看清工程量</h2>
+
+                <p>
+                    源库不是"一个 React 组件库"那么简单，它是三层：<code>semi-ui</code>（React
+                    渲染层）、<code>semi-foundation</code>（框架无关的状态机 +
+                    组件样式）、<code>semi-theme-default</code>（设计令牌）。后两层才是复刻的主要参考物——TSX
+                    提供 API 与行为，SCSS 提供视觉规格。
+                </p>
+
+                <div class="stats">
+                    <div class="stat">
+                        <div class="stat__num">111</div>
+                        <div class="stat__label">index.ts 导出条目</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat__num">~80</div>
+                        <div class="stat__label">实际 UI 组件</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat__num">160<small>×2</small></div>
+                        <div class="stat__label">色阶值（16 色系 × 10 级，明暗两套）</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat__num">115</div>
+                        <div class="stat__label">语义颜色令牌</div>
+                    </div>
+                </div>
+
+                <h3>单看一个 Button，就知道复杂度在哪</h3>
+                <p>
+                    Semi 的 Button 是
+                    <strong>5 种主题色 × 4 种形态 × 4 种状态</strong>的笛卡尔积，再叠加
+                    colorful（AI 渐变）变体和三档尺寸。它的
+                    <code>variables.scss</code> 有 209 行，全部在展开这几十个色值组合：
+                </p>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>维度</th>
+                            <th>取值</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>主题色 type</td>
+                            <td>primary / secondary / tertiary / warning / danger</td>
+                        </tr>
+                        <tr>
+                            <td>形态 theme</td>
+                            <td>solid / borderless / light / outline</td>
+                        </tr>
+                        <tr>
+                            <td>状态</td>
+                            <td>default / hover / active / disabled（另有 focus-visible 轮廓）</td>
+                        </tr>
+                        <tr>
+                            <td>尺寸 size</td>
+                            <td>small 24px / default 32px / large 40px</td>
+                        </tr>
+                        <tr>
+                            <td>附加</td>
+                            <td>icon / loading / block / colorful / ButtonGroup / SplitButtonGroup</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="note note--warn">
+                    <span class="note__label">结论</span>
+                    像素级全量复刻是一个<strong>多人月</strong>量级的工程。合理的做法不是"照单全收"，而是先把令牌层和外观解析引擎做扎实，让后续每个组件都能复用同一套机制；然后按依赖顺序分期推进，每期都能独立交付、独立验收。
+                </div>
+
+                <!-- ========== 2 ========== -->
+                <h2 id="tokens">2 · 令牌体系：一条三层链</h2>
+
+                <p>
+                    Semi 没有在组件里写死颜色。所有色值走的是三级引用，这是整个复刻里最需要先搬对的东西：
+                </p>
+
+                <div class="chain">
+                    <div class="chain__step">
+                        <div class="chain__kicker">① 色阶</div>
+                        <div class="chain__code">
+                            <em>--semi-blue-5</em>:<br />0,100,250
+                        </div>
+                    </div>
+                    <div class="chain__arrow">→</div>
+                    <div class="chain__step">
+                        <div class="chain__kicker">② 语义令牌</div>
+                        <div class="chain__code">
+                            --semi-color-primary:<br />rgba(var(<em>--semi-blue-5</em>), 1)
+                        </div>
+                    </div>
+                    <div class="chain__arrow">→</div>
+                    <div class="chain__step">
+                        <div class="chain__kicker">③ 组件变量</div>
+                        <div class="chain__code">
+                            $color-button_primary-<br />bg-default: var(<em>--semi-color-primary</em>)
+                        </div>
+                    </div>
+                </div>
+
+                <p>
+                    色阶用 <strong>RGB 三元组</strong>存（<code>0,100,250</code> 而不是
+                    <code>#0064fa</code>），因为组件层要靠 <code>rgba(var(--semi-blue-5), 0.6)</code>
+                    这种写法临时调透明度。搬进 QML 时，色阶建议保留三元组形式，配色函数在 C++ 侧做。
+                </p>
+
+                <h3>16 个色系 × 10 级，明暗两套</h3>
+                <p>
+                    下面是从 <code>_palette.scss</code> 直接解析出来的完整色板（实时渲染，鼠标悬停看
+                    hex）。切到深色可以看到这套体系最关键、也最容易做错的性质：
+                    <strong>暗色模式的色阶方向是整体反转的</strong>。<code>grey</code>
+                    一行最直观——浅色下 <code>grey-0</code> 是 <code>#f9f9f9</code>，深色下是
+                    <code>#1c1f23</code>，两套序列正好相反。
+                </p>
+
+                <div class="palette" id="palette"></div>
+                <div class="palette__legend" id="paletteLegend"></div>
+
+                <div class="note">
+                    <span class="note__label">为什么这条很重要</span>
+                    色阶反转意味着「色阶 6 做文字、色阶 0 做底色」这类约定可以同时服务两种主题，同一个组件不必写两套颜色。反过来，如果按"浅色下越深越重"的直觉去映射暗色，对比度会全线崩掉。这条规律我在别的项目里踩过，这次要在地基阶段就用测试锁住。
+                </div>
+
+                <h3>除了颜色，还有这些令牌</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>类别</th>
+                            <th>取值</th>
+                            <th>来源</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>控件高度</td>
+                            <td>24 / 32 / 40 px</td>
+                            <td><code>variables.scss</code></td>
+                        </tr>
+                        <tr>
+                            <td>间距</td>
+                            <td>2 / 4 / 8 / 12 / 16 / 20 / 24 / 32 / 40 px</td>
+                            <td><code>variables.scss</code></td>
+                        </tr>
+                        <tr>
+                            <td>圆角</td>
+                            <td>3（基础控件）/ 6（菜单类）/ 12（大容器）/ 50% / 9999px</td>
+                            <td><code>DESIGN.md</code></td>
+                        </tr>
+                        <tr>
+                            <td>图标尺寸</td>
+                            <td>8 / 12 / 16（默认）/ 20 / 24 px</td>
+                            <td><code>variables.scss</code></td>
+                        </tr>
+                        <tr>
+                            <td>字号</td>
+                            <td>正文 12 / 14；标题 16 / 18 / 20 / 24 / 28 / 32</td>
+                            <td><code>DESIGN.md</code></td>
+                        </tr>
+                        <tr>
+                            <td>字重</td>
+                            <td>200 / 400 / 600</td>
+                            <td><code>variables.scss</code></td>
+                        </tr>
+                        <tr>
+                            <td>阴影</td>
+                            <td>elevated 一套（明暗各一版），其余靠 1px 描边分层</td>
+                            <td><code>DESIGN.md</code></td>
+                        </tr>
+                        <tr>
+                            <td>z-index</td>
+                            <td>affix 10 → modal 1000 → toast 1010 → tooltip 1060 → 拖拽 2000</td>
+                            <td><code>variables.scss</code></td>
+                        </tr>
+                        <tr>
+                            <td>动效</td>
+                            <td>8 档时长（50 → 500ms）+ 5 种缓动</td>
+                            <td><code>animation.scss</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="note">
+                    <span class="note__label">动效到底在哪（已核对 npm 发布版）</span>
+                    <code>animation.scss</code> 里所有 duration 确实都是 0ms，但这不是"值缺失"：
+                    <code>semi-foundation</code> 下 50 处组件级定义<strong>全部显式选用了
+                    <code>none</code> 档</strong>，npm 上发布的
+                    <code>@douyinfe/semi-theme-default</code> 与本仓库也逐字一致。也就是说<strong>交互控件的状态切换是刻意不做过渡的</strong>，反馈即时。真正的动画集中在弹层与进出场，而且不走令牌系统、直接硬编码：popover 100ms、modal 120ms（遮罩 90ms）、sidebar 180ms、notification 300ms、loading 旋转 600ms。另有一个
+                    <code>semi-animation</code> 包承担 JS 插值动画。
+                </div>
+
+                <div class="note">
+                    <span class="note__label">完整清单</span>
+                    全部 383 个独立令牌（另有 40 个 AI 渐变的内部色标）的逐项明细 —— 含 Semi
+                    默认值、明暗两套色块、引用关系与建议的 QML 字段名 —— 见 gallery 的
+                    <code>Tokens 设计变量</code> 页（带搜索与点击复制色值），数据源与
+                    <code>src/SemiThemeValues.h</code> 同源。
+                </div>
+
+                <!-- ========== 3 ========== -->
+                <h2 id="arch">3 · QML 侧的架构</h2>
+
+                <p>
+                    源库的三层（foundation 状态机 / SCSS 样式 / React 渲染）在 QML 里不能照搬，但结论可以借用：
+                    <strong>把"该显示成什么样"从组件里抽出来，集中到一处</strong>。这是能否复刻几十个组件而不失控的分水岭。
+                </p>
+
+                <h3>模块结构</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>文件</th>
+                            <th>职责</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>Theme</code>（C++ 单例）</td>
+                            <td>全部令牌：16×10 色板、语义色、尺寸、圆角、字体、阴影、z-index、动效时长。暴露 <code>mode</code> 切换明暗</td>
+                        </tr>
+                        <tr>
+                            <td><code>Enums</code>（C++）</td>
+                            <td>Variant / Size / Status / Placement / Direction 等枚举，替代 React 的字符串 props</td>
+                        </tr>
+                        <tr>
+                            <td><code>Appearance</code>（C++）</td>
+                            <td><strong>核心</strong>：把「组件 × 形态 × 状态」解析成具体色值，等价于 Semi 那几百行 <code>variables.scss</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>ControlState</code>（QML 基类）</td>
+                            <td>统一采集 hovered / pressed / focused / disabled，组件不再各自接 handler</td>
+                        </tr>
+                        <tr>
+                            <td><code>FocusRing</code>（QML）</td>
+                            <td>模拟 <code>:focus-visible</code>——只在键盘操作后显示焦点环</td>
+                        </tr>
+                        <tr>
+                            <td><code>internal/</code></td>
+                            <td>Popup 基座、图标基座、文本测量、动画曲线等公共设施</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="note">
+                    <span class="note__label">为什么要 <code>Appearance</code> 这一层</span>
+                    如果不抽这一层，Button 一个组件里就会散落几十个
+                    <code>if (variant === ... && state === ...)</code>。有了它，每个组件只需要声明"我是
+                    Button、我的色系是 danger、形态是 outline、当前是 hover"，色值由一处统一算出。这也是新增组件成本能压下来的原因。
+                </div>
+
+                <h3>三个绕不开的 QML 特性差异</h3>
+                <ul>
+                    <li>
+                        <strong>没有 CSS 变量继承</strong>——令牌靠 C++ 单例 + QML 属性绑定传递，组件不缓存色值，保证切主题时全局刷新。
+                    </li>
+                    <li>
+                        <strong>没有 <code>:focus-visible</code></strong>——需要自己记录"最近一次交互是键盘还是指针"，否则鼠标点击也会弹出焦点环，视觉上比 Semi 脏。
+                    </li>
+                    <li>
+                        <strong>没有伪元素和 mixin</strong>——Semi 的 <code>mixin.scss</code>（<code>shadow-0</code>、文本截断、清除浮动等）要在 QML 侧用可复用的部件或 C++ 工具函数替代。
+                    </li>
+                </ul>
+
+                <!-- ========== 4 ========== -->
+                <h2 id="roadmap">4 · 分期路线</h2>
+
+                <p>
+                    按期推进，每期结束都有一个能跑、能验收的 Gallery。人日是按单人全职估的粗略量级，用于比较规模，不是承诺。
+                </p>
+
+                <div class="card">
+                    <div class="phase">
+                        <div class="phase__tag">P0</div>
+                        <div>
+                            <div class="phase__head">
+                                <span class="phase__title">地基</span>
+                                <span class="phase__meta">5–8 人日 · 无组件产出</span>
+                            </div>
+                            <div class="phase__items">
+                                完整 <code>Theme</code> 令牌 · <code>Enums</code> ·
+                                <code>Appearance</code> 解析引擎 · <code>ControlState</code> ·
+                                <code>FocusRing</code> · Popup 基座 · 图标基座（SVG +
+                                着色）· Gallery 骨架（对照 semi.design 的分组导航）
+                            </div>
+                            <div class="phase__accept">
+                                <b>验收</b>：色板有单元测试锁住明暗两套共 320 个值与"暗色反转"性质；Gallery
+                                能一键切换明暗；一个探针组件能正确响应全部状态与形态组合。
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="phase">
+                        <div class="phase__tag">P1</div>
+                        <div>
+                            <div class="phase__head">
+                                <span class="phase__title">基础控件</span>
+                                <span class="phase__meta">15–20 人日 · ~24 个</span>
+                            </div>
+                            <div class="phase__items">
+                                <code>Button</code> <code>IconButton</code> <code>ButtonGroup</code>
+                                <code>SplitButtonGroup</code> <code>Input</code> <code>TextArea</code>
+                                <code>InputNumber</code> <code>Checkbox</code> <code>Radio</code>
+                                <code>Switch</code> <code>Tag</code> <code>Divider</code>
+                                <code>Space</code> <code>Typography</code> <code>Avatar</code>
+                                <code>Badge</code> <code>Spin</code> <code>Progress</code>
+                                <code>Skeleton</code> <code>Empty</code>
+                            </div>
+                            <div class="phase__accept">
+                                <b>验收</b>：形态 × 状态矩阵逐项对照；键盘可达（Tab
+                                顺序、空格/回车触发）；禁用态与只读态区分正确。
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="phase">
+                        <div class="phase__tag">P2</div>
+                        <div>
+                            <div class="phase__head">
+                                <span class="phase__title">容器与导航</span>
+                                <span class="phase__meta">15–20 人日 · ~18 个</span>
+                            </div>
+                            <div class="phase__items">
+                                <code>Card</code> <code>Grid</code> <code>Layout</code> <code>Tabs</code>
+                                <code>Breadcrumb</code> <code>Steps</code> <code>Collapse</code>
+                                <code>SideSheet</code> <code>Navigation</code> <code>Anchor</code>
+                                <code>BackTop</code> <code>List</code> <code>Descriptions</code>
+                                <code>Timeline</code> <code>Divider</code>
+                            </div>
+                            <div class="phase__accept">
+                                <b>验收</b>：响应式布局在窗口缩放时行为正确；<code>Space</code>/<code>Grid</code>
+                                的间距语义与源库一致。
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="phase">
+                        <div class="phase__tag">P3</div>
+                        <div>
+                            <div class="phase__head">
+                                <span class="phase__title">弹层与反馈</span>
+                                <span class="phase__meta">20–25 人日 · ~12 个</span>
+                            </div>
+                            <div class="phase__items">
+                                <code>Tooltip</code> <code>Popover</code> <code>Popconfirm</code>
+                                <code>Dropdown</code> <code>Modal</code> <code>Notification</code>
+                                <code>Toast</code> <code>Banner</code>
+                            </div>
+                            <div class="phase__accept">
+                                <b>验收</b>：自动翻转定位（12 个方位）、层级管理、Esc/点外关闭策略、Modal
+                                的焦点陷阱与滚动锁定、Toast 并发队列。
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="phase">
+                        <div class="phase__tag">P4</div>
+                        <div>
+                            <div class="phase__head">
+                                <span class="phase__title">数据录入进阶</span>
+                                <span class="phase__meta">30–40 人日 · ~15 个</span>
+                            </div>
+                            <div class="phase__items">
+                                <code>Select</code> <code>AutoComplete</code> <code>Cascader</code>
+                                <code>DatePicker</code> <code>TimePicker</code> <code>Slider</code>
+                                <code>Rating</code> <code>Upload</code> <code>Form</code>
+                                <code>Transfer</code> <code>TreeSelect</code> <code>ColorPicker</code>
+                                <code>PinCode</code> <code>TagInput</code> <code>HotKeys</code>
+                            </div>
+                            <div class="phase__accept">
+                                <b>验收</b>：<code>Form</code> 的校验状态机（校验触发时机、错误定位、跨字段依赖）与源库一致；日期选择器的键盘输入与日历面板双向同步。
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="phase">
+                        <div class="phase__tag">P5</div>
+                        <div>
+                            <div class="phase__head">
+                                <span class="phase__title">数据展示</span>
+                                <span class="phase__meta">40–50 人日 · ~12 个</span>
+                            </div>
+                            <div class="phase__items">
+                                <code>Table</code> <code>Tree</code> <code>Calendar</code>
+                                <code>Carousel</code> <code>Image</code> <code>Pagination</code>
+                                <code>OverflowList</code> <code>ScrollList</code> <code>Resizable</code>
+                                <code>Highlight</code> <code>JsonViewer</code> <code>CodeHighlight</code>
+                            </div>
+                            <div class="phase__accept">
+                                <b>验收</b>：<code>Table</code> 在 10 万行下滚动不卡（虚拟化 +
+                                固定列 + 排序筛选）；<code>Tree</code> 的懒加载与勾选级联正确。
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="phase">
+                        <div class="phase__tag">P6</div>
+                        <div>
+                            <div class="phase__head">
+                                <span class="phase__title">可选与高级</span>
+                                <span class="phase__meta">按需 · ~14 个</span>
+                            </div>
+                            <div class="phase__items">
+                                <code>Chat</code> <code>MarkdownRender</code> <code>Cropper</code>
+                                <code>AudioPlayer</code> <code>VideoPlayer</code> <code>Lottie</code>
+                                <code>UserGuide</code> <code>FloatButton</code> <code>DragMove</code>
+                                <code>AiChatDialogue</code> <code>AiChatInput</code>
+                            </div>
+                            <div class="phase__accept">
+                                <b>验收</b>：独立验收，可按项目实际需要挑选。
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <p>
+                    合计约 <strong>125–165 人日</strong>。若只做 <span class="tag tag--primary">P0 + P1 + P2</span>（地基
+                    + 约 42 个组件），大约 35–48 人日，已经能覆盖绝大多数后台界面的需求——这是我建议的起手范围。
+                </p>
+
+                <!-- ========== 5 ========== -->
+                <h2 id="risks">5 · 难点与风险</h2>
+                <p>按风险从高到低排。前四项会显著影响架构决策，不是"实现细节"。</p>
+
+                <div class="card">
+                    <div class="risk">
+                        <div class="risk__rank">01</div>
+                        <div>
+                            <div class="risk__title">Table 的虚拟化与固定列</div>
+                            <div class="risk__body">
+                                QML 没有现成的"虚拟滚动 + 固定列 + 列宽拖拽 + 排序筛选"表格。需要自建一个 model/view
+                                层，并用 <code>TableView</code> 或自绘 <code>ListView</code> 实现。这是整个项目里最重的单点。
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="risk">
+                        <div class="risk__rank">02</div>
+                        <div>
+                            <div class="risk__title">弹层的定位与焦点管理</div>
+                            <div class="risk__body">
+                                12 个方位自动翻转、边界碰撞检测、嵌套弹层的层级与关闭策略、Modal
+                                的焦点陷阱与滚动锁定。Qt Quick 的 <code>Popup</code> 能提供基础，但策略层要自己写。
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="risk">
+                        <div class="risk__rank">03</div>
+                        <div>
+                            <div class="risk__title">文本输入的原生细节</div>
+                            <div class="risk__body">
+                                光标定位、选区、拖选、中文输入法（IME 预编辑）、撤销栈、<code>TextArea</code>
+                                的自动高度。<code>TextField</code> 覆盖了大部分，但 <code>PinCode</code>、<code>TagInput</code>、<code>InputNumber</code>
+                                这类需要自己接管键盘与光标。
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="risk">
+                        <div class="risk__rank">04</div>
+                        <div>
+                            <div class="risk__title">focus-visible 的缺失</div>
+                            <div class="risk__body">
+                                QML 只给 <code>activeFocus</code>，无法区分"鼠标点进来的焦点"和"键盘 Tab
+                                进来的焦点"。需要一个全局的输入设备追踪器，否则所有鼠标点击都会带焦点环。
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="risk">
+                        <div class="risk__rank">05</div>
+                        <div>
+                            <div class="risk__title">图标库规模</div>
+                            <div class="risk__body">
+                                <code>semi-icons</code> 是数千个独立 SVG。全量移植不现实，建议先做按需引入的
+                                SVG 着色机制，再挑常用的一批（约 80–120 个）落地，其余按需增补。
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="risk">
+                        <div class="risk__rank">06</div>
+                        <div>
+                            <div class="risk__title">与 QtQuick.Controls 的取舍</div>
+                            <div class="risk__body">
+                                复用 <code>Controls.Basic</code> 能白拿键盘导航、无障碍和 <code>Popup</code>
+                                基座，但它的样式体系会和 Semi 的形态矩阵打架；完全自建则要重写这些基础设施。需要一个明确的边界——这是决策点之一。
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="risk">
+                        <div class="risk__rank">07</div>
+                        <div>
+                            <div class="risk__title">动效默认值</div>
+                            <div class="risk__body">
+                                源库把所有 duration 置为 0ms（见第 2 节的说明）。需要一个全局开关，并确认期望的默认观感。
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="risk">
+                        <div class="risk__rank">08</div>
+                        <div>
+                            <div class="risk__title">RTL 与国际化</div>
+                            <div class="risk__body">
+                                源库有 <code>rtl.scss</code> 和完整的 locale 体系（<code>semi-ui/locale/</code>）。建议先留出结构、不实现，避免后期返工。
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ========== 6 ========== -->
+                <h2 id="decisions">6 · 待你拍板</h2>
+                <p>这四点会实质改变计划的形状和代码结构，定了我就按它往下走。</p>
+
+                <div class="decision">
+                    <div class="decision__q">
+                        <span class="decision__num">Q1</span>
+                        复刻范围到哪一期？
+                    </div>
+                    <div class="options">
+                        <div class="option option--rec">
+                            <span class="option__mark">▸</span>
+                            <div>
+                                <div class="option__name">P0 + P1 + P2（推荐）</div>
+                                <div class="option__desc">
+                                    地基 + 约 42 个组件，35–48 人日。覆盖绝大多数后台界面，能形成完整的令牌与形态体系。
+                                </div>
+                            </div>
+                        </div>
+                        <div class="option">
+                            <span class="option__mark">▸</span>
+                            <div>
+                                <div class="option__name">只做 P0 + P1</div>
+                                <div class="option__desc">
+                                    20–28 人日，先把令牌与基础控件做扎实，验证机制是否成立再决定继续。
+                                </div>
+                            </div>
+                        </div>
+                        <div class="option">
+                            <span class="option__mark">▸</span>
+                            <div>
+                                <div class="option__name">全量到 P5</div>
+                                <div class="option__desc">
+                                    125–165 人日。需要接受这是一个长期工程，中途会有多个可交付节点。
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="decision">
+                    <div class="decision__q">
+                        <span class="decision__num">Q2</span>
+                        保真度目标是什么？
+                    </div>
+                    <div class="options">
+                        <div class="option option--rec">
+                            <span class="option__mark">▸</span>
+                            <div>
+                                <div class="option__name">令牌与规格严格对齐，像素级近似（推荐）</div>
+                                <div class="option__desc">
+                                    色值、尺寸、间距、圆角全部取自源库；渲染差异（字体度量、阴影算法）允许存在。可对照截图验收。
+                                </div>
+                            </div>
+                        </div>
+                        <div class="option">
+                            <span class="option__mark">▸</span>
+                            <div>
+                                <div class="option__name">像素级像素对齐</div>
+                                <div class="option__desc">
+                                    逐像素比对截图。成本会翻倍，且字体渲染差异使得完全对齐不可达。
+                                </div>
+                            </div>
+                        </div>
+                        <div class="option">
+                            <span class="option__mark">▸</span>
+                            <div>
+                                <div class="option__name">神似即可</div>
+                                <div class="option__desc">
+                                    只借用设计语言，不追求规格一致。工作量最小，但"复刻"的意义会打折。
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="decision">
+                    <div class="decision__q">
+                        <span class="decision__num">Q3</span>
+                        控件基座怎么选？
+                    </div>
+                    <div class="options">
+                        <div class="option option--rec">
+                            <span class="option__mark">▸</span>
+                            <div>
+                                <div class="option__name">视觉自建，复用 Qt 的输入与弹层基础设施（推荐）</div>
+                                <div class="option__desc">
+                                    外观全部自绘以对齐 Semi；键盘导航、IME、<code>Popup</code>
+                                    定位借 Qt 的成熟实现。平衡点最合理。
+                                </div>
+                            </div>
+                        </div>
+                        <div class="option">
+                            <span class="option__mark">▸</span>
+                            <div>
+                                <div class="option__name">完全自建</div>
+                                <div class="option__desc">
+                                    不依赖 QtQuick.Controls，控制力最强，但要自己重写焦点、IME 与弹层基础设施。
+                                </div>
+                            </div>
+                        </div>
+                        <div class="option">
+                            <span class="option__mark">▸</span>
+                            <div>
+                                <div class="option__name">基于 Controls.Basic 定制样式</div>
+                                <div class="option__desc">
+                                    起步最快，但 Semi 的形态矩阵与 Controls 的样式体系会持续冲突，后期改造代价高。
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="decision">
+                    <div class="decision__q">
+                        <span class="decision__num">Q4</span>
+                        动效策略？
+                    </div>
+                    <div class="options">
+                        <div class="option option--rec">
+                            <span class="option__mark">▸</span>
+                            <div>
+                                <div class="option__name">严格跟随源库（推荐）</div>
+                                <div class="option__desc">
+                                    交互控件的状态切换不做过渡（即时反馈，与源库一致）；弹层与进出场按源库的硬编码值实现（popover 100 / modal 120 / sidebar 180 / notification 300ms）。图标走按需引入机制，先落地常用 100 个。
+                                </div>
+                            </div>
+                        </div>
+                        <div class="option">
+                            <span class="option__mark">▸</span>
+                            <div>
+                                <div class="option__name">交互控件也补上过渡</div>
+                                <div class="option__desc">
+                                    给 hover/active 加 100–200ms 过渡（即 <code>animation.scss</code> 里被注释掉的那套值），观感更柔和，但偏离源库。
+                                </div>
+                            </div>
+                        </div>
+                        <div class="option">
+                            <span class="option__mark">▸</span>
+                            <div>
+                                <div class="option__name">连弹层动画也省掉</div>
+                                <div class="option__desc">
+                                    动画全部归零，追求最朴素、最可预测的渲染表现。
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ========== 7 ========== -->
+                <h2 id="scaffold">7 · 现有脚手架怎么处置</h2>
+                <p>
+                    上一轮搭的 <code>semi.qml</code> 骨架可以直接承接，不用推倒——但组件部分要按上面的架构重写。
+                </p>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>现状</th>
+                            <th>处置</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>CMake 工程 / 安装导出 / CMakePresets</td>
+                            <td><span class="tag tag--success">保留</span>已验证可被外部 <code>find_package(Semi)</code> 消费，直接沿用</td>
+                        </tr>
+                        <tr>
+                            <td>测试基座（Qt Quick Test + ctest）</td>
+                            <td><span class="tag tag--success">保留</span>P0 的色板与形态矩阵测试就建在它上面</td>
+                        </tr>
+                        <tr>
+                            <td>Gallery 应用</td>
+                            <td><span class="tag tag--warning">改造</span>骨架保留，内容按 Semi 文档的分组导航重建</td>
+                        </tr>
+                        <tr>
+                            <td><code>Theme</code> 单例</td>
+                            <td><span class="tag tag--danger">重写</span>当前只有 8 个颜色 + 9 个尺寸，要扩到完整令牌体系（含明暗反转语义）</td>
+                        </tr>
+                        <tr>
+                            <td><code>Button</code> / <code>Card</code> / <code>Switch</code></td>
+                            <td><span class="tag tag--danger">重写</span>当前是演示用的简化版，要按形态 × 状态矩阵重建</td>
+                        </tr>
+                        <tr>
+                            <td>缺失的能力</td>
+                            <td><span class="tag tag--primary">新增</span><code>Enums</code>、<code>Appearance</code>、<code>ControlState</code>、<code>FocusRing</code>、<code>internal/</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="note">
+                    <span class="note__label">下一步</span>
+                    你把上面 Q1–Q4 定下来，我就从 P0 开始：先把令牌层和外观解析引擎做出来，用测试锁住 320 个色值和暗色反转这条性质，然后再动手写第一个组件。
+                </div>
+
+                <footer>
+                    数据来源：<code>packages/semi-ui</code>（111 个导出）、
+                    <code>packages/semi-theme-default/scss</code>（1029 行令牌）、
+                    <code>packages/semi-foundation/</code>（组件样式与状态机）、
+                    <code>DESIGN.md</code>。色板由 <code>_palette.scss</code> 解析得到（16 色系 × 10 级 × 2 模式 = 320 值）。
+                </footer>
+            </main>
+        </div>
+
+        <script src="./script.js"></script>
+    </body>
+</html>

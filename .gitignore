@@ -1,0 +1,32 @@
+build*/
+cmake-build-*/
+install/
+
+# docs.json / tokens.json 的生成器源码住在 examples/gallery/build/ 下（不是构建产物）；
+# 父目录被上面的 build*/ 排除时无法再反选文件，所以先反选目录本身。
+!examples/gallery/build/
+!examples/gallery/build/*.py
+
+# Qt / QML
+*.qmlc
+*.jsc
+*.qmltypes.user
+qmldir.bak
+
+# qmlls 生成的构建目录索引，含本机绝对路径
+**/.qmlls.ini
+
+# IDE
+.cache
+.idea/
+.vscode/
+*.user
+CMakeUserPresets.json
+.qtcreator
+
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.pyc

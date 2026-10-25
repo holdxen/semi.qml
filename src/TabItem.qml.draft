@@ -1,0 +1,338 @@
+pragma ComponentBehavior: Bound
+
+import QtQuick
+import QtQuick.Shapes
+import Semi
+
+// 标签栏里的一格。对应 `packages/semi-ui/tabs/TabItem.tsx`（类名拼接 :71-83、icon :51/:70、
+// × :39-47、点击 :63-69）+ `semi-foundation/tabs/tabs.scss` 的 `.semi-tabs-tab*`。
+//
+// 度量全部取自编译后的 `packages/semi-ui/dist/css/semi.css`（tabs 段 21854-22610），
+// 号在注释里。官方有两套并行规则（`.semi-tabs-bar .semi-tabs-tab` 与
+// `.semi-tabs-tab-single.semi-tabs-tab`），**single 那份赢**（同特异度、写在后面），
+// 而 TabItem.tsx:75 对每一格都恒加 `-single` ⇒ 端口按 single 那份画。
+//
+// 端口与官方的差异（逐条，都有测试盯着）：
+//   · 官方指示条是**格子自己的 border**（2px，铺满含左右内边距的整格宽，无圆角、无内缩），
+//     不是另外摆一根线 ⇒ 端口用 Rectangle 贴在同一条边上，长度 = 整格宽 / 整格高。
+//   · 官方所有 hover / active / 底色切换的 transition 一律是
+//     `--semi-transition_duration-none` = **0ms**（animation.scss:1-17 把 tabs 那几条全映射到
+//     none）⇒ 端口不挂任何 Behavior，整个标签栏除了面板入场没有动画。
+//   · `disabled` 只改文字色（`--semi-color-disabled-text`）与光标，**没有** opacity 那一套；
+//     并且 `.semi-tabs-tab-disabled:hover { border-bottom: none }`（:21958-21960）
+//     ⇒ 禁用格连悬浮指示条都不给。
+//   · × 平时与选中都是 text-2（:21948-21950 明确把选中那格的 × 钉回 text-2，不跟文字变
+//     primary），只有 hover 抬一档：非选中 hover → text-0、选中 hover → text-1
+//     （single 那套 :21988-21990 / :22020-22022）。
+//   · `closable` 只画 ×，**不判 type**：文档写「只有卡片样式的页签支持关闭」，代码里
+//     line / button / slash 一样出 ×。上游就这样。
+Item {
+    id: control
+
+    property var host: null
+    property string itemKey: ""
+    property var label: ""
+    property var iconValue: ""
+    property bool disabled: false
+    property bool closable: false
+    property bool selected: false
+    /// 官方 :nth-of-type(1) { padding-left: 0 } 只对 line-top / slash 生效
+    property bool isFirst: false
+    /// slash 档那根斜线画在「前一格」的盒子里（:not(:last-of-type)::after）⇒ 最后一格不画
+    property bool isLast: false
+
+    // ---- 宿主下发的三档 ----
+    readonly property string type: control.host === null ? "line" : control.host.type
+    readonly property string size: control.host === null ? "large" : control.host.size
+    readonly property string position: control.host === null ? "top" : control.host.tabPosition
+    readonly property bool vertical: control.position === "left"
+
+    // ---- 内边距（variables.scss:104-128 三档，semi.css 里逐档落定）----
+    readonly property real padTop: vertical ? (size === "small" ? 6 : (size === "medium" ? 10 : 12))
+        : (type === "line" ? (size === "small" ? 8 : (size === "medium" ? 12 : 16))
+            : (type === "slash" ? 12 : 8))
+    readonly property real padBottom: vertical ? padTop
+        : (type === "line" ? (size === "small" ? 6 : (size === "medium" ? 10 : 14))
+            : (type === "slash" ? 12 : (selected ? 7 : 8)))
+    readonly property real padLeft: vertical ? padTop
+        : (type === "line" || type === "slash" ? (isFirst ? 0 : 4) : 12)
+    readonly property real padRight: vertical ? padTop
+        : (type === "line" || type === "slash" ? 4 : 12)
+
+    // ---- 内容宽 ----
+    readonly property bool labelIsComponent: typeof control.label === "object" && control.label !== null
+    readonly property real labelWidth: control.labelIsComponent
+        ? (labelLoader.item === null ? 0 : labelLoader.item.implicitWidth)
+        : labelText.implicitWidth
+    // .semi-icon { font-size: 16px } + margin-right: 8（variables.scss:101）
+    readonly property real iconWidth: (control.iconValue === undefined || control.iconValue === null
+        || control.iconValue === "") ? 0 : Theme.current.widthIconMedium + 8
+    // × 是 14px 图标 + margin-left: 10（:21921-21927，10 是硬编码不是令牌）
+    readonly property real closeWidth: control.closable ? Theme.current.fontSizeRegular + 10 : 0
+
+    readonly property real textHeight: 20
+    // box-sizing: border-box，而官方没给 height ⇒ 高 = 内边距 + 行高 + 「垂直于指示条方向」的边框。
+    // line-top 那 2px 是 border-bottom ⇒ 算进高度（52 / 44 / 36）；line-left 的 2px 是 border-left
+    // ⇒ 算进宽度不算高度。card 只有贴着内容那一侧的 1px 上边框算高度（border-bottom: none），
+    // 选中那格补上下边框、同时把 padding-bottom 从 8 减到 7 ⇒ 高度还是 37 不变。
+    readonly property real boxHeight: padTop + textHeight + padBottom
+        + (type === "line" && !vertical ? 2 : 0)
+        + (type === "card" ? 1 : 0)
+    readonly property real boxWidth: padLeft + iconWidth + labelWidth + closeWidth + padRight
+        + (type === "line" && vertical ? 2 : 0)
+
+    implicitWidth: boxWidth
+    implicitHeight: boxHeight
+
+    // ---- 四态颜色（:21901-21960 与 single 那套 :21962-22030）----
+    readonly property bool pressed: rowPress.pressed
+    readonly property bool hovered: rowHover.hovered && !control.disabled
+    readonly property color textColor: control.disabled ? Theme.current.colorDisabledText
+        : (control.selected ? Theme.current.colorText0
+            : (control.hovered || control.pressed ? Theme.current.colorText0
+                : Theme.current.colorText2))
+    readonly property color iconColor: control.disabled ? Theme.current.colorDisabledText
+        : (control.selected ? Theme.current.colorPrimary
+            : (control.hovered || control.pressed ? Theme.current.colorText0
+                : Theme.current.colorText2))
+    readonly property color closeColor: closeHover.hovered
+        ? (control.selected ? Theme.current.colorText1 : Theme.current.colorText0)
+        : Theme.current.colorText2
+
+    // ---- 底色：line-left / card / button 三档有，line-top 没有 ----
+    readonly property bool hasBg: control.disabled ? false
+        : (control.vertical ? (control.type === "line")
+            : (control.type === "card" || control.type === "button"))
+    readonly property color fillColor: {
+        if (!control.hasBg)
+            return "transparent";
+        if (control.type === "button" && control.selected)
+            return Theme.current.colorPrimaryLightDefault;
+        if (control.type === "line" && control.selected)        // line-left 选中
+            return Theme.current.colorPrimaryLightDefault;
+        if (control.type === "card" && control.selected)        // card 选中 explicit transparent
+            return "transparent";
+        if (control.pressed)
+            return Theme.current.colorFill1;
+        if (control.hovered)
+            return Theme.current.colorFill0;
+        return "transparent";
+    }
+
+    // ---- 指示条 2px：top 档在下边、left 档在左边 ----
+    readonly property bool showIndicator: control.type === "line" && !control.disabled
+    readonly property color indicatorColor: control.selected ? Theme.current.colorPrimary
+        : (control.pressed ? Theme.current.colorFill1
+            : (control.hovered ? Theme.current.colorFill0 : "transparent"))
+
+    // ---- card 的 1px 外框（贴着 bar 那一边没有）----
+    readonly property bool cardBorder: control.type === "card"
+
+    // 圆角：button 四角 3；card-top 3 3 0 0；card-left 3 0 3 0（variables.scss:155-157）
+    readonly property real rTL: (cardBorder || type === "button") ? Theme.current.radiusExtraSmall : 0
+    readonly property real rTR: type === "button" ? Theme.current.radiusExtraSmall
+        : (cardBorder && !vertical ? Theme.current.radiusExtraSmall : 0)
+    readonly property real rBL: type === "button" ? Theme.current.radiusExtraSmall : 0
+    readonly property real rBR: type === "button" ? Theme.current.radiusExtraSmall
+        : (cardBorder && vertical ? Theme.current.radiusExtraSmall : 0)
+
+    signal clicked()
+    signal closeClicked()
+
+    Rectangle {
+        objectName: "tabFill"
+
+        anchors.fill: parent
+        visible: control.fillColor.a > 0
+        color: control.fillColor
+        topLeftRadius: control.rTL
+        topRightRadius: control.rTR
+        bottomLeftRadius: control.rBL
+        bottomRightRadius: control.rBR
+    }
+
+    Rectangle {
+        objectName: "tabCardFrame"
+
+        visible: control.cardBorder && control.selected && !control.disabled
+        anchors.fill: parent
+        color: "transparent"
+        border.width: 1
+        border.color: Theme.current.colorBorder
+        topLeftRadius: control.rTL
+        topRightRadius: control.rTR
+        bottomLeftRadius: control.rBL
+        bottomRightRadius: control.rBR
+    }
+
+    // 选中那格贴着 bar 的那一边画成 bg-1，把 bar 的 1px 基线「擦掉」
+    Rectangle {
+        objectName: "tabCardSeam"
+
+        visible: control.cardBorder && control.selected && !control.disabled
+        width: control.vertical ? 1 : parent.width
+        height: control.vertical ? parent.height : 1
+        x: control.vertical ? parent.width - 1 : 0
+        y: control.vertical ? 0 : parent.height - 1
+        color: Theme.current.colorBg1
+    }
+
+    Rectangle {
+        id: indicator
+
+        objectName: "tabIndicator"
+
+        visible: control.showIndicator && control.indicatorColor.a > 0
+        width: control.vertical ? 2 : parent.width
+        height: control.vertical ? parent.height : 2
+        color: control.indicatorColor
+    }
+
+    Row {
+        id: line
+
+        x: control.padLeft
+        anchors.verticalCenter: parent.verticalCenter
+        spacing: 0
+
+        Item {
+            id: iconSlot
+
+            objectName: "tabIconSlot"
+
+            visible: control.iconWidth > 0
+            width: control.iconWidth
+            height: control.textHeight
+
+            Icon {
+                id: leadIcon
+
+                objectName: "tabLeadIcon"
+
+                // .semi-icon 16px + `position: relative; top: 3px`（variables.scss:102 手调值）
+                y: 3
+                name: typeof control.iconValue === "string" ? control.iconValue : ""
+                size: Theme.current.widthIconMedium
+                color: control.iconColor
+            }
+        }
+
+        Loader {
+            id: labelLoader
+
+            objectName: "tabLabelLoader"
+
+            visible: control.labelIsComponent
+            y: (control.textHeight - implicitHeight) / 2
+            sourceComponent: control.labelIsComponent ? control.label : null
+        }
+
+        Text {
+            id: labelText
+
+            objectName: "tabLabelText"
+
+            visible: !control.labelIsComponent
+            y: (control.textHeight - height) / 2
+            text: control.labelIsComponent ? "" : String(control.label === undefined ? "" : control.label)
+            color: control.textColor
+            font.pixelSize: Theme.current.fontSizeRegular
+            font.weight: control.selected ? Font.DemiBold : Font.Normal
+        }
+
+        Item {
+            id: closeSlot
+
+            objectName: "tabCloseSlot"
+
+            visible: control.closeWidth > 0
+            width: control.closeWidth
+            height: control.textHeight
+
+            Icon {
+                id: closeIcon
+
+                objectName: "tabCloseIcon"
+
+                x: 10
+                y: 3
+                name: "close"
+                // .semi-tabs-tab-icon-close { font-size: 14px }
+                size: Theme.current.fontSizeRegular
+                color: control.closeColor
+
+                HoverHandler {
+                    id: closeHover
+
+                    objectName: "tabCloseHover"
+                }
+
+                TapHandler {
+                    objectName: "tabCloseTap"
+
+                    acceptedButtons: Qt.LeftButton
+                    gesturePolicy: TapHandler.ReleaseWithinBounds
+                    onTapped: control.closeClicked()
+                }
+            }
+        }
+    }
+
+    // slash：8×14 的一条 ~1.4px 对角带，画在**前一格**的盒子里、底对齐
+    // （:22295-22306 是 linear-gradient(to bottom right, …)，端口换成一条线段）
+    Item {
+        id: slash
+
+        objectName: "tabSlash"
+
+        visible: control.type === "slash" && !control.isLast
+        width: 8 + 16
+        height: parent.height
+        x: parent.width - control.padRight
+        y: parent.height - 14 - 3
+
+        Shape {
+            id: slashShape
+
+            objectName: "tabSlashShape"
+
+            width: 8
+            height: 14
+            // 记忆 qt-quick-verified-behaviors：Shape 默认渲染器不做 AA，要点名 CurveRenderer
+            renderer: ShapePainter.Antialiasing ? ShapePainter.Antialiasing : 0
+
+            ShapePath {
+                strokeColor: Theme.current.colorText2
+                strokeWidth: 1
+                capStyle: ShapePath.FlatCap
+
+                PathGeometry {
+                    PathMove { x: 0; y: 0 }
+                    PathLine { x: 8; y: 14 }
+                }
+            }
+        }
+    }
+
+    HoverHandler {
+        id: rowHover
+
+        objectName: "tabHover"
+
+        enabled: !control.disabled
+    }
+
+    TapHandler {
+        id: rowPress
+
+        objectName: "tabTap"
+
+        acceptedButtons: Qt.LeftButton
+        gesturePolicy: TapHandler.ReleaseWithinBounds
+        onTapped: {
+            if (control.disabled)
+                return;
+            control.clicked();
+        }
+    }
+}
