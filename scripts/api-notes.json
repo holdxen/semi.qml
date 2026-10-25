@@ -1,6 +1,5 @@
 {
     "_comment": "API 说明列的人工维护文件。键是 QML 类型名，值里：属性名 -> 说明短句（表格「说明」列不换行，压到 20 字以内）；skip = 不进表的内部属性；extra = 额外补的行（默认属性等）。跑 scripts/gen-api-tables.py 生成 docs.json 的 api。",
-
     "Button": {
         "text": "按钮文字",
         "icon": "图标名（取值同 Icon.name）",
@@ -18,9 +17,15 @@
         "onMouseDown": "按下就发，不等抬起",
         "onMouseEntered": "指针进入时发",
         "onMouseLeft": "指针离开时发",
-        "skip": ["groupPosition", "groupTone", "groupVariant", "groupSize", "groupColorful", "groupDisabled"]
+        "skip": [
+            "groupPosition",
+            "groupTone",
+            "groupVariant",
+            "groupSize",
+            "groupColorful",
+            "groupDisabled"
+        ]
     },
-
     "ButtonGroup": {
         "content": "默认子项：一组 Button",
         "size": "整组尺寸，给没自己设 size 的子按钮",
@@ -29,9 +34,10 @@
         "colorful": "整组彩色，同上",
         "disabled": "整组禁用",
         "ariaLabel": "无障碍标签",
-        "skip": ["childItems"]
+        "skip": [
+            "childItems"
+        ]
     },
-
     "Divider": {
         "vertical": "竖向分隔（丢弃 content）",
         "text": "分隔文字（字符串档）",
@@ -40,7 +46,6 @@
         "align": "文字位置：left / center / right",
         "margin": "外边距：数字或 [水平, 垂直]，烘进尺寸"
     },
-
     "FloatButton": {
         "icon": "图标名",
         "text": "文字（与 icon 并存）",
@@ -52,14 +57,12 @@
         "iconSize": "图标边长",
         "onClicked": "点击时发"
     },
-
     "Icon": {
         "name": "图标名（库内 SVG 资源）",
         "color": "着色；缺省 colorText0",
         "size": "边长；缺省 widthIconMedium",
         "tinted": "false 时用图标原色，不吃 color"
     },
-
     "Space": {
         "content": "默认子项：任意 Item",
         "wrap": "窄了换行",
@@ -67,14 +70,16 @@
         "vertical": "竖排（spacing 当行距）",
         "spacing": "间距：tight / medium / large / 数字 / [水平, 垂直]",
         "space": "spacing 的别名",
-        "skip": ["lineStarts", "layoutHeight", "nodeWatchers"]
+        "skip": [
+            "lineStarts",
+            "layoutHeight",
+            "nodeWatchers"
+        ]
     },
-
     "Title": {
         "level": "标题级别 1..6（历史名字，保留）",
         "heading": "官方名；>0 时覆盖 level"
     },
-
     "Switch": {
         "checked": "受控的开关状态",
         "loading": "转圈并拦下点击",
@@ -83,7 +88,6 @@
         "size": "尺寸：Enums.Size",
         "onToggled": "点击翻面时发"
     },
-
     "Rating": {
         "value": "受控的分值",
         "defaultValue": "非受控时的初值",
@@ -102,7 +106,6 @@
         "onBlurred": "失去焦点时发",
         "onKeyPressed": "方向键加分时发"
     },
-
     "PinCode": {
         "value": "受控的验证码串",
         "defaultValue": "非受控的初值",
@@ -114,7 +117,6 @@
         "onChanged": "每次输入都发",
         "onCompleted": "填满全部格子时发"
     },
-
     "Checkbox": {
         "checked": "受控的选中态",
         "defaultChecked": "非受控的初值",
@@ -126,7 +128,6 @@
         "type": "形态：Enums.ChoiceDefault / ChoiceCard / ChoicePureCard",
         "onToggled": "点击翻面时发"
     },
-
     "CheckboxGroup": {
         "content": "默认子项：可选，铺在选项之外",
         "options": "选项：字符串，或 {label, value, extra, disabled}",
@@ -136,9 +137,10 @@
         "direction": "排列：Enums.DirectionVertical / DirectionHorizontal",
         "type": "形态：Enums.ChoiceType",
         "onChanged": "选中集合变化时发，参数是新的 value 数组",
-        "skip": ["itemSpacing"]
+        "skip": [
+            "itemSpacing"
+        ]
     },
-
     "Radio": {
         "checked": "受控的选中态",
         "defaultChecked": "非受控的初值",
@@ -153,9 +155,10 @@
         "onChanged": "选中变化时发（非受控档）",
         "onMouseEntered": "指针进入时发",
         "onMouseLeft": "指针离开时发",
-        "skip": ["groupTail"]
+        "skip": [
+            "groupTail"
+        ]
     },
-
     "RadioGroup": {
         "content": "默认子项：可选，铺在选项之外",
         "value": "受控的选中值",
@@ -169,7 +172,6 @@
         "name": "原生 name，本库未消费",
         "onChanged": "选中值变化时发"
     },
-
     "Slider": {
         "value": "受控的值",
         "min": "最小值",
@@ -192,9 +194,11 @@
         "railContent": "默认子项：铺在轨道里的内容",
         "onMoved": "拖动过程中发",
         "onAfterChange": "松手之后发",
-        "skip": ["dragHandle", "dragOffset"]
+        "skip": [
+            "dragHandle",
+            "dragOffset"
+        ]
     },
-
     "Cascader": {
         "options": "选项树：[{label, value, children}]",
         "value": "受控的路径值数组",
@@ -207,7 +211,6 @@
         "clearable": "可清除",
         "onSelected": "选中末级时发：(path, labels)"
     },
-
     "ColorPicker": {
         "value": "受控的颜色值",
         "defaultValue": "非受控初值；字符串或 {hex, rgba, hsva}",
@@ -221,9 +224,12 @@
         "bottomSlot": "面板底部插槽：Component",
         "triggerContent": "触发器自定义内容：Component",
         "onChanged": "颜色变化时发",
-        "skip": ["format", "typedText", "typing"]
+        "skip": [
+            "format",
+            "typedText",
+            "typing"
+        ]
     },
-
     "AutoComplete": {
         "dataList": "候选项：字符串数组或 {label, value} 对象数组",
         "value": "受控的输入值",
@@ -247,9 +253,10 @@
         "onSelected": "选中候选时发",
         "onSearch": "输入变化时发（远程过滤用）",
         "onCleared": "点清除时发",
-        "skip": ["filtered"]
+        "skip": [
+            "filtered"
+        ]
     },
-
     "Transfer": {
         "dataSource": "数据源：[{key, label, …}]，treeList 带 children",
         "type": "列表形态：'list' / 'groupList' / 'treeList'",
@@ -277,7 +284,6 @@
         "onSearch": "搜索词变化时发",
         "onPageChanged": "页码变化时发"
     },
-
     "Select": {
         "options": "选项：{label, value, disabled} / 字符串数组 / 带 children 分组",
         "value": "受控的单选值",
@@ -311,9 +317,10 @@
         "onSearch": "搜索词变化时发（远程搜索用）",
         "onExceed": "多选超出 maxTagCount 时发",
         "onRestTagsClick": "点 +N 时发",
-        "skip": ["tagsBlockHeight"]
+        "skip": [
+            "tagsBlockHeight"
+        ]
     },
-
     "Input": {
         "text": "受控的文字（转发给内层 TextInput）",
         "input": "内层 TextInput 本体",
@@ -353,7 +360,6 @@
         "textAlign": "对齐：TextInput.AlignLeft / AlignRight / AlignHCenter",
         "revealed": "密码可见态（mode: password 时）"
     },
-
     "InputNumber": {
         "value": "受控的值",
         "defaultValue": "非受控初值",
@@ -392,9 +398,10 @@
         "onNumberChange": "数值变化时发（number）",
         "onUpClick": "点加号时发",
         "onDownClick": "点减号时发",
-        "skip": ["number"]
+        "skip": [
+            "number"
+        ]
     },
-
     "TimePicker": {
         "value": "受控的值：Date 或 [起, 止]",
         "defaultValue": "非受控初值",
@@ -436,7 +443,6 @@
         "onFocused": "触发器获得焦点时发",
         "onBlurred": "触发器失去焦点时发"
     },
-
     "TagInput": {
         "value": "受控的标签数组",
         "defaultValue": "非受控初值",
@@ -481,9 +487,14 @@
         "onFocused": "获得焦点时发",
         "onBlurred": "失去焦点时发",
         "onKeyDown": "按键时发：(key, modifiers)",
-        "skip": ["active", "contentHeight", "dragIndex", "dropIndex", "tagMarginX"]
+        "skip": [
+            "active",
+            "contentHeight",
+            "dragIndex",
+            "dropIndex",
+            "tagMarginX"
+        ]
     },
-
     "DatePicker": {
         "type": "类型：Enums.DatePickerType（date / dateTime / 各 range 档）",
         "value": "受控的值：Date 或 [起, 止]",
@@ -538,7 +549,6 @@
         "onCleared": "点清除时发",
         "onPresetClicked": "点快捷项时发"
     },
-
     "Upload": {
         "action": "上传地址",
         "formData": "附加表单字段",
@@ -608,7 +618,6 @@
         "onPreviewClick": "点预览时发",
         "onRetried": "点重试时发"
     },
-
     "TreeSelect": {
         "treeData": "树数据：[{key, label, children, …}]",
         "keyMaps": "字段名映射：{key, label, value, children, …}",
@@ -676,9 +685,12 @@
         "onVisibleChange": "显隐变化时发",
         "onFocused": "获得焦点时发",
         "onBlurred": "失去焦点时发",
-        "skip": ["hoverPoint", "hoverInside", "entryRefs"]
+        "skip": [
+            "hoverPoint",
+            "hoverInside",
+            "entryRefs"
+        ]
     },
-
     "Form": {
         "content": "默认子项：一串 FormItem",
         "layout": "布局：vertical / horizontal",
@@ -707,9 +719,11 @@
         "onResetTriggered": "reset 之后发",
         "onSubmit": "提交时发：(values)",
         "onSubmitFail": "校验不过时发：(errors, values)",
-        "skip": ["fields", "fieldOrder"]
+        "skip": [
+            "fields",
+            "fieldOrder"
+        ]
     },
-
     "FormItem": {
         "content": "默认子项：控件与提示文字",
         "form": "所属 Form（id 或直接引用）",
@@ -737,10 +751,15 @@
         "pure": "纯展示，不注册字段",
         "valueKey": "数组值取哪个 key",
         "onChange": "该项值变化：(value)",
-        "skip": ["stretch", "groupIndex", "groupCount", "innerControl",
-                 "writingToControl", "wiring"]
+        "skip": [
+            "stretch",
+            "groupIndex",
+            "groupCount",
+            "innerControl",
+            "writingToControl",
+            "wiring"
+        ]
     },
-
     "FormLabel": {
         "text": "标签文字",
         "required": "必填星号",
@@ -752,7 +771,6 @@
         "blockLevel": "占满整行",
         "padTop": "顶部留白（对齐内容用）"
     },
-
     "Anchor": {
         "content": "默认子项：一串 AnchorLink",
         "size": "滑块与文字档：'small' / 'default'",
@@ -773,10 +791,17 @@
         "activeLink": "当前高亮的链接（状态，读不改）",
         "onChange": "高亮变化：(currentLink, previousLink)",
         "onClick": "点击链接：(currentLink)",
-        "skip": ["clickLink", "hrefList", "childMap", "slideBarTop", "slideBarHeight",
-                 "scrollPending", "wiredCount", "scrollTicks"]
+        "skip": [
+            "clickLink",
+            "hrefList",
+            "childMap",
+            "slideBarTop",
+            "slideBarHeight",
+            "scrollPending",
+            "wiredCount",
+            "scrollTicks"
+        ]
     },
-
     "AnchorLink": {
         "content": "默认子项：嵌套的 AnchorLink",
         "sublinks": "默认子项：嵌套的 AnchorLink",
@@ -789,9 +814,11 @@
         "level": "缩进层级，从 1 起",
         "selected": "是否当前项（由 Anchor 推下来）",
         "onClicked": "点击时发",
-        "skip": ["rowWidth", "hostWired"]
+        "skip": [
+            "rowWidth",
+            "hostWired"
+        ]
     },
-
     "BackTop": {
         "target": "滚动容器：Flickable；不给用祖先里最近的",
         "visibilityHeight": "超过这个距离才出现（px）",
@@ -802,9 +829,12 @@
         "rightMargin": "距右缘（官方 fixed right 100）",
         "bottomMargin": "距下缘（官方 fixed bottom 50）",
         "onClicked": "点击时发",
-        "skip": ["shown", "throttleWindow", "throttlePending"]
+        "skip": [
+            "shown",
+            "throttleWindow",
+            "throttlePending"
+        ]
     },
-
     "Breadcrumb": {
         "routes": "条目：[{text, href, icon, …}]",
         "separator": "分隔符；空串算没给",
@@ -820,9 +850,14 @@
         "className": "官方透传；本库无落点",
         "style": "官方透传；本库无落点",
         "onClicked": "点条目时发",
-        "skip": ["collapsed", "itemCount", "restList", "naturalWidth", "rowsHeight"]
+        "skip": [
+            "collapsed",
+            "itemCount",
+            "restList",
+            "naturalWidth",
+            "rowsHeight"
+        ]
     },
-
     "BreadcrumbItem": {
         "label": "条目文字",
         "icon": "图标：Component",
@@ -834,16 +869,21 @@
         "route": "路由对象：{path, href}",
         "host": "所属 Breadcrumb（id 或引用）",
         "onClicked": "点击时发",
-        "skip": ["fromRepeater", "cellIndex", "hovered", "pressed"]
+        "skip": [
+            "fromRepeater",
+            "cellIndex",
+            "hovered",
+            "pressed"
+        ]
     },
-
     "BreadcrumbMore": {
         "host": "所属 Breadcrumb",
         "restItems": "被折叠掉的那几条",
         "onExpandRequested": "点省略号时发",
-        "skip": ["cellIndex"]
+        "skip": [
+            "cellIndex"
+        ]
     },
-
     "Navigation": {
         "content": "默认子项：自定义菜单项之外的内容",
         "header": "头部槽（别名，指向 headerSlot 的子项）",
@@ -871,7 +911,6 @@
         "onOpenChange": "展开 key 变化时发",
         "onCollapseChange": "收起态变化时发"
     },
-
     "Pagination": {
         "total": "总条数",
         "showTotal": "显示总数",
@@ -894,7 +933,6 @@
         "onPageSizeChange": "每页条数变化时发",
         "onChange": "页码或条数变化时发：(page, size)"
     },
-
     "Steps": {
         "type": "档位：fill（缺省）/ basic / nav",
         "current": "当前步，从 0 起算",
@@ -906,6 +944,973 @@
         "ariaLabel": "无障碍标签",
         "items": "步骤项：[{title, description, icon}]",
         "onChange": "点某一步时发：(index)",
-        "skip": ["cells", "clickable", "layoutHeight"]
+        "skip": [
+            "cells",
+            "clickable",
+            "layoutHeight"
+        ]
+    },
+    "Tabs": {
+        "tabList": "标签列表：[{itemKey, tab, icon, disabled, closable}]",
+        "activeKey": "受控的当前 key",
+        "defaultActiveKey": "非受控初值",
+        "type": "档位：line / card / button / slash",
+        "size": "尺寸：small / medium / large（缺省 large）",
+        "tabPosition": "标签栏位置：top / left",
+        "keepDOM": "面板不销毁（保留 DOM）",
+        "lazyRender": "面板首次显示才渲染",
+        "tabPaneMotion": "面板切换动画",
+        "collapsible": "标签栏可折叠：false / true / \"auto\"",
+        "more": "超出收纳：number 或 {count, render}",
+        "showRestInDropdown": "收纳进下拉菜单",
+        "arrowPosition": "箭头位置：start / end / both",
+        "preventScroll": "不自动滚到当前标签",
+        "tabBarExtraContent": "标签栏右侧插槽：Component",
+        "renderArrow": "箭头渲染：Component",
+        "renderTabBar": "整条标签栏渲染：Component",
+        "dropdownProps": "收纳下拉参数：{start, end}",
+        "onChange": "切换标签时发",
+        "onTabClick": "点标签时发（点当前也发）",
+        "onTabClose": "点关闭时发",
+        "onVisibleTabsChange": "可见标签变化时发",
+        "skip": [
+            "items",
+            "currentKey",
+            "prevActiveKey",
+            "barNaturalLen",
+            "forceDisableMotion",
+            "barBox",
+            "focusedKey",
+            "defaultBar",
+            "rowBar",
+            "colBar",
+            "tabItemComp",
+            "overflowBar",
+            "overflowCellRenderer",
+            "arrowRenderer",
+            "moreTriggerDefault",
+            "moreMenuStore"
+        ]
+    },
+    "Tree": {
+        "treeData": "树数据：[{key, label, children, …}]",
+        "treeDataSimpleJson": "简化 JSON 数据（带 parentId 那种）",
+        "keyMaps": "字段名映射：{key, label, value, children, …}",
+        "value": "受控值：单选标量，多选数组",
+        "defaultValue": "非受控初值",
+        "multiple": "多选（勾选框）",
+        "checkRelation": "多选关联：related 联动 / unRelated 独立",
+        "leafOnly": "只能选叶子",
+        "autoMergeValue": "取值时合并父子",
+        "onChangeWithObject": "信号给节点对象而不是 key",
+        "disabled": "禁用整棵树",
+        "disableStrictly": "禁用项不参与级联",
+        "defaultExpandAll": "非受控初值全展开",
+        "expandAll": "全展开（受控）",
+        "defaultExpandedKeys": "非受控的初始展开 key",
+        "expandedKeys": "受控的展开 key",
+        "autoExpandParent": "选中时自动展开父级",
+        "blockNode": "节点整行铺满",
+        "showLine": "连接线",
+        "motion": "展开收起动画",
+        "directory": "文件夹样式（图标跟着换）",
+        "icon": "节点图标：图标名 / Component / function(rowProps)",
+        "expandIcon": "展开图标：同上",
+        "labelEllipsis": "标签省略；缺省跟虚拟化",
+        "emptyContent": "空态内容",
+        "ariaLabel": "无障碍标签",
+        "filterTreeNode": "过滤：false / true / function(input, target, data)",
+        "treeNodeFilterProp": "过滤取值字段",
+        "showFilteredOnly": "只显示命中的节点",
+        "showClear": "搜索框可清除",
+        "searchPlaceholder": "搜索框占位文字",
+        "searchRender": "搜索框渲染：false 藏起来 / Component 自定义",
+        "expandAction": "展开收起触发方式（false / 区域点击）",
+        "loadData": "异步加载：(node, done)",
+        "loadedKeys": "已加载过的 key（配合 loadData）",
+        "draggable": "节点可拖拽",
+        "autoExpandWhenDragEnter": "拖到折叠节点上自动展开",
+        "virtualize": "虚拟化：{itemSize, height, width}",
+        "renderLabel": "标签渲染：Component",
+        "renderFullLabel": "整行渲染：Component",
+        "onChange": "值变化时发",
+        "onSelect": "勾选单个节点：(key, selected, node)",
+        "onExpand": "展开变化：(expandedKeys, info)",
+        "onSearch": "搜索：(input, filteredExpandedKeys)",
+        "onDoubleClick": "双击时发",
+        "onContextMenu": "右键时发",
+        "onLoad": "异步加载完成：(loadedKeys, node)",
+        "onDragStart": "拖拽开始时发",
+        "onDragEnter": "拖入节点时发",
+        "onDragOver": "拖过节点时发",
+        "onDragLeave": "拖离节点时发",
+        "onDragEnd": "拖拽结束时发",
+        "onDrop": "落下时发：(node, dragNode, dragNodesKeys, dropPosition, dropToGap)",
+        "skip": [
+            "hoverPoint",
+            "hoverInside",
+            "entryRefs",
+            "dragCentroid"
+        ]
+    },
+    "Collapse": {
+        "accordion": "手风琴档：一次只开一个",
+        "content": "默认子项：被折叠的内容"
+    },
+    "Popover": {
+        "style": "面板样式对象（透传）",
+        "arrowStyle": "箭头样式对象",
+        "initialFocus": "打开后聚焦的节点",
+        "returnFocusOnClose": "关闭时把焦点还回去（缺省 true）"
+    },
+    "Highlight": {
+        "sourceString": "被搜索的原串",
+        "searchWords": "关键词数组",
+        "caseSensitive": "区分大小写",
+        "autoEscape": "自动转义正则元字符",
+        "highlightStyle": "高亮样式对象",
+        "component": "包高亮用什么：'mark' / 'span'"
+    },
+    "Collapsible": {
+        "content": "默认子项：被折叠的内容",
+        "isOpen": "受控的开合态",
+        "collapseHeight": "收起后的高度；0 不限制",
+        "fade": "收起时淡出",
+        "duration": "动画时长（ms）",
+        "onToggled": "开合变化时发",
+        "skip": [
+            "currentHeight"
+        ]
+    },
+    "Empty": {
+        "footer": "底部插槽（footerRow 的子项）",
+        "layout": "排布：vertical / horizontal",
+        "image": "图：字符串或 Component",
+        "darkModeImage": "深色模式的图",
+        "title": "标题",
+        "description": "描述",
+        "imageStyle": "图的样式对象",
+        "style": "官方透传；本库无落点",
+        "className": "官方透传；本库无落点",
+        "skip": [
+            "footerCount"
+        ]
+    },
+    "Timeline": {
+        "mode": "排列：left / right / center / alternate",
+        "dataSource": "每项 = TimelineItem 的属性 + content",
+        "content": "默认子项：直接摆 TimelineItem（不走 dataSource）"
+    },
+    "TimelineItem": {
+        "type": "档位：default / ongoing / success / warning / error",
+        "color": "圆点色值覆盖；空串不覆盖",
+        "position": "left / right；只在 center / alternate 下生效",
+        "time": "时间：字符串或 Component",
+        "extra": "附加内容：字符串或 Component",
+        "content": "主内容：字符串或 Component（官方是 children）",
+        "dot": "圆点自定义：Component",
+        "onClicked": "点这一项时发",
+        "skip": [
+            "timelineIndex",
+            "timelineCount",
+            "timelineMode"
+        ]
+    },
+    "Badge": {
+        "content": "默认子项：角标挂上去的目标",
+        "count": "数字 / 字符串 / Component",
+        "dot": "只画红点",
+        "type": "档位：primary / secondary / tertiary / danger / warning / success",
+        "theme": "底色：solid / light / inverted",
+        "position": "位置：leftTop / leftBottom / rightTop / rightBottom",
+        "overflowCount": "超过就截断；官方无缺省 ⇒ 不传永不截断",
+        "className": "死 prop（外层）",
+        "countClassName": "死 prop（内层）",
+        "countStyle": "死 prop（内层）",
+        "style": "死 prop（给了它就整个顶掉 countStyle）",
+        "onClicked": "点击时发",
+        "onMouseEntered": "指针进入时发",
+        "onMouseLeft": "指针离开时发",
+        "skip": [
+            "declaredCount"
+        ]
+    },
+    "OverflowList": {
+        "items": "条目数组",
+        "itemKey": "取 key 的字段",
+        "renderMode": "收纳方式：collapse / scroll",
+        "collapseFrom": "从哪端收：start / end",
+        "minVisibleItems": "最少露几个",
+        "threshold": "滚动档的可见比例阈值（只在 scroll 档用）",
+        "visibleItemRenderer": "可见项渲染：Component",
+        "overflowRenderer": "溢出项渲染：Component",
+        "onOverflow": "溢出集合变化时发",
+        "onIntersect": "可见性相交时发",
+        "onVisibleStateChange": "可见状态变化时发",
+        "skip": [
+            "pivot",
+            "overflowStatus",
+            "visibleState",
+            "hiddenBefore",
+            "hiddenAfter"
+        ]
+    },
+    "Calendar": {
+        "header": "头部插槽（官方月视图没有头部，这是本库给的便利）",
+        "displayValue": "当前显示的日期",
+        "events": "事件数组（带 start / end / children）",
+        "mode": "档：day / week / month / range",
+        "range": "range 档的 [起, 止]（左闭右开）",
+        "weekStartsOn": "周起始日 0..6",
+        "markWeekend": "周末格铺灰",
+        "showCurrTime": "显示当前时间线",
+        "scrollTop": "日视图初始滚动位置（只在挂载时吃一次）",
+        "minEventHeight": "事件条最小高度",
+        "dateGridRender": "格子自定义节点：Component",
+        "renderTimeDisplay": "时间轴显示渲染：Component",
+        "renderDateDisplay": "表头日期渲染：Component",
+        "allDayEventsRender": "全天条渲染：Component（拿的是未过滤的原数组）",
+        "onClicked": "点格子时发：(value)",
+        "onMoreClicked": "点「还有 N 项」时发：(day, remaining)",
+        "onClose": "关掉那张卡片时发"
+    },
+    "ScrollList": {
+        "content": "默认子项：列表里的条目",
+        "header": "头部：字符串或节点",
+        "footer": "尾部：字符串或节点",
+        "bodyHeight": "列表高：数字或 \"300px\"（缺省走 CSS 的 300）",
+        "className": "官方透传；本库无落点",
+        "style": "官方透传；本库无落点",
+        "skip": [
+            "columnCount"
+        ]
+    },
+    "ScrollItem": {
+        "mode": "滚动方式：normal / wheel（缺省 wheel）",
+        "cycled": "循环（仅 wheel 档生效）",
+        "list": "条目数组",
+        "selectedIndex": "受控的选中下标",
+        "motion": "切换动画",
+        "textTransform": "文本变换函数",
+        "type": "身份标记，只在 onSelect 载荷里回传",
+        "className": "官方透传；本库无落点",
+        "style": "官方透传；本库无落点",
+        "ariaLabel": "无障碍标签",
+        "onSelect": "选中时发：(data)",
+        "skip": [
+            "selectedModel"
+        ]
+    },
+    "List": {
+        "content": "默认子项：直接摆条目（不走 dataSource）",
+        "bordered": "外框 1px（缺省 false）",
+        "dataSource": "数据：字符串数组或对象数组",
+        "renderItem": "条目渲染：Component（注入 modelData / index）",
+        "emptyContent": "空态：字符串或节点；\"\" 不画",
+        "footer": "底部：字符串或节点；\"\" 不占位",
+        "grid": "栅格档：{span, gutter, xs…xxl, align, justify}",
+        "header": "头部：字符串或节点；\"\" 不占位",
+        "layout": "排布：vertical / horizontal",
+        "loadMore": "加载更多：字符串或节点",
+        "loading": "加载态（Spin 套在 items 外）",
+        "size": "尺寸：small / default / large",
+        "split": "条目分隔线（缺省 true）",
+        "onClicked": "点条目时发（header/footer 不算）",
+        "onRightClicked": "右键条目时发",
+        "skip": [
+            "declaredCount",
+            "itemsHeight",
+            "nodeWatchers",
+            "stretchPinned",
+            "layingOut"
+        ]
+    },
+    "Dropdown": {
+        "menu": "菜单内容：条目数组或 Component",
+        "showTick": "整组的对勾开关（条目自己那条被顶死）",
+        "extraRows": [
+            {
+                "name": "其余参数",
+                "desc": "定位 / 触发 / 延迟等一整套见 Tooltip 页",
+                "type": "—",
+                "default": "—"
+            }
+        ],
+        "skip": [
+            "ctxLevel",
+            "menuNaturalWidth",
+            "menuNaturalHeight",
+            "focusableItems",
+            "firstChars"
+        ]
+    },
+    "DropdownItem": {
+        "text": "条目文字",
+        "icon": "图标：Component",
+        "disabled": "禁用",
+        "selected": "死 prop（官方也是）",
+        "active": "是否高亮（Dropdown 推下来的选中态）",
+        "type": "档位：''（缺省）/ primary 等",
+        "showTick": "条目自己的对勾；在 Dropdown 里被组那条顶死（官方行为）",
+        "content": "默认子项：文字之外的自定义内容",
+        "dropdownHost": "所属 Dropdown（内部注入）",
+        "onClicked": "点击时发",
+        "onMouseEntered": "指针进入时发",
+        "onMouseLeft": "指针离开时发",
+        "onContextMenu": "右键时发"
+    },
+    "DropdownTitle": {
+        "text": "分组标题文字",
+        "dropdownHost": "所属 Dropdown（内部注入）"
+    },
+    "DropdownDivider": {},
+    "SideSheet": {
+        "content": "默认子项：面板主体",
+        "placement": "方位：top / bottom / left / right",
+        "size": "尺寸：small / medium / large（只给左右方位定宽）",
+        "motion": "出入场动画",
+        "mask": "有蒙层",
+        "maskClosable": "点蒙层关闭",
+        "closable": "显示关闭键",
+        "closeIcon": "关闭键图标名",
+        "closeOnEsc": "Esc 关闭（官方缺省 false）",
+        "keepDOM": "关闭后保留 DOM",
+        "disableScroll": "打开时锁住页面滚动",
+        "zIndex": "层级；收下不生效（层序交给 Overlay）",
+        "title": "标题",
+        "footer": "底部插槽",
+        "bodyStyle": "主体样式对象",
+        "headerStyle": "头部样式对象",
+        "maskStyle": "蒙层样式对象",
+        "getPopupContainer": "挂载目标：Item",
+        "className": "官方透传；本库无落点",
+        "direction": "文字方向：ltr / rtl",
+        "onCancel": "关闭时发",
+        "onAfterVisibleChange": "显隐变化后发",
+        "skip": [
+            "escIsTop"
+        ]
+    },
+    "UserGuide": {
+        "current": "受控的当前步；undefined 是非受控",
+        "finishText": "最后一步的完成按钮文字",
+        "mask": "有蒙层",
+        "mode": "档：popup / modal",
+        "position": "方位：Enums.Bottom（官方 'bottom'）",
+        "spotlightPadding": "高亮洞留白；留 undefined 才让 5 兜底",
+        "showPrevButton": "显示上一步",
+        "showSkipButton": "显示跳过",
+        "steps": "步骤数组",
+        "theme": "主题：default / primary",
+        "zIndex": "层级",
+        "container": "挂载目标（官方 getPopupContainer）",
+        "nextButtonText": "下一步按钮文字",
+        "nextButtonVariant": "下一步按钮形态：Enums.Variant",
+        "nextButtonTone": "下一步按钮色调：Enums.Tone",
+        "prevButtonText": "上一步按钮文字",
+        "prevButtonVariant": "上一步按钮形态：Enums.Variant",
+        "prevButtonTone": "上一步按钮色调：Enums.Tone",
+        "onChanged": "换步时发",
+        "onNext": "点下一步时发",
+        "onPrev": "点上一步时发",
+        "onFinished": "走完最后一步时发",
+        "onSkipped": "点跳过时发",
+        "skip": [
+            "motionDuration"
+        ]
+    },
+    "Tag": {
+        "text": "文字（走截断）",
+        "content": "内容：Component（与 text 二选一）",
+        "tagKey": "关闭时回传的 key",
+        "size": "尺寸：small / default / large",
+        "color": "色板名：grey / blue / …",
+        "type": "底色档：light / solid / outline / ghost",
+        "shape": "形状：square / circle",
+        "closable": "可关闭（出 × ）",
+        "prefixIcon": "前图标：Component",
+        "suffixIcon": "后图标：Component",
+        "avatarSrc": "头像图",
+        "avatarShape": "头像形状：square / circle",
+        "colorful": "彩色渐变底",
+        "gradient": "渐变底（colorful 的细档）",
+        "ariaLabel": "无障碍标签",
+        "disabled": "禁用",
+        "maxWidth": "最大宽；-1 不限",
+        "backgroundColor": "背景色覆盖",
+        "onClicked": "点击时发",
+        "onClosed": "点关闭时发：(tagChildren, event, tagKey)",
+        "onKeyPressed": "按键时发",
+        "onMouseEntered": "指针进入时发",
+        "skip": [
+            "splitChild",
+            "splitFirst",
+            "splitLast"
+        ]
+    },
+    "Tooltip": {
+        "target": "目标节点（官方是 children 包裹，这里显式指定）",
+        "text": "文字（官方 content 的字符串档）",
+        "trigger": "触发：hover / focus / click / custom / contextMenu",
+        "position": "方位：Enums.Top 等 12 档",
+        "mouseEnterDelay": "悬浮进入延迟（ms）",
+        "mouseLeaveDelay": "悬浮离开延迟（ms）",
+        "condition": "显示条件开关（只挡显示那几条路径）",
+        "arrowPointAtCenter": "角落方位时卡片平移，让三角指到目标中心",
+        "margin": "边距（只参与翻面判定）",
+        "zIndex": "层级",
+        "autoAdjustOverflow": "越界自动换方位",
+        "clickToHide": "点卡片也收起",
+        "clickTriggerToHide": "点触发器也收起（配合 click 档）",
+        "disableFocusListener": "只关 hover 档附带的 focus / blur 对",
+        "closeOnEsc": "Esc 关闭（官方缺省 false）",
+        "rePosKey": "变了就重算一次位置",
+        "container": "挂载目标（官方 getPopupContainer）",
+        "maxWidth": "卡片最大宽（官方用 style.maxWidth 覆盖）",
+        "labelColor": "文字颜色",
+        "labelPaddingX": "文字左右内边距",
+        "labelPaddingY": "文字上下内边距",
+        "onClickedOutside": "点外面时发（官方 onClickOutSide）",
+        "onEscKeyDown": "按 Esc 时发",
+        "skip": [
+            "clickToHideLatched",
+            "arrowMinWidth",
+            "arrowMinHeight",
+            "arrowCross"
+        ]
+    },
+    "Carousel": {
+        "content": "默认子项：各片内容（按顺序轮播）",
+        "activeIndex": "受控的当前片",
+        "animation": "切换动画：slide / fade",
+        "arrowProps": "箭头自定义：{leftArrow: {children}, rightArrow: {children}}",
+        "autoPlay": "自动播放：true / false / {interval, hoverToPause}",
+        "arrowType": "箭头何时显示：always / hover",
+        "className": "死 prop",
+        "defaultActiveIndex": "非受控初值",
+        "indicatorPosition": "指示器位置：left / center / right",
+        "indicatorSize": "指示器尺寸：small / medium",
+        "indicatorType": "指示器形状：dot / line / columnar",
+        "theme": "主题：dark / primary / light",
+        "showArrow": "显示箭头",
+        "showIndicator": "显示指示器",
+        "slideDirection": "切换方向：left / right",
+        "speed": "动画时长（ms）",
+        "style": "死 prop",
+        "trigger": "箭头触发：click / hover",
+        "onChanged": "切换时发：(activeIndex, preIndex)",
+        "skip": [
+            "innerIndex",
+            "preIndex",
+            "isReverse",
+            "isInit",
+            "forcePlay",
+            "progress",
+            "declaredCount",
+            "bootedOnce"
+        ]
+    },
+    "Avatar": {
+        "text": "文字（整串显示，靠 scale 自适应）",
+        "src": "图片地址",
+        "srcSet": "多分辨率地址",
+        "alt": "替代文字",
+        "gap": "组内间距（给 AvatarGroup 用）",
+        "color": "色板名：grey / blue / …",
+        "shape": "形状：circle / square",
+        "size": "尺寸：七档字符串之一，或自定义边长",
+        "hoverMask": "悬浮遮罩：图标名或 Component",
+        "imgAttr": "图片属性透传",
+        "error": "图挂了的回调；返回 false 就留住破图",
+        "bottomSlot": "底部角标：{shape, text, bgColor, textColor, render}",
+        "topSlot": "顶部角标：{text, gradientStart, textColor, render}",
+        "border": "边框：true / false 或 {color, motion}",
+        "contentMotion": "内容随缩放动（官方 scale(0.8) 那条死规则）",
+        "backgroundColor": "内联底色，压过色板类名",
+        "onClicked": "点击时发",
+        "onMouseEntered": "指针进入时发",
+        "onMouseLeft": "指针离开时发",
+        "skip": [
+            "groupSize",
+            "groupShape",
+            "groupBorderWidth",
+            "keepBroken"
+        ]
+    },
+    "AvatarGroup": {
+        "content": "默认子项：一组 Avatar",
+        "size": "尺寸（下发给没自己设 size 的子项）",
+        "shape": "形状（下发给子项）",
+        "overlapFrom": "重叠起点：start / end",
+        "maxCount": "最多显示几个；超出走 +N",
+        "renderMore": "「+N」渲染：Component"
+    },
+    "Descriptions": {
+        "align": "值对齐：left / center / right",
+        "row": "行式：把 description 摊到列上",
+        "size": "尺寸：small / medium / large",
+        "style": "官方透传；本库无落点",
+        "className": "官方透传；本库无落点",
+        "dataList": "数据：[{key, value, …}]（给了就用数据驱动）",
+        "layout": "布局：vertical / horizontal",
+        "column": "列数",
+        "skip": [
+            "contentHeight",
+            "entries"
+        ]
+    },
+    "DescriptionsItem": {
+        "content": "默认子项：值那一侧的内容",
+        "itemKey": "键名（key）",
+        "hidden": "不渲染这一格",
+        "className": "官方透传；本库无落点",
+        "style": "官方透传；本库无落点",
+        "keyStyle": "键样式（只在 plain 档生效）",
+        "span": "跨几列",
+        "value": "值（给了就不再从子项取）",
+        "skip": [
+            "spanExplicit",
+            "descriptionsHost",
+            "fromRepeater",
+            "hostAlign",
+            "hostRow",
+            "hostSize",
+            "cellWidth",
+            "keyColumnWidth",
+            "declaredCount"
+        ]
+    },
+    "Card": {
+        "content": "默认子项：卡片主体",
+        "actions": "底部按钮组：数组或节点",
+        "bodyStyle": "死 prop",
+        "bordered": "有边框（缺省 true）",
+        "className": "死 prop",
+        "cover": "封面：节点",
+        "footer": "底部：节点",
+        "footerLine": "底部分隔线",
+        "footerStyle": "死 prop",
+        "header": "头部：节点",
+        "headerLine": "头部分隔线（缺省 true）",
+        "headerStyle": "死 prop",
+        "loading": "加载态（要 children 才出）",
+        "shadows": "阴影：'' / hover / always",
+        "style": "死 prop",
+        "title": "标题：字符串或节点",
+        "headerExtraContent": "头部右侧插槽",
+        "ariaLabel": "无障碍标签（官方 'aria-label'）",
+        "skip": [
+            "declaredCount",
+            "cardGroupGrid",
+            "actionNodes"
+        ]
+    },
+    "CardMeta": {
+        "avatar": "头像：节点",
+        "className": "死 prop",
+        "description": "描述文字",
+        "style": "死 prop",
+        "title": "标题文字"
+    },
+    "CardGroup": {
+        "content": "默认子项：一组 Card",
+        "className": "死 prop",
+        "spacing": "间距：数字或 [水平, 垂直]",
+        "style": "死 prop",
+        "type": "'' 或 'grid'（栅格排）",
+        "skip": [
+            "childCount",
+            "lineWidth",
+            "layoutHeight",
+            "lineStarts",
+            "lineHeights",
+            "lineExtents",
+            "nodeWatchers"
+        ]
+    },
+    "Modal": {
+        "content": "默认子项：弹层主体",
+        "title": "标题：字符串或节点",
+        "header": "自定义头部：节点",
+        "footer": "自定义底部：节点",
+        "icon": "图标：节点（给了就不再按 okType 换图标）",
+        "closeIcon": "右上关闭键图标名",
+        "okText": "确定按钮文字；空 ⇒ locale.confirm",
+        "cancelText": "取消按钮文字；空 ⇒ locale.cancel",
+        "okType": "确定按钮色调：primary / secondary / tertiary / warning / danger",
+        "hasCancel": "有取消按钮",
+        "closable": "有关闭键",
+        "mask": "有蒙层",
+        "maskClosable": "点蒙层关闭",
+        "closeOnEsc": "Esc 关闭",
+        "centered": "居中（缺省贴上）",
+        "motion": "出入场动画",
+        "fullScreen": "全屏",
+        "footerFill": "底部铺满（自定义 footer 档用）",
+        "size": "尺寸档：small / medium / large / full-width（448 / 684 / 920 / 容器−64）",
+        "zIndex": "层级",
+        "confirmLoading": "确定按钮转圈",
+        "cancelLoading": "取消按钮转圈",
+        "okButtonProps": "确定按钮的额外参数",
+        "cancelButtonProps": "取消按钮的额外参数",
+        "bodyStyle": "主体样式对象",
+        "modalRender": "整层重渲染：Component",
+        "getPopupContainer": "挂载目标：Item",
+        "className": "官方透传；本库无落点",
+        "modalContentClass": "官方透传；本库无落点",
+        "direction": "文字方向：ltr / rtl",
+        "preventScroll": "打开时锁滚动",
+        "iconColor": "图标颜色（给了就压过档位色）",
+        "onOk": "点确定时发",
+        "onCancel": "点取消 / Esc / 蒙层关闭时发",
+        "onAfterClose": "关闭动画走完后发",
+        "skip": [
+            "escIsTop"
+        ]
+    },
+    "ModalConfirm": {
+        "confirmType": "类型：success / info / warning / error / confirm（官方 type）",
+        "contentText": "正文文字",
+        "contentComponent": "正文节点：Component",
+        "iconName": "图标名",
+        "iconComponent": "图标节点：Component",
+        "okCallback": "确定回调",
+        "cancelCallback": "取消回调",
+        "afterCloseCallback": "关闭后的回调",
+        "shown": "可见（受控）",
+        "onHideFinished": "关闭动画走完后发"
+    },
+    "Cropper": {
+        "className": "官方透传；本库无落点",
+        "style": "官方透传；本库无落点",
+        "src": "图片地址（远端 URL 能显示，裁不出来）",
+        "imgProps": "死 prop（官方就是死的）",
+        "shape": "形状：rect / round / roundRect（roundRect 官方也是圆）",
+        "aspectRatio": "受控的裁切比例",
+        "defaultAspectRatio": "非受控初值比例（缺省 1）",
+        "zoom": "受控的缩放倍数",
+        "rotate": "受控的旋转角度",
+        "showResizeBox": "显示八块调整块（round 档四块）",
+        "cropperBoxStyle": "框样式对象；只有颜色键有落点（改环用 outlineColor）",
+        "cropperBoxCls": "官方透传；本库无落点（官网表把这条写成 cropperBoxClassName）",
+        "fill": "裁切结果里非图片部分的填充色",
+        "maxZoom": "缩放上限（缺省 3）",
+        "minZoom": "缩放下限（缺省 0.1）",
+        "zoomStep": "缩放步长（缺省 0.1）",
+        "preview": "预览容器：Item",
+        "onZoomChange": "缩放变化时发",
+        "skip": [
+            "imgW",
+            "imgH",
+            "imgCX",
+            "imgCY",
+            "boxW",
+            "boxH",
+            "boxCX",
+            "boxCY",
+            "innerZoom",
+            "innerRotate",
+            "loaded",
+            "originalW",
+            "originalH",
+            "fitScale",
+            "boxMoveDir",
+            "paramX",
+            "paramY",
+            "rangeXMin",
+            "rangeXMax",
+            "rangeYMin",
+            "rangeYMax",
+            "boxMoveStart",
+            "boxMoving",
+            "imgMoveStart",
+            "imgMoving",
+            "moveRangeXMin",
+            "moveRangeXMax",
+            "moveRangeYMin",
+            "moveRangeYMax",
+            "previewImage",
+            "previewInitW",
+            "previewInitH",
+            "lastContainerWidth",
+            "naturalW",
+            "naturalH",
+            "laidOutSrc"
+        ]
+    },
+    "ImageView": {
+        "src": "图片地址",
+        "alt": "替代文字",
+        "placeholder": "占位：字符串或 Component",
+        "fallback": "破图兜底：字符串或 Component",
+        "preview": "预览：bool 或预览参数对象",
+        "fillMode": "填充方式：Image.PreserveAspectFit 等",
+        "onLoaded": "加载成功时发",
+        "onFailed": "加载失败时发",
+        "onClicked": "点击时发",
+        "skip": [
+            "groupHost",
+            "groupIndex",
+            "previewVisibleInternal",
+            "previewIndexInternal",
+            "onPreviewVisibleChangeRequested",
+            "onPreviewCloseRequested"
+        ]
+    },
+    "ImagePreview": {
+        "src": "图片：字符串或数组（排在组内那些之前）",
+        "groupChildren": "默认子项：组内的 ImageView（声明式注册那条路）",
+        "open": "受控的显隐；undefined 是非受控",
+        "currentIndex": "受控的当前张；undefined 是非受控",
+        "defaultCurrentIndex": "非受控初值",
+        "infinite": "循环翻页（超出取模）",
+        "closable": "有关闭键",
+        "maskClosable": "点蒙层关闭",
+        "closeOnEsc": "Esc 关闭",
+        "zoomStep": "缩放步长（缺省 0.1）",
+        "minZoom": "缩放下限（缺省 0.1）",
+        "maxZoom": "缩放上限（缺省 5）",
+        "initialZoom": "初始缩放（0 = 适配）",
+        "zIndex": "层级",
+        "container": "挂载目标：Item",
+        "renderHeader": "头部渲染：Component",
+        "renderPreviewMenu": "底部菜单渲染：Component",
+        "renderLeftIcon": "左箭头渲染：Component",
+        "renderRightIcon": "右箭头渲染：Component",
+        "renderCloseIcon": "关闭键渲染：Component",
+        "onVisibleChangeRequested": "显隐请求时发（配合受控档）",
+        "onCloseRequested": "请求关闭时发",
+        "onChanged": "当前张变化时发",
+        "onPrev": "翻上一张时发",
+        "onNext": "翻下一张时发",
+        "onZoomInRequested": "请求放大时发",
+        "onZoomOutRequested": "请求缩小时发",
+        "onRatioChange": "缩放比例变化时发",
+        "onRotateLeft": "逆时针旋转时发",
+        "skip": [
+            "innerVisible",
+            "innerIndex",
+            "flowHeight",
+            "flowWidth"
+        ]
+    },
+    "Table": {
+        "columnNodes": "默认子项：一串 TableColumn（JSX 那种写法）",
+        "bordered": "表格边框",
+        "childrenRecordName": "子数据字段名",
+        "className": "官方透传；本库无落点",
+        "clickGroupedRowToExpand": "点分组行切展开",
+        "columns": "列配置数组（给了就用配置式写法）",
+        "components": "自定义槽：{body: {cell, row}, header…}",
+        "dataSource": "数据：对象数组",
+        "defaultExpandAllGroupRows": "分组行初值全展开",
+        "defaultExpandAllRows": "展开行初值全展开",
+        "defaultExpandedRowKeys": "非受控的初始展开 key",
+        "empty": "空态：{title, content, image, …}",
+        "expandAllGroupRows": "分组行全展开（受控）",
+        "expandAllRows": "展开行全展开（受控）",
+        "expandCellFixed": "展开列吸附：false 或 {left, right}",
+        "expandIcon": "展开图标：节点或 {showHideIcon}",
+        "expandedRowKeys": "受控的展开 key",
+        "expandedRowRender": "展开内容渲染：Component",
+        "expandRowByClick": "点整行切展开",
+        "footer": "表尾：节点",
+        "groupBy": "分组字段名",
+        "headerStyle": "表头样式；只认 backgroundColor（其余是 DOM 渲染期的东西）",
+        "hideExpandedColumn": "展开按钮占第一列（不再单开一列）",
+        "indentSize": "展开缩进（px）",
+        "loading": "加载态",
+        "pagination": "分页：true / false / {currentPage, pageSize, …}",
+        "prefixCls": "官方类名前缀；本库无落点",
+        "renderGroupSection": "分组头渲染：Component",
+        "renderPagination": "分页渲染：Component",
+        "resizable": "列宽可拖：bool 或 {…}",
+        "rowExpandable": "行可展开判定函数",
+        "rowKey": "行主键字段名",
+        "rowSelection": "行选择：{…}",
+        "scroll": "横滚参数：{x, y}",
+        "showHeader": "显示表头",
+        "size": "尺寸档：small / middle / default",
+        "sticky": "吸附列：false 或 {left, right}",
+        "title": "表标题：字符串或节点",
+        "virtualized": "虚拟化：bool 或 {itemSize}",
+        "onRow": "整行包装：Component（官方 SortableRow 那档）",
+        "onHeaderRow": "表头行包装：Component",
+        "onGroupedRow": "分组行包装：Component",
+        "onChanged": "排序 / 筛选变化时发",
+        "onExpand": "展开某行时发：(expanded, record)",
+        "onExpandedRowsChange": "展开集合变化时发",
+        "skip": [
+            "queries",
+            "innerPagination",
+            "innerExpandedRowKeys",
+            "innerSelectedRowKeys",
+            "expandHeights",
+            "innerWidths",
+            "resizeDragging",
+            "resizeStartWidth",
+            "scrollWasRequested"
+        ]
+    },
+    "TableColumn": {
+        "subColumns": "默认子项：嵌套列（分组表头那一档）",
+        "title": "列头文字",
+        "dataIndex": "数据字段名",
+        "columnKey": "列 key（排序、筛选认它）",
+        "width": "列宽",
+        "align": "对齐：left / center / right",
+        "fixed": "固定列：false / left / right",
+        "ellipsis": "超出省略（开这个才会收省略号）",
+        "render": "单元格渲染：Component",
+        "sorter": "排序器：true 或 {compare}",
+        "sortOrder": "受控的排序方向",
+        "defaultSortOrder": "非受控初值",
+        "sortIcon": "自定义排序图标",
+        "showSortTip": "显示排序提示",
+        "sortChildrenRecord": "连子记录一起排",
+        "filters": "筛选项：[{text, value}]",
+        "onFilter": "外部筛选回调（配合 filteredValue 受控）",
+        "filteredValue": "受控的已筛值",
+        "defaultFilteredValue": "非受控初值",
+        "filterMultiple": "筛选可多选",
+        "filterConfirmMode": "确认方式：immediate / none",
+        "filterIcon": "自定义筛选图标",
+        "filterDropdown": "筛选面板内容：Component",
+        "filterDropdownProps": "筛选面板参数：{position, …}",
+        "filterDropdownVisible": "受控的面板显隐",
+        "renderFilterDropdown": "面板渲染：Component（拿 args 回填）",
+        "renderFilterDropdownItem": "面板选项渲染：Component",
+        "filterChildrenRecord": "连子记录一起筛",
+        "onCell": "单元格包装：Component",
+        "onHeaderCell": "表头单元格包装：Component",
+        "colSpan": "横向跨格",
+        "rowSpan": "纵向跨格",
+        "className": "官方透传；本库无落点",
+        "resize": "这一列可拖宽",
+        "useFullRender": "整格交调用方渲染（自己画勾选框与展开按钮）"
+    },
+    "Banner": {
+        "content": "默认子项：标题描述之外的附加内容",
+        "tone": "色调：Enums.Info / Warning / Danger 等（官方 type，缺省 info）",
+        "fullMode": "通栏铺满",
+        "bordered": "有边框",
+        "title": "标题",
+        "description": "描述",
+        "iconName": "图标名；空串按 tone 取默认",
+        "iconShown": "显示图标",
+        "closeIconName": "关闭键图标名",
+        "closable": "可关闭",
+        "bannerVisible": "可见（官方 state.visible）",
+        "onClosed": "点关闭时发"
+    },
+    "Feedback": {
+        "content": "默认子项：custom 档的内容",
+        "mode": "档：popup / modal",
+        "type": "类型：emoji / text / radio / checkbox / custom",
+        "title": "标题",
+        "closable": "有关闭键",
+        "showFooter": "有底部按钮（官方是往外壳传 footer={null}）",
+        "value": "受控的选择值",
+        "okText": "确定按钮文字",
+        "cancelText": "取消按钮文字",
+        "okButtonDisabled": "确定按钮禁用；不给走内部算式",
+        "okButtonLoading": "确定按钮转圈",
+        "cancelButtonLoading": "取消按钮转圈",
+        "textAreaPlaceholder": "输入区占位文字",
+        "textAreaMaxCount": "输入字数上限；0 不限",
+        "radioOptions": "单选项：[{value, text}]",
+        "checkboxOptions": "复选项：[{value, text}]",
+        "onOk": "点确定时发",
+        "onCancel": "点取消时发",
+        "onValueChange": "选择变化时发"
+    },
+    "Notification": {
+        "zIndex": "层级（缺省 zNotification）",
+        "position": "位置：topRight 等四角",
+        "duration": "停留秒数；0 不自动关",
+        "motion": "出入场动画",
+        "getPopupContainer": "挂载目标：Item"
+    },
+    "Popconfirm": {
+        "title": "标题",
+        "description": "描述",
+        "okText": "确定按钮文字",
+        "cancelText": "取消按钮文字",
+        "tone": "色调：Enums.Warning（缺省）",
+        "iconName": "图标名",
+        "onConfirmed": "点确定时发",
+        "onCancelled": "点取消时发"
+    },
+    "Progress": {
+        "percent": "进度 0..100",
+        "type": "形状：line / circle",
+        "size": "尺寸：default / small / large",
+        "direction": "方向：horizontal / vertical",
+        "stroke": "颜色串，或分段 [{percent, color}]",
+        "strokeGradient": "分段渐变底",
+        "strokeLinecap": "端头：round / square（只作用在环形上）",
+        "strokeWidth": "线宽（只作用在环形上）",
+        "orbitStroke": "轨道色；不给走 colorFill0",
+        "showInfo": "显示百分比",
+        "format": "百分比格式化函数",
+        "indeterminate": "不确定态（转圈动画）",
+        "motion": "动画开关",
+        "circleWidth": "环形直径（官方叫 width，本库改名：Item.width 是 FINAL）",
+        "ariaLabel": "无障碍标签",
+        "ariaValueText": "无障碍数值文字",
+        "ariaLabelledBy": "关联的标签节点",
+        "skip": [
+            "numberShown",
+            "shownPercent",
+            "slideRatio",
+            "spinAngle",
+            "_started"
+        ]
+    },
+    "Skeleton": {
+        "content": "默认子项：被包住的内容",
+        "active": "渲染占位（官方没给默认值 ⇒ false）",
+        "loading": "loading 档才出（官方缺省 true）",
+        "placeholder": "占位节点：Component",
+        "skip": [
+            "placeholderItem"
+        ]
+    },
+    "Spin": {
+        "content": "默认子项：被包住的内容（loading 时盖一层）",
+        "size": "尺寸：small / middle / large（官方缺省 middle）",
+        "spinning": "转",
+        "delay": "延迟起转（ms）",
+        "tip": "提示文字（官方是 ReactNode）",
+        "indicator": "自定义指示器：Component",
+        "color": "转圈颜色",
+        "skip": [
+            "loading",
+            "pendingDelay"
+        ]
+    },
+    "Toast": {
+        "zIndex": "层级（缺省 zToast）",
+        "theme": "主题：normal / light",
+        "duration": "停留秒数；0 不自动关",
+        "motion": "出入场动画",
+        "stack": "整叠共用一个位置（最后一次调用赢）",
+        "getPopupContainer": "挂载目标：Item",
+        "skip": [
+            "stackExpanded"
+        ]
+    },
+    "DragMove": {
+        "content": "默认子项：可拖的那块内容",
+        "movable": "可拖",
+        "constrainToParent": "不出父项",
+        "isMoving": "正在拖（状态，读不改）",
+        "onMoveStarted": "开始拖时发",
+        "onMoved": "拖动过程中发",
+        "onMoveFinished": "结束拖时发"
+    },
+    "HotKeys": {
+        "keys": "快捷键数组：[{key, handler}]",
+        "size": "热区尺寸档：Enums.Size"
     }
 }

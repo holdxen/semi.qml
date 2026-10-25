@@ -61,8 +61,25 @@ Button {
 
 ```cmake
 find_package(Semi REQUIRED)
-target_link_libraries(myapp PRIVATE Semi::Semi)
+target_link_libraries(myapp PRIVATE semi::semi)
 ```
+
+### 用 FetchContent 引入（推荐）
+
+不想手动 install 的话，直接在你的 `CMakeLists.txt` 里拉取：
+
+```cmake
+include(FetchContent)
+FetchContent_Declare(semi
+    GIT_REPOSITORY https://github.com/holdxen/semi.qml.git
+    GIT_TAG        main
+)
+FetchContent_MakeAvailable(semi)
+
+target_link_libraries(myapp PRIVATE semi::semi)
+```
+
+QML 里直接 `import Semi` 就行，所有组件和 C++ 类型（`Theme`、`Appearance`、`Enums` 等）都会自动注册。
 
 ## 主题
 
