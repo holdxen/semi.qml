@@ -17,7 +17,11 @@ import shutil
 import sys
 
 DEFAULT_SEMI_ROOT = pathlib.Path.home() / "Documents/Code/Html/semi-design"
-SKIP_FILLS = ("url(",)   # 渐变色标图标不做单色化，仍然同步但由组件侧决定是否着色
+# 只有「填充本身是渐变」的图标才不做单色化（ai_*_level_3 那 8 枚）。
+# 判据必须是 fill="url( —— 裁剪路径 clip-path="url(#…) 也含 url( 子串，
+# 用裸 url( 会把 spin/loading 等 8 枚带 clipPath 的图标误判成保留原色，
+# 黑填充原样落盘后被 colorization 染成恒黑（gray×color，灰度 0 乘什么色都是黑）。
+SKIP_FILLS = ('fill="url(',)
 
 
 def main():
