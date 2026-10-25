@@ -99,6 +99,7 @@ PAGES = {
     "HotKeys": ["HotKeys"],
 }
 
+ALIAS_RE = re.compile(r"^ {4}(?:(default|readonly) )?property alias (\w+):\s*(\S+)\s*$")
 PROP_RE = re.compile(r"^ {4}(?:(default|readonly) )?property(?: alias)? (\S+)\s+(\w+)\s*(?::\s*(.*))?$")
 SIGNAL_RE = re.compile(r"^ {4}signal (\w+)\s*(\(([^)]*)\))?\s*$")
 
@@ -124,6 +125,9 @@ def default_of(raw, kind=""):
     # 默认值列不换行（120 宽）：`Theme.current.xxx` 砍掉前缀，令牌名在说明里已经点过
     if v.startswith("Theme.current."):
         return v[len("Theme.current."):]
+    # 多行字面量（`({ … })` 那种）只抓到第一行，括号不闭合就当「见说明」
+    if v.count("{") != v.count("}") or v.count("(") != v.count(")"):
+        return "-"
     return v or "-"
 
 
@@ -141,6 +145,12 @@ def extract(type_name):
             args = (m.group(3) or "").strip()
             signals.append((f"on{name[0].upper()}{name[1:]}",
                             "signal" + (f" {name}({args})" if args else "")))
+            continue
+        m = ALIAS_RE.match(line)
+        if m:
+            name = m.group(2)
+            if not name.startswith("_"):
+                props.append((name, "alias", "-", m.group(1) or "alias"))
             continue
         m = PROP_RE.match(line)
         if m:

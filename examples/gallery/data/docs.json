@@ -841,214 +841,142 @@
                     ],
                     "api": [
                         {
-                            "name": "autoFocus",
-                            "desc": "是否自动聚焦",
-                            "type": "bool",
-                            "default": "false"
-                        },
-                        {
-                            "name": "autoAdjustOverflow",
-                            "desc": "浮层被遮挡时是否自动调整方向",
-                            "type": "bool",
-                            "default": "true"
-                        },
-                        {
-                            "name": "className",
-                            "desc": "样式类名",
-                            "type": "string",
+                            "name": "— AutoComplete —",
+                            "desc": "",
+                            "type": "",
                             "default": ""
                         },
                         {
-                            "name": "clearIcon",
-                            "desc": "可用于自定义清除按钮, showClear为true时有效",
-                            "type": "ReactNode",
-                            "default": ""
-                        },
-                        {
-                            "name": "data",
-                            "desc": "候选项的数据源，可以为字符串数组或对象数组",
-                            "type": "array",
+                            "name": "dataList",
+                            "desc": "候选项：字符串数组或 {label, value} 对象数组",
+                            "type": "var",
                             "default": "[]"
                         },
                         {
-                            "name": "defaultActiveFirstOption",
-                            "desc": "是否默认高亮第一个选项（按回车可直接选中）",
+                            "name": "value",
+                            "desc": "受控的输入值",
+                            "type": "string",
+                            "default": "\"\""
+                        },
+                        {
+                            "name": "placeholderText",
+                            "desc": "占位文字",
+                            "type": "string",
+                            "default": "qsTr(\"请输入\")"
+                        },
+                        {
+                            "name": "size",
+                            "desc": "尺寸：Enums.Size",
+                            "type": "int",
+                            "default": "Enums.Default"
+                        },
+                        {
+                            "name": "topLeftRadius",
+                            "desc": "上左圆角（转给内层 Input）",
+                            "type": "alias",
+                            "default": "-"
+                        },
+                        {
+                            "name": "topRightRadius",
+                            "desc": "上右圆角（转给内层 Input）",
+                            "type": "alias",
+                            "default": "-"
+                        },
+                        {
+                            "name": "bottomLeftRadius",
+                            "desc": "下左圆角（转给内层 Input）",
+                            "type": "alias",
+                            "default": "-"
+                        },
+                        {
+                            "name": "bottomRightRadius",
+                            "desc": "下右圆角（转给内层 Input）",
+                            "type": "alias",
+                            "default": "-"
+                        },
+                        {
+                            "name": "showClear",
+                            "desc": "可清除",
                             "type": "bool",
                             "default": "false"
                         },
                         {
-                            "name": "defaultOpen",
-                            "desc": "是否默认展开下拉菜单",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "defaultValue",
-                            "desc": "默认值",
+                            "name": "prefixIcon",
+                            "desc": "前缀图标名（官方 prefix）",
                             "type": "string",
-                            "default": ""
+                            "default": "\"\"             // 官方 prefix（ReactNode → 这里收图标名）"
                         },
                         {
-                            "name": "disabled",
-                            "desc": "是否禁用",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "dropdownClassName",
-                            "desc": "下拉列表的 CSS 类名",
+                            "name": "suffixIcon",
+                            "desc": "后缀图标名（官方 suffix）",
                             "type": "string",
-                            "default": ""
-                        },
-                        {
-                            "name": "dropdownStyle",
-                            "desc": "下拉列表的内联样式",
-                            "type": "object",
-                            "default": ""
-                        },
-                        {
-                            "name": "emptyContent",
-                            "desc": "data 为空时自定义下拉内容",
-                            "type": "ReactNode",
-                            "default": "null"
-                        },
-                        {
-                            "name": "getPopupContainer",
-                            "desc": "指定下拉列表浮层的父级容器，浮层将会渲染至该 DOM 中。自定义该项时需给容器设置 position: relative 这会改变浮层 DOM 树位置，但不会改变视图渲染位置",
-                            "type": "() => HTMLElement",
-                            "default": "() => document.body"
-                        },
-                        {
-                            "name": "loading",
-                            "desc": "下拉列表是否展示加载动画",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "maxHeight",
-                            "desc": "下拉列表的最大高度",
-                            "type": "number\\",
-                            "default": "string"
-                        },
-                        {
-                            "name": "motion",
-                            "desc": "下拉列表出现/隐藏时，是否有动画",
-                            "type": "boolean",
-                            "default": "true"
-                        },
-                        {
-                            "name": "onSelectWithObject",
-                            "desc": "点击候选项时，是否将选中项 option 的其他属性也作为回调入参。设为 true 时，onSelect 的入参类型会从 string 变为 object: { value, label, ...rest }",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "placeholder",
-                            "desc": "输入框默认提示文案",
-                            "type": "string",
-                            "default": ""
-                        },
-                        {
-                            "name": "position",
-                            "desc": "下拉菜单的显示位置，可选值同 tooltip 组件",
-                            "type": "string",
-                            "default": "'bottomLeft'"
-                        },
-                        {
-                            "name": "prefix",
-                            "desc": "选择框的前缀标签",
-                            "type": "ReactNode",
-                            "default": ""
-                        },
-                        {
-                            "name": "renderItem",
-                            "desc": "控制下拉列表候选项的渲染",
-                            "type": "(option: string\\",
-                            "default": "Item)=> React.Node"
-                        },
-                        {
-                            "name": "renderSelectedItem",
-                            "desc": "通过 renderSelectedItem 自定义下拉列表候选项被点击选中后，在选择框中的渲染内容 仅支持 String 类型的返回值",
-                            "type": "(option: string\\",
-                            "default": "Item) => string"
-                        },
-                        {
-                            "name": "showClear",
-                            "desc": "是否展示清除按钮",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "size",
-                            "desc": "尺寸，可选small, default, large",
-                            "type": "string",
-                            "default": "default"
-                        },
-                        {
-                            "name": "style",
-                            "desc": "样式",
-                            "type": "object",
-                            "default": ""
-                        },
-                        {
-                            "name": "suffix",
-                            "desc": "选择框的前缀标签",
-                            "type": "ReactNode",
-                            "default": ""
+                            "default": "\"\"             // 官方 suffix"
                         },
                         {
                             "name": "validateStatus",
-                            "desc": "校验状态，可选值default、error、warning，默认 default。仅影响展示样式",
-                            "type": "string",
-                            "default": "'default'"
+                            "desc": "校验态：Enums.StatusType",
+                            "type": "int",
+                            "default": "Enums.StatusDefault"
                         },
                         {
-                            "name": "value",
-                            "desc": "当前值",
-                            "type": "string\\",
-                            "default": "number"
+                            "name": "position",
+                            "desc": "浮层方位：Enums.Position（缺省 BottomLeft）",
+                            "type": "int",
+                            "default": "Enums.BottomLeft"
                         },
                         {
-                            "name": "zIndex",
-                            "desc": "下拉菜单的 zIndex",
-                            "type": "number",
-                            "default": ""
+                            "name": "loading",
+                            "desc": "远程搜索加载态",
+                            "type": "bool",
+                            "default": "false"
                         },
                         {
-                            "name": "onBlur",
-                            "desc": "失去焦点时的回调",
-                            "type": "Function(event)",
-                            "default": ""
+                            "name": "renderItem",
+                            "desc": "选项渲染：Component",
+                            "type": "Component",
+                            "default": "null"
                         },
                         {
-                            "name": "onChange",
-                            "desc": "输入框变化/候选项选中时变化",
-                            "type": "Function(value:string\\",
-                            "default": "number)"
+                            "name": "emptyContent",
+                            "desc": "空态内容：Component",
+                            "type": "Component",
+                            "default": "null"
                         },
                         {
-                            "name": "onFocus",
-                            "desc": "获得焦点时的回调",
-                            "type": "Function(event)",
-                            "default": ""
+                            "name": "renderSelectedItem",
+                            "desc": "选中项渲染：返回字符串的函数",
+                            "type": "var",
+                            "default": "null"
                         },
                         {
-                            "name": "onKeyDown",
-                            "desc": "keydown 回调",
-                            "type": "(e: React.KeyboardEvent) => void",
-                            "default": ""
+                            "name": "strict",
+                            "desc": "只认候选里的值",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "filterLocal",
+                            "desc": "本地过滤（不发 onSearch）",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "onSelected",
+                            "desc": "选中候选时发",
+                            "type": "signal selected(string value)",
+                            "default": "-"
                         },
                         {
                             "name": "onSearch",
-                            "desc": "输入变化时的回调",
-                            "type": "Function(value: string)",
-                            "default": ""
+                            "desc": "输入变化时发（远程过滤用）",
+                            "type": "signal search(string value)",
+                            "default": "-"
                         },
                         {
-                            "name": "onSelect",
-                            "desc": "下拉菜单候选项被选中时的回调",
-                            "type": "Function(item: string\\",
-                            "default": "number\\"
+                            "name": "onCleared",
+                            "desc": "点清除时发",
+                            "type": "signal",
+                            "default": "-"
                         }
                     ],
                     "guidelines": [
@@ -1226,508 +1154,64 @@
                             "default": ""
                         },
                         {
-                            "name": "arrowIcon",
-                            "desc": "自定义右侧下拉箭头 Icon，当 showClear 开关打开且当前有选中值时，hover 会优先显示 clear icon",
-                            "type": "ReactNode",
-                            "default": "-"
-                        },
-                        {
-                            "name": "autoAdjustOverflow",
-                            "desc": "是否自动调整下拉框展开方向，用于边缘遮挡时自动调整展开方向",
-                            "type": "boolean",
-                            "default": "true"
-                        },
-                        {
-                            "name": "autoMergeValue",
-                            "desc": "设置自动合并 value。具体而言是，开启后，当某个父节点被选中时，value 将不包括该节点的子孙节点。不支持动态切换",
-                            "type": "boolean",
-                            "default": "true"
-                        },
-                        {
-                            "name": "bottomSlot",
-                            "desc": "底部插槽",
-                            "type": "ReactNode",
-                            "default": "-"
-                        },
-                        {
-                            "name": "borderless",
-                            "desc": "无边框模式",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "changeOnSelect",
-                            "desc": "是否允许选择非叶子节点",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "checkRelation",
-                            "desc": "多选时，节点之间选中状态的关系，可选：'related'、'unRelated'。",
-                            "type": "string",
-                            "default": "'related'"
-                        },
-                        {
-                            "name": "className",
-                            "desc": "选择框的 className 属性",
-                            "type": "string",
-                            "default": "-"
-                        },
-                        {
-                            "name": "clearIcon",
-                            "desc": "可用于自定义清除按钮, showClear为true时有效",
-                            "type": "ReactNode",
-                            "default": "-"
-                        },
-                        {
-                            "name": "defaultOpen",
-                            "desc": "设置是否默认打开下拉菜单",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "defaultValue",
-                            "desc": "指定默认选中的条目",
-                            "type": "string\\",
-                            "default": "number\\"
-                        },
-                        {
-                            "name": "disabled",
-                            "desc": "是否禁用",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "displayProp",
-                            "desc": "设置回填选项显示的属性值",
-                            "type": "string",
-                            "default": "label"
-                        },
-                        {
-                            "name": "displayRender",
-                            "desc": "设置回填格式",
-                            "type": "(selected: string[] \\",
-                            "default": "Entity, idx?: number) => ReactNode"
-                        },
-                        {
-                            "name": "dropdownMargin",
-                            "desc": "下拉菜单计算溢出时的增加的冗余值，详见issue#549，作用同 Tooltip margin",
-                            "type": "object\\",
-                            "default": "number"
-                        },
-                        {
-                            "name": "dropdownClassName",
-                            "desc": "下拉菜单的 className 属性",
-                            "type": "string",
-                            "default": "-"
-                        },
-                        {
-                            "name": "dropdownStyle",
-                            "desc": "下拉菜单的样式",
-                            "type": "object",
-                            "default": "-"
-                        },
-                        {
-                            "name": "expandIcon",
-                            "desc": "自定义展开 icon",
-                            "type": "ReactNode",
-                            "default": "-"
-                        },
-                        {
-                            "name": "emptyContent",
-                            "desc": "当搜索无结果时展示的内容",
-                            "type": "ReactNode",
-                            "default": "暂无数据"
-                        },
-                        {
-                            "name": "filterLeafOnly",
-                            "desc": "搜索结果是否只展示叶子结点路径",
-                            "type": "boolean",
-                            "default": "true"
-                        },
-                        {
-                            "name": "filterRender",
-                            "desc": "自定义渲染筛选后的选项",
-                            "type": "(props: FilterRenderProps) => ReactNode;",
-                            "default": "-"
-                        },
-                        {
-                            "name": "filterSorter",
-                            "desc": "对筛选后的选项进行排序",
-                            "type": "(first: CascaderData, second: CascaderData, inputValue: string) => number",
-                            "default": "-"
-                        },
-                        {
-                            "name": "filterTreeNode",
-                            "desc": "设置筛选，默认用 treeNodeFilterProp 的值作为要筛选的 TreeNode 的属性值， data 参数自 v2.28.0 开始提供",
-                            "type": "((inputValue: string, treeNodeString: string, data?: CascaderData) => boolean) \\",
-                            "default": "boolean"
-                        },
-                        {
-                            "name": "getPopupContainer",
-                            "desc": "指定父级 DOM，下拉框将会渲染至该 DOM 中，自定义需要设置 position: relative 这会改变浮层 DOM 树位置，但不会改变视图渲染位置。",
-                            "type": "() => HTMLElement",
-                            "default": "() => document.body"
-                        },
-                        {
-                            "name": "leafOnly",
-                            "desc": "多选时设置 value 只包含叶子节点，即显示的 Tag 和 onChange 的 value 参数只包含叶子节点。不支持动态切换",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "keyMaps",
-                            "desc": "自定义节点中 value、label、children、disabled、isLeaf 的字段",
-                            "type": "object",
-                            "default": "-"
-                        },
-                        {
-                            "name": "loadData",
-                            "desc": "异步加载数据，需要返回一个Promise",
-                            "type": "(selectOptions: CascaderData[]) => Promise< void >",
-                            "default": "-"
-                        },
-                        {
-                            "name": "max",
-                            "desc": "多选时，限制多选选中的数量，超出 max 后将触发 onExceed 回调",
-                            "type": "number",
-                            "default": "-"
-                        },
-                        {
-                            "name": "maxTagCount",
-                            "desc": "多选时，标签的最大展示数量，超出后将以 +N 形式展示",
-                            "type": "number",
-                            "default": "-"
-                        },
-                        {
-                            "name": "motion",
-                            "desc": "设置下拉框弹出的动画",
-                            "type": "boolean",
-                            "default": "true"
-                        },
-                        {
-                            "name": "mouseEnterDelay",
-                            "desc": "鼠标移入后，延迟显示下拉框的时间，单位毫秒",
-                            "type": "number",
-                            "default": "50"
-                        },
-                        {
-                            "name": "mouseLeaveDelay",
-                            "desc": "鼠标移出后，延迟消失下拉框的时间，单位毫秒",
-                            "type": "number",
-                            "default": "50"
-                        },
-                        {
-                            "name": "multiple",
-                            "desc": "设置多选",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "placeholder",
-                            "desc": "选择框默认文字",
-                            "type": "string",
-                            "default": "-"
-                        },
-                        {
-                            "name": "position",
-                            "desc": "方向，可选值：top,topLeft,topRight,left,leftTop,leftBottom,right,rightTop,rightBottom,bottom,bottomLeft,bottomRight",
-                            "type": "string",
-                            "default": "bottom"
-                        },
-                        {
-                            "name": "prefix",
-                            "desc": "前缀标签",
-                            "type": "ReactNode",
-                            "default": "-"
-                        },
-                        {
-                            "name": "preventScroll",
-                            "desc": "指示浏览器是否应滚动文档以显示新聚焦的元素，作用于组件内的 focus 方法",
-                            "type": "boolean",
-                            "default": "-"
-                        },
-                        {
-                            "name": "remote",
-                            "desc": "是否开启远程搜索。开启后，搜索输入时不再做本地过滤，仅触发 onSearch 回调，由用户根据输入异步更新 treeData 来展示远程搜索结果，行为与 Select 的 remote 一致",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "restTagsPopoverProps",
-                            "desc": "Popover 的配置属性，可以控制 position、zIndex、trigger 等，具体参考Popover",
-                            "type": "PopoverProps",
-                            "default": "{}"
-                        },
-                        {
-                            "name": "searchPlaceholder",
-                            "desc": "搜索框默认文字",
-                            "type": "string",
-                            "default": "-"
-                        },
-                        {
-                            "name": "searchPosition",
-                            "desc": "设置搜索框的位置，可选: trigger、custom",
-                            "type": "string",
-                            "default": "trigger"
-                        },
-                        {
-                            "name": "separator",
-                            "desc": "自定义分隔符，包括：搜索时显示在下拉框的内容以及单选时回显到 Trigger 的内容的分隔符",
-                            "type": "string",
-                            "default": "/"
-                        },
-                        {
-                            "name": "showClear",
-                            "desc": "是否展示清除按钮",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "showNext",
-                            "desc": "设置展开 Dropdown 子菜单的方式，可选: click、hover",
-                            "type": "string",
-                            "default": "click"
-                        },
-                        {
-                            "name": "showRestTagsPopover",
-                            "desc": "当超过 maxTagCount，hover 到 +N 时，是否通过 Popover 显示剩余内容",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "size",
-                            "desc": "选择框大小，可选 large，small，default",
-                            "type": "string",
-                            "default": "default"
-                        },
-                        {
-                            "name": "stopPropagation",
-                            "desc": "是否阻止下拉框上的点击事件冒泡",
-                            "type": "boolean",
-                            "default": "true"
-                        },
-                        {
-                            "name": "disableStrictly",
-                            "desc": "设置是否开启严格禁用。开启后，当节点是 disabled 的时候，则不能通过子级或者父级的关系改变选中状态",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "style",
-                            "desc": "选择框的样式",
-                            "type": "CSSProperties",
-                            "default": "-"
-                        },
-                        {
-                            "name": "suffix",
-                            "desc": "后缀标签",
-                            "type": "ReactNode",
-                            "default": "-"
-                        },
-                        {
-                            "name": "topSlot",
-                            "desc": "顶部插槽",
-                            "type": "ReactNode",
-                            "default": "-"
-                        },
-                        {
-                            "name": "treeData",
-                            "desc": "展示数据，具体属性参考 CascaderData",
-                            "type": "CascaderData[]",
+                            "name": "options",
+                            "desc": "选项树：[{label, value, children}]",
+                            "type": "var",
                             "default": "[]"
                         },
                         {
-                            "name": "treeNodeFilterProp",
-                            "desc": "搜索时输入项过滤对应的 CascaderData 属性",
-                            "type": "string",
-                            "default": "label"
-                        },
-                        {
-                            "name": "triggerRender",
-                            "desc": "自定义触发器渲染方法",
-                            "type": "(props: TriggerRenderProps) => ReactNode",
-                            "default": "-"
-                        },
-                        {
-                            "name": "validateStatus",
-                            "desc": "trigger 的校验状态，仅影响展示样式。可选: default、error、warning",
-                            "type": "string",
-                            "default": "default"
-                        },
-                        {
                             "name": "value",
-                            "desc": "（受控）选中的条目",
-                            "type": "string\\",
-                            "default": "number\\"
+                            "desc": "受控的路径值数组",
+                            "type": "var",
+                            "default": "[]"
                         },
                         {
-                            "name": "virtualizeInSearch",
-                            "desc": "搜索列表虚拟化，用于大量树节点的情况，由 height, width, itemSize 组成",
-                            "type": "Object",
+                            "name": "placeholder",
+                            "desc": "占位文字",
+                            "type": "string",
+                            "default": "qsTr(\"请选择\")"
+                        },
+                        {
+                            "name": "size",
+                            "desc": "尺寸：Enums.Size",
+                            "type": "int",
+                            "default": "Enums.Default"
+                        },
+                        {
+                            "name": "topLeftRadius",
+                            "desc": "上左圆角（转给内层 Input）",
+                            "type": "alias",
                             "default": "-"
                         },
                         {
-                            "name": "zIndex",
-                            "desc": "下拉菜单的 zIndex",
-                            "type": "number",
-                            "default": "1030"
-                        },
-                        {
-                            "name": "clickToSelect",
-                            "desc": "多选时，点击任意节点即可触发选中，常配合 showNext=\"hover\" 使用，悬浮展开子菜单，点击选中当前节点",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "enableLeafClick",
-                            "desc": "多选时，是否启动点击叶子节点选项触发勾选",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "onBlur",
-                            "desc": "失焦 Cascader 的回调",
-                            "type": "(e: MouseEvent) => void",
+                            "name": "topRightRadius",
+                            "desc": "上右圆角（转给内层 Input）",
+                            "type": "alias",
                             "default": "-"
                         },
                         {
-                            "name": "onChange",
-                            "desc": "选中树节点时调用此函数，默认返回选中项 path 的 value 数组",
-                            "type": "(value: string\\",
-                            "default": "number\\"
-                        },
-                        {
-                            "name": "onChangeWithObject",
-                            "desc": "是否将选中项 option 的其他属性作为回调。设为 true 时，onChange 的入参类型会从 string/number 变为 TreeNode。此时如果是受控，也需要把 value 设置成 CascaderData 类型，且必须含有 value 的键值，defaultValue 同理",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "onClear",
-                            "desc": "showClear 为 true 时，点击清空按钮触发的回调",
-                            "type": "() => void",
+                            "name": "bottomLeftRadius",
+                            "desc": "下左圆角（转给内层 Input）",
+                            "type": "alias",
                             "default": "-"
                         },
                         {
-                            "name": "onDropdownVisibleChange",
-                            "desc": "下拉框切换时的回调",
-                            "type": "(visible: boolean) => void",
+                            "name": "bottomRightRadius",
+                            "desc": "下右圆角（转给内层 Input）",
+                            "type": "alias",
                             "default": "-"
                         },
                         {
-                            "name": "onExceed",
-                            "desc": "多选时，超出 max 后触发的回调",
-                            "type": "(checkedItem: Entity[]) => void",
+                            "name": "clearable",
+                            "desc": "可清除",
+                            "type": "bool",
+                            "default": "true"
+                        },
+                        {
+                            "name": "onSelected",
+                            "desc": "选中末级时发：(path, labels)",
+                            "type": "signal selected(var path, string labels)",
                             "default": "-"
-                        },
-                        {
-                            "name": "onFocus",
-                            "desc": "聚焦 Cascader 的回调",
-                            "type": "(e: MouseEvent) => void",
-                            "default": "-"
-                        },
-                        {
-                            "name": "onListScroll",
-                            "desc": "下拉面板滚动的回调",
-                            "type": "(e: React.Event, panel: { panelIndex: number; activeNode: CascaderData; } ) => void",
-                            "default": "-"
-                        },
-                        {
-                            "name": "onLoad",
-                            "desc": "节点加载完毕时触发的回调",
-                            "type": "(newLoadedKeys: Set< string >, data: CascaderData) => void",
-                            "default": "-"
-                        },
-                        {
-                            "name": "onSearch",
-                            "desc": "文本框值变化时回调",
-                            "type": "(value: string) => void",
-                            "default": "-"
-                        },
-                        {
-                            "name": "onSelect",
-                            "desc": "被选中时调用，返回选中项的 value",
-                            "type": "(value: string \\",
-                            "default": "number \\"
-                        },
-                        {
-                            "name": "— CascaderData —",
-                            "desc": "",
-                            "type": "",
-                            "default": ""
-                        },
-                        {
-                            "name": "children",
-                            "desc": "子节点",
-                            "type": "CascaderData[]",
-                            "default": "-"
-                        },
-                        {
-                            "name": "disabled",
-                            "desc": "不可选状态",
-                            "type": "boolean",
-                            "default": "-"
-                        },
-                        {
-                            "name": "isLeaf",
-                            "desc": "叶子节点",
-                            "type": "boolean",
-                            "default": "-"
-                        },
-                        {
-                            "name": "label",
-                            "desc": "展示的文本（必填）",
-                            "type": "ReactNode",
-                            "default": "-"
-                        },
-                        {
-                            "name": "loading",
-                            "desc": "正在加载",
-                            "type": "boolean",
-                            "default": "-"
-                        },
-                        {
-                            "name": "value",
-                            "desc": "属性值（必填）",
-                            "type": "string\\",
-                            "default": "number"
-                        },
-                        {
-                            "name": "— Methods —",
-                            "desc": "",
-                            "type": "",
-                            "default": ""
-                        },
-                        {
-                            "name": "close",
-                            "desc": "调用时可以手动关闭下拉列表 v2.30.0",
-                            "type": "",
-                            "default": ""
-                        },
-                        {
-                            "name": "open",
-                            "desc": "调用时可以手动展开下拉列表 v2.30.0",
-                            "type": "",
-                            "default": ""
-                        },
-                        {
-                            "name": "focus",
-                            "desc": "调用时可以手动聚焦 v2.34.0",
-                            "type": "",
-                            "default": ""
-                        },
-                        {
-                            "name": "blur",
-                            "desc": "调用时可以手动失焦 v2.34.0",
-                            "type": "",
-                            "default": ""
-                        },
-                        {
-                            "name": "search(value: string)",
-                            "desc": "手动触发搜索，需同时设置 filterTreeNode 开启搜索，searchPosition 为 custom 自定义展示搜素框 v2.54.0",
-                            "type": "",
-                            "default": ""
                         }
                     ],
                     "guidelines": [
@@ -2122,81 +1606,81 @@
                     ],
                     "api": [
                         {
-                            "name": "onChange",
-                            "desc": "用户选中颜色的回调",
-                            "type": "(value)=>void",
+                            "name": "— ColorPicker —",
+                            "desc": "",
+                            "type": "",
+                            "default": ""
+                        },
+                        {
+                            "name": "value",
+                            "desc": "受控的颜色值",
+                            "type": "var",
+                            "default": "-"
+                        },
+                        {
+                            "name": "defaultValue",
+                            "desc": "非受控初值；字符串或 {hex, rgba, hsva}",
+                            "type": "var",
                             "default": "-"
                         },
                         {
                             "name": "alpha",
-                            "desc": "是否开启透明度选择",
-                            "type": "boolean",
+                            "desc": "带透明度通道",
+                            "type": "bool",
                             "default": "true"
-                        },
-                        {
-                            "name": "bottomSlot",
-                            "desc": "底部渲染额外元素",
-                            "type": "ReactNode",
-                            "default": "-"
-                        },
-                        {
-                            "name": "className",
-                            "desc": "类名",
-                            "type": "string",
-                            "default": "-"
-                        },
-                        {
-                            "name": "defaultFormat",
-                            "desc": "默认手动输入时的格式",
-                            "type": "rgba hex hsva",
-                            "default": "hex"
-                        },
-                        {
-                            "name": "defaultValue",
-                            "desc": "默认值",
-                            "type": "Object",
-                            "default": "-"
                         },
                         {
                             "name": "eyeDropper",
-                            "desc": "是否开启滴管拾色器",
-                            "type": "boolean",
+                            "desc": "吸管取色",
+                            "type": "bool",
                             "default": "true"
                         },
                         {
-                            "name": "height",
-                            "desc": "高度",
-                            "type": "number",
+                            "name": "defaultFormat",
+                            "desc": "缺省格式：Enums.ColorFormat",
+                            "type": "int",
+                            "default": "Enums.FormatHex"
+                        },
+                        {
+                            "name": "panelWidth",
+                            "desc": "面板宽度",
+                            "type": "real",
                             "default": "280"
                         },
                         {
-                            "name": "style",
-                            "desc": "样式",
-                            "type": "CSSProperties",
-                            "default": "-"
-                        },
-                        {
-                            "name": "topSlot",
-                            "desc": "顶部渲染额外元素",
-                            "type": "ReactNode",
-                            "default": "-"
-                        },
-                        {
-                            "name": "width",
-                            "desc": "宽度",
-                            "type": "number",
+                            "name": "areaHeight",
+                            "desc": "饱和度 / 亮度区高度",
+                            "type": "int",
                             "default": "280"
                         },
                         {
                             "name": "usePopover",
-                            "desc": "是否放入Popover渲染",
-                            "type": "boolean",
+                            "desc": "面板收进 Popover（组件只当触发器）",
+                            "type": "bool",
                             "default": "false"
                         },
                         {
-                            "name": "popoverProps",
-                            "desc": "放入 Popover 时，Popover 传入的 props",
-                            "type": "Popover Props",
+                            "name": "topSlot",
+                            "desc": "面板顶部插槽：Component",
+                            "type": "Component",
+                            "default": "null"
+                        },
+                        {
+                            "name": "bottomSlot",
+                            "desc": "面板底部插槽：Component",
+                            "type": "Component",
+                            "default": "null"
+                        },
+                        {
+                            "name": "triggerContent",
+                            "desc": "触发器自定义内容：Component",
+                            "type": "Component",
+                            "default": "null"
+                        },
+                        {
+                            "name": "onChanged",
+                            "desc": "颜色变化时发",
+                            "type": "signal changed(var value)",
                             "default": "-"
                         }
                     ],
@@ -4062,525 +3546,225 @@
                             "default": ""
                         },
                         {
-                            "name": "aria-describedby",
-                            "desc": "设置 aria-describedby 属性",
-                            "type": "string",
+                            "name": "text",
+                            "desc": "受控的文字（转发给内层 TextInput）",
+                            "type": "alias",
                             "default": "-"
                         },
                         {
-                            "name": "aria-errormessage",
-                            "desc": "设置 aria-errormessage 属性",
-                            "type": "string",
+                            "name": "input",
+                            "desc": "内层 TextInput 本体",
+                            "type": "alias",
                             "default": "-"
                         },
                         {
-                            "name": "aria-invalid",
-                            "desc": "设置 aria-invalid 属性",
-                            "type": "string",
+                            "name": "echoMode",
+                            "desc": "回显模式（转给 TextInput，密码档用）",
+                            "type": "alias",
                             "default": "-"
                         },
                         {
-                            "name": "aria-label",
-                            "desc": "设置 aria-label 属性",
-                            "type": "string",
+                            "name": "readOnly",
+                            "desc": "只读",
+                            "type": "alias",
                             "default": "-"
                         },
                         {
-                            "name": "aria-labelledby",
-                            "desc": "设置 aria-labelledby 属性",
-                            "type": "string",
+                            "name": "validator",
+                            "desc": "校验器",
+                            "type": "alias",
                             "default": "-"
                         },
                         {
-                            "name": "aria-required",
-                            "desc": "设置 aria-required 属性",
+                            "name": "inputMethodHints",
+                            "desc": "输入法提示",
+                            "type": "alias",
+                            "default": "-"
+                        },
+                        {
+                            "name": "placeholderText",
+                            "desc": "占位文字",
                             "type": "string",
+                            "default": "\"\""
+                        },
+                        {
+                            "name": "size",
+                            "desc": "尺寸：Enums.Size",
+                            "type": "int",
+                            "default": "Enums.Default"
+                        },
+                        {
+                            "name": "validateStatus",
+                            "desc": "校验态：Enums.StatusType",
+                            "type": "int",
+                            "default": "Enums.StatusDefault"
+                        },
+                        {
+                            "name": "mode",
+                            "desc": "空串；'password' 切密码档",
+                            "type": "string",
+                            "default": "\"\""
+                        },
+                        {
+                            "name": "borderless",
+                            "desc": "无边框（底清空）",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "onlyBorder",
+                            "desc": "只画描边：>=0 时底清空、边色 color-border、宽度取该值",
+                            "type": "real",
+                            "default": "-1"
+                        },
+                        {
+                            "name": "maxLength",
+                            "desc": "最大长度；0 不限",
+                            "type": "int",
+                            "default": "0"
+                        },
+                        {
+                            "name": "getValueLength",
+                            "desc": "自定义计长函数（中文按 2 算这类）",
+                            "type": "var",
+                            "default": "null"
+                        },
+                        {
+                            "name": "composition",
+                            "desc": "输入法组合态（组合中不发搜索）",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "prefix",
+                            "desc": "前缀：字符串或节点",
+                            "type": "var",
+                            "default": "-"
+                        },
+                        {
+                            "name": "suffix",
+                            "desc": "后缀：字符串或节点",
+                            "type": "var",
+                            "default": "-"
+                        },
+                        {
+                            "name": "addonBefore",
+                            "desc": "前置块：字符串或节点",
+                            "type": "var",
                             "default": "-"
                         },
                         {
                             "name": "addonAfter",
-                            "desc": "后置标签",
-                            "type": "ReactNode",
-                            "default": ""
+                            "desc": "后置块：字符串或节点",
+                            "type": "var",
+                            "default": "-"
                         },
                         {
-                            "name": "addonBefore",
-                            "desc": "前置标签",
-                            "type": "ReactNode",
-                            "default": ""
-                        },
-                        {
-                            "name": "borderless",
-                            "desc": "无边框模式 >=2.33.0",
-                            "type": "boolean",
-                            "default": ""
-                        },
-                        {
-                            "name": "className",
-                            "desc": "类名",
+                            "name": "prefixIcon",
+                            "desc": "前缀图标名（官方 prefix）",
                             "type": "string",
-                            "default": ""
+                            "default": "\"\""
+                        },
+                        {
+                            "name": "suffixIcon",
+                            "desc": "后缀图标名（官方 suffix）",
+                            "type": "string",
+                            "default": "\"\""
+                        },
+                        {
+                            "name": "insetLabel",
+                            "desc": "前置文字（贴在框内）",
+                            "type": "string",
+                            "default": "\"\""
+                        },
+                        {
+                            "name": "showClear",
+                            "desc": "有字时可清除",
+                            "type": "bool",
+                            "default": "false"
                         },
                         {
                             "name": "clearIcon",
-                            "desc": "可用于自定义清除按钮, showClear为true时有效 >=2.25.0",
-                            "type": "ReactNode",
-                            "default": ""
-                        },
-                        {
-                            "name": "composition",
-                            "desc": "是否开启输入法模式，开启后输入法未确认期间不会触发 onChange，输入法确认后触发一次 onChange",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "defaultValue",
-                            "desc": "输入框内容默认值",
-                            "type": "ReactText",
-                            "default": ""
-                        },
-                        {
-                            "name": "disabled",
-                            "desc": "是否禁用，默认为false",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "getValueLength",
-                            "desc": "自定义计算字符串长度",
-                            "type": "(value: string) => number",
-                            "default": ""
+                            "desc": "清除图标名",
+                            "type": "string",
+                            "default": "\"\""
                         },
                         {
                             "name": "hideSuffix",
-                            "desc": "清除按钮与后缀标签并存时隐藏后缀标签，默认为false两者并列",
-                            "type": "boolean",
+                            "desc": "隐藏后缀区",
+                            "type": "bool",
                             "default": "false"
                         },
                         {
-                            "name": "mode",
-                            "desc": "输入框的模式，可选值password",
-                            "type": "string",
-                            "default": ""
-                        },
-                        {
-                            "name": "prefix",
-                            "desc": "前缀标签",
-                            "type": "ReactNode",
-                            "default": ""
-                        },
-                        {
-                            "name": "preventScroll",
-                            "desc": "指示浏览器是否应滚动文档以显示新聚焦的元素，作用于组件内的 focus 方法",
-                            "type": "boolean",
-                            "default": ""
-                        },
-                        {
-                            "name": "showClear",
-                            "desc": "输入框有内容且 hover 或 focus 时展示清除按钮",
-                            "type": "boolean",
+                            "name": "arrowsAsKeys",
+                            "desc": "方向键当普通键（不挪光标）",
+                            "type": "bool",
                             "default": "false"
                         },
                         {
-                            "name": "size",
-                            "desc": "输入框大小，large、default、small",
-                            "type": "string",
-                            "default": "'default'"
+                            "name": "radius",
+                            "desc": "圆角",
+                            "type": "real",
+                            "default": "radiusSmall"
                         },
                         {
-                            "name": "style",
-                            "desc": "样式",
-                            "type": "CSSProperties",
-                            "default": ""
-                        },
-                        {
-                            "name": "suffix",
-                            "desc": "后缀标签",
-                            "type": "ReactNode",
-                            "default": ""
-                        },
-                        {
-                            "name": "type",
-                            "desc": "声明input类型，同原生input标签的type属性",
-                            "type": "string",
-                            "default": "text"
-                        },
-                        {
-                            "name": "validateStatus",
-                            "desc": "校验状态，可选值default、error、warning，默认default。仅影响展示样式",
-                            "type": "string",
-                            "default": "'default'"
-                        },
-                        {
-                            "name": "value",
-                            "desc": "输入框内容",
-                            "type": "ReactText",
-                            "default": ""
-                        },
-                        {
-                            "name": "onBlur",
-                            "desc": "输入框失去焦点时的回调",
-                            "type": "function(e:event)",
-                            "default": ""
-                        },
-                        {
-                            "name": "onChange",
-                            "desc": "输入框内容变化时的回调",
-                            "type": "function(value:string, e:event)",
-                            "default": ""
-                        },
-                        {
-                            "name": "onClear",
-                            "desc": "点击清除按钮时的回调",
-                            "type": "function(e:event)",
-                            "default": ""
-                        },
-                        {
-                            "name": "onEnterPress",
-                            "desc": "按回车时回调（keypress）",
-                            "type": "function(e:event)",
-                            "default": ""
-                        },
-                        {
-                            "name": "onFocus",
-                            "desc": "输入框focus时的回调",
-                            "type": "function(e:event)",
-                            "default": ""
-                        },
-                        {
-                            "name": "onKeyDown",
-                            "desc": "keydown回调",
-                            "type": "function(e:event)",
-                            "default": ""
-                        },
-                        {
-                            "name": "onKeyPress",
-                            "desc": "keypress回调",
-                            "type": "function(e:event)",
-                            "default": ""
-                        },
-                        {
-                            "name": "onKeyUp",
-                            "desc": "keyup回调",
-                            "type": "function(e:event)",
-                            "default": ""
-                        },
-                        {
-                            "name": "onCompositionStart",
-                            "desc": "onCompositionStart回调, >=2.85.0",
-                            "type": "function(e:event)",
+                            "name": "topLeftRadius",
+                            "desc": "上左圆角",
+                            "type": "alias",
                             "default": "-"
                         },
                         {
-                            "name": "onCompositionEnd",
-                            "desc": "onCompositionEnd回调, >=2.85.0",
-                            "type": "function(e:event)",
+                            "name": "topRightRadius",
+                            "desc": "上右圆角",
+                            "type": "alias",
                             "default": "-"
                         },
                         {
-                            "name": "onCompositionUpdate",
-                            "desc": "onCompositionUpdate回调, >=2.85.0",
-                            "type": "function(e:event)",
+                            "name": "bottomLeftRadius",
+                            "desc": "下左圆角",
+                            "type": "alias",
                             "default": "-"
                         },
                         {
-                            "name": "— TextArea —",
-                            "desc": "",
-                            "type": "",
-                            "default": ""
-                        },
-                        {
-                            "name": "aria-describedby",
-                            "desc": "设置 aria-describedby 属性",
-                            "type": "string",
+                            "name": "bottomRightRadius",
+                            "desc": "下右圆角",
+                            "type": "alias",
                             "default": "-"
                         },
                         {
-                            "name": "aria-errormessage",
-                            "desc": "设置 aria-errormessage 属性",
-                            "type": "string",
-                            "default": "-"
+                            "name": "paddingH",
+                            "desc": "左右内边距",
+                            "type": "int",
+                            "default": "Appearance.inputPaddingHorizontal(Theme.current)"
                         },
                         {
-                            "name": "aria-invalid",
-                            "desc": "设置 aria-invalid 属性",
-                            "type": "string",
-                            "default": "-"
+                            "name": "textAlign",
+                            "desc": "对齐：TextInput.AlignLeft / AlignRight / AlignHCenter",
+                            "type": "int",
+                            "default": "TextInput.AlignLeft"
                         },
                         {
-                            "name": "aria-label",
-                            "desc": "设置 aria-label 属性",
-                            "type": "string",
-                            "default": "-"
-                        },
-                        {
-                            "name": "aria-labelledby",
-                            "desc": "设置 aria-labelledby 属性",
-                            "type": "string",
-                            "default": "-"
-                        },
-                        {
-                            "name": "aria-required",
-                            "desc": "设置 aria-required 属性",
-                            "type": "string",
-                            "default": "-"
-                        },
-                        {
-                            "name": "autosize",
-                            "desc": "是否随着自动适应内容高度，可写成对象配置最小最大行数{minRows?: number, maxRows?: number} 从2.45.0版本起支持对象参数",
-                            "type": "boolean\\",
-                            "default": "object"
-                        },
-                        {
-                            "name": "borderless",
-                            "desc": "无边框模式 >=2.33.0",
-                            "type": "boolean",
-                            "default": ""
-                        },
-                        {
-                            "name": "className",
-                            "desc": "类名",
-                            "type": "string",
-                            "default": "-"
-                        },
-                        {
-                            "name": "cols",
-                            "desc": "默认列数",
-                            "type": "number",
-                            "default": "无"
-                        },
-                        {
-                            "name": "composition",
-                            "desc": "是否开启输入法模式，开启后输入法未确认期间不会触发 onChange，输入法确认后触发一次 onChange",
-                            "type": "boolean",
+                            "name": "revealed",
+                            "desc": "密码可见态（mode: password 时）",
+                            "type": "bool",
                             "default": "false"
                         },
                         {
-                            "name": "disabled",
-                            "desc": "禁用状态",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "getValueLength",
-                            "desc": "自定义计算字符串长度",
-                            "type": "(value: string) => number",
-                            "default": ""
-                        },
-                        {
-                            "name": "maxCount",
-                            "desc": "设置字数限制并显示字数统计",
-                            "type": "number",
-                            "default": "无"
-                        },
-                        {
-                            "name": "placeholder",
-                            "desc": "当前的默认值",
-                            "type": "string",
-                            "default": "无"
-                        },
-                        {
-                            "name": "readonly",
-                            "desc": "只读",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "resize",
-                            "desc": "是否允许用户拖拽调整尺寸，及调整方向。可选值：none \\",
-                            "type": "both \\",
-                            "default": "horizontal \\"
-                        },
-                        {
-                            "name": "rows",
-                            "desc": "默认行数",
-                            "type": "number",
-                            "default": "4"
-                        },
-                        {
-                            "name": "showLineNumber",
-                            "desc": "是否展示行号",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "lineNumberStart",
-                            "desc": "行号起始值",
-                            "type": "number",
-                            "default": "1"
-                        },
-                        {
-                            "name": "lineNumberClassName",
-                            "desc": "行号区域 className",
-                            "type": "string",
+                            "name": "onAccepted",
+                            "desc": "回车 / 确认时发",
+                            "type": "signal",
                             "default": "-"
                         },
                         {
-                            "name": "lineNumberStyle",
-                            "desc": "行号区域样式",
-                            "type": "CSSProperties",
+                            "name": "onCleared",
+                            "desc": "点清除时发",
+                            "type": "signal",
                             "default": "-"
                         },
                         {
-                            "name": "showClear",
-                            "desc": "支持清除",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "style",
-                            "desc": "外层容器样式",
-                            "type": "CSSProperties",
-                            "default": "-"
-                        },
-                        {
-                            "name": "textareaStyle",
-                            "desc": "textarea 元素的样式，可用于设置 textarea 的高度等样式 >=2.94.0",
-                            "type": "CSSProperties",
-                            "default": "-"
-                        },
-                        {
-                            "name": "onBlur",
-                            "desc": "输入框失去焦点时的回调",
-                            "type": "(e:event) => void",
-                            "default": "-"
-                        },
-                        {
-                            "name": "onChange",
-                            "desc": "输入框内容变化时的回调",
-                            "type": "(value:string, e:event) => void",
-                            "default": ""
-                        },
-                        {
-                            "name": "onClear",
-                            "desc": "点击清除按钮时的回调",
-                            "type": "(e:event) => void",
-                            "default": "-"
-                        },
-                        {
-                            "name": "onEnterPress",
-                            "desc": "按下回车的回调",
-                            "type": "(e:event) => void",
-                            "default": "无"
-                        },
-                        {
-                            "name": "onFocus",
-                            "desc": "输入框 focus 时的回调",
-                            "type": "(e:event) => void",
-                            "default": "-"
-                        },
-                        {
-                            "name": "onKeyDown",
-                            "desc": "keydown 回调，html 事件",
-                            "type": "(e:event) => void",
-                            "default": "-"
-                        },
-                        {
-                            "name": "onKeyPress",
-                            "desc": "keypress 回调，html 事件",
-                            "type": "(e:event) => void",
-                            "default": "-"
-                        },
-                        {
-                            "name": "onKeyUp",
-                            "desc": "keyup 回调，html 事件",
-                            "type": "(e:event) => void",
-                            "default": "-"
-                        },
-                        {
-                            "name": "onResize",
-                            "desc": "尺寸变化回调：autosize 导致高度变化时触发；当 resize 允许用户拖拽调整尺寸时，也会在尺寸变化时触发（会额外提供 width），>=2.97.0",
-                            "type": "({ height:number, width?: number }) => void",
-                            "default": "-"
-                        },
-                        {
-                            "name": "onCompositionStart",
-                            "desc": "onCompositionStart回调, >=2.85.0",
-                            "type": "function(e:event)",
-                            "default": "-"
-                        },
-                        {
-                            "name": "onCompositionEnd",
-                            "desc": "onCompositionEnd回调, >=2.85.0",
-                            "type": "function(e:event)",
-                            "default": "-"
-                        },
-                        {
-                            "name": "onCompositionUpdate",
-                            "desc": "onCompositionUpdate回调, >=2.85.0",
-                            "type": "function(e:event)",
-                            "default": "-"
-                        },
-                        {
-                            "name": "— InputGroup —",
-                            "desc": "",
-                            "type": "",
-                            "default": ""
-                        },
-                        {
-                            "name": "className",
-                            "desc": "组的类名",
-                            "type": "string",
-                            "default": "-"
-                        },
-                        {
-                            "name": "disabled",
-                            "desc": "禁用",
-                            "type": "boolean",
-                            "default": "-"
-                        },
-                        {
-                            "name": "label",
-                            "desc": "InputGroup 的 label 属性",
-                            "type": "LabelProps",
-                            "default": "-"
-                        },
-                        {
-                            "name": "labelPosition",
-                            "desc": "label 位置，可选 top 或 left",
-                            "type": "string",
-                            "default": "-"
-                        },
-                        {
-                            "name": "size",
-                            "desc": "输入框大小，large、default、small",
-                            "type": "string",
-                            "default": "'default'"
-                        },
-                        {
-                            "name": "style",
-                            "desc": "组的样式",
-                            "type": "CSSProperties",
-                            "default": "-"
-                        },
-                        {
-                            "name": "onBlur",
-                            "desc": "输入框失去焦点时的回调",
-                            "type": "(e:event) => void",
-                            "default": "-"
-                        },
-                        {
-                            "name": "onFocus",
-                            "desc": "输入框 focus 时的回调",
-                            "type": "(e:event) => void",
-                            "default": "-"
-                        },
-                        {
-                            "name": "— Methods —",
-                            "desc": "",
-                            "type": "",
-                            "default": ""
-                        },
-                        {
-                            "name": "blur()",
-                            "desc": "移出焦点",
-                            "type": "() => void",
-                            "default": "-"
-                        },
-                        {
-                            "name": "focus()",
-                            "desc": "获取焦点",
-                            "type": "() => void",
+                            "name": "onKeyPressed",
+                            "desc": "按键时发：(key, modifiers)",
+                            "type": "signal keyPressed(int key, int modifiers)",
                             "default": "-"
                         }
                     ],
@@ -5638,544 +4822,178 @@
                     ],
                     "api": [
                         {
-                            "name": "— Select Props —",
+                            "name": "— Select —",
                             "desc": "",
                             "type": "",
                             "default": ""
                         },
                         {
-                            "name": "allowCreate",
-                            "desc": "是否允许用户创建新条目，需配合 filter 使用。该项为true时不再响应 optionList的变更",
-                            "type": "boolean",
-                            "default": "false"
+                            "name": "options",
+                            "desc": "选项：{label, value, disabled} / 字符串数组 / 带 children 分组",
+                            "type": "var",
+                            "default": "[]"
                         },
                         {
-                            "name": "arrowIcon",
-                            "desc": "自定义右侧下拉箭头 Icon，当 showClear 开关打开且当前有选中值时，hover 会优先显示 clear icon",
-                            "type": "ReactNode",
-                            "default": ""
-                        },
-                        {
-                            "name": "autoAdjustOverflow",
-                            "desc": "浮层被遮挡时是否自动调整方向（暂时仅支持竖直方向，且插入的父级为 body）",
-                            "type": "boolean",
-                            "default": "true"
-                        },
-                        {
-                            "name": "autoClearSearchValue",
-                            "desc": "选中选项后，是否自动清空搜索关键字，当 multiple、filter 都开启时生效",
-                            "type": "boolean",
-                            "default": "true"
-                        },
-                        {
-                            "name": "autoFocus",
-                            "desc": "初始渲染时是否自动 focus",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "borderless",
-                            "desc": "无边框模式 >=2.33.0",
-                            "type": "boolean",
-                            "default": ""
-                        },
-                        {
-                            "name": "className",
-                            "desc": "类名",
-                            "type": "string",
-                            "default": ""
-                        },
-                        {
-                            "name": "clearIcon",
-                            "desc": "可用于自定义清除按钮, showClear为true时有效",
-                            "type": "ReactNode",
-                            "default": ""
-                        },
-                        {
-                            "name": "clickToHide",
-                            "desc": "已展开时，点击选择框是否自动收起下拉列表",
-                            "type": "boolean",
-                            "default": "false"
+                            "name": "value",
+                            "desc": "受控的单选值",
+                            "type": "var",
+                            "default": "null"
                         },
                         {
                             "name": "defaultValue",
-                            "desc": "初始选中的值",
-                            "type": "string\\",
-                            "default": "number\\"
+                            "desc": "非受控的单选初值",
+                            "type": "var",
+                            "default": "null"
                         },
                         {
-                            "name": "defaultOpen",
-                            "desc": "是否默认展开下拉列表",
-                            "type": "boolean",
+                            "name": "multiple",
+                            "desc": "多选",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "values",
+                            "desc": "多选的受控值数组",
+                            "type": "var",
+                            "default": "[]"
+                        },
+                        {
+                            "name": "defaultValues",
+                            "desc": "多选的非受控初值",
+                            "type": "var",
+                            "default": "[]"
+                        },
+                        {
+                            "name": "filter",
+                            "desc": "可搜索",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "filterFunction",
+                            "desc": "自定义过滤函数 (option, keyword)",
+                            "type": "var",
+                            "default": "null"
+                        },
+                        {
+                            "name": "clearable",
+                            "desc": "可清除",
+                            "type": "bool",
                             "default": "false"
                         },
                         {
                             "name": "disabled",
-                            "desc": "是否禁用",
-                            "type": "boolean",
+                            "desc": "禁用",
+                            "type": "bool",
                             "default": "false"
-                        },
-                        {
-                            "name": "defaultActiveFirstOption",
-                            "desc": "是否默认高亮第一个选项（按回车可直接选中） v2.17.0 之后默认值从 false 变为 true",
-                            "type": "boolean",
-                            "default": "true"
-                        },
-                        {
-                            "name": "dropdownClassName",
-                            "desc": "弹出层的 className",
-                            "type": "string",
-                            "default": ""
-                        },
-                        {
-                            "name": "dropdownMatchSelectWidth",
-                            "desc": "下拉菜单最小宽度是否等于 Select",
-                            "type": "boolean",
-                            "default": "true"
-                        },
-                        {
-                            "name": "dropdownStyle",
-                            "desc": "弹出层的样式",
-                            "type": "object",
-                            "default": ""
-                        },
-                        {
-                            "name": "dropdownMargin",
-                            "desc": "弹出层计算溢出时的增加的冗余值，详见issue#549，作用同 Tooltip margin",
-                            "type": "object\\",
-                            "default": "number"
-                        },
-                        {
-                            "name": "emptyContent",
-                            "desc": "无结果时展示的内容。设为 null 时，下拉列表将不展示",
-                            "type": "string\\",
-                            "default": "ReactNode"
-                        },
-                        {
-                            "name": "ellipsisTrigger",
-                            "desc": "当 maxTagCount 存在且为多选时，是否对溢出部分的 tag 做自适应处理(当宽度不足时，最后一个tag内容作截断处理)。开启该功能后会有一定性能损耗，不推荐在大表单场景下使用",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "expandRestTagsOnClick",
-                            "desc": "当maxTagCount存在且为多选时，select 在面板打开状态下是否展开多余的 Tag",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "filter",
-                            "desc": "是否可搜索，默认为 false。传入 true 时，代表开启搜索并采用默认过滤策略（label 是否与 sugInput 匹配），传入值为函数时，会接收 sugInput, option 两个参数，当 option 符合筛选条件应返回 true，否则返回 false",
-                            "type": "boolean \\",
-                            "default": "function(sugInput, option)"
-                        },
-                        {
-                            "name": "getPopupContainer",
-                            "desc": "指定父级 DOM，弹层将会渲染至该 DOM 中，自定义需要设置 position: relative 这会改变浮层 DOM 树位置，但不会改变视图渲染位置。",
-                            "type": "function():HTMLElement",
-                            "default": "() => document.body"
-                        },
-                        {
-                            "name": "inputProps",
-                            "desc": "filter 为 true 时, input 输入框的额外配置参数，具体可配置属性请参考 Input 组件（注意：请不要传入 value、ref、onChange、onFocus，否则会覆盖 Select 相关回调，影响组件行为）",
-                            "type": "object",
-                            "default": ""
-                        },
-                        {
-                            "name": "innerTopSlot",
-                            "desc": "渲染在弹出层顶部，在 optionList 内部的自定义 slot",
-                            "type": "ReactNode",
-                            "default": ""
-                        },
-                        {
-                            "name": "innerBottomSlot",
-                            "desc": "渲染在弹出层底部，在 optionList 内部的自定义 slot",
-                            "type": "ReactNode",
-                            "default": ""
                         },
                         {
                             "name": "loading",
-                            "desc": "下拉列表是否展示加载动画",
-                            "type": "boolean",
+                            "desc": "远程搜索加载态",
+                            "type": "bool",
                             "default": "false"
                         },
                         {
                             "name": "maxTagCount",
-                            "desc": "多选模式下，已选项超出 maxTagCount 时，后续选项会被渲染成+N 的形式",
-                            "type": "number",
-                            "default": ""
+                            "desc": "多选标签上限；0 不限",
+                            "type": "int",
+                            "default": "0"
                         },
                         {
-                            "name": "max",
-                            "desc": "最多可选几项，仅在多选模式下生效",
-                            "type": "number",
-                            "default": ""
-                        },
-                        {
-                            "name": "maxHeight",
-                            "desc": "下拉菜单中 optionList 的最大高度。注意：当使用虚拟化列表且 virtualize.height 大于默认值 270px 时，需要将 maxHeight 设置为与 virtualize.height 相同的值，以避免出现双滚动条问题",
-                            "type": "string\\",
-                            "default": "number"
-                        },
-                        {
-                            "name": "multiple",
-                            "desc": "是否多选",
-                            "type": "boolean",
+                            "name": "ellipsisTrigger",
+                            "desc": "超宽时截断最后一个标签",
+                            "type": "bool",
                             "default": "false"
                         },
                         {
-                            "name": "outerTopSlot",
-                            "desc": "渲染在弹出层顶部，与 optionList 平级的自定义 slot",
-                            "type": "ReactNode",
-                            "default": ""
-                        },
-                        {
-                            "name": "outerBottomSlot",
-                            "desc": "渲染在弹出层底部，与 optionList 平级的自定义 slot",
-                            "type": "ReactNode",
-                            "default": ""
-                        },
-                        {
-                            "name": "optionList",
-                            "desc": "可以通过该属性传入 Option,请确保数组内每个元素都具备 label、value 属性",
-                            "type": "array(\\[{value, label}\\])",
-                            "default": ""
-                        },
-                        {
-                            "name": "placeholder",
-                            "desc": "选择框默认文字",
-                            "type": "ReactNode",
-                            "default": ""
-                        },
-                        {
-                            "name": "position",
-                            "desc": "菜单展开的位置，可选项同 Tooltip position",
-                            "type": "string",
-                            "default": "'bottomLeft'"
-                        },
-                        {
-                            "name": "rePosKey",
-                            "desc": "可以更新该项值手动触发弹出层的重新定位",
-                            "type": "string\\",
-                            "default": "number"
-                        },
-                        {
-                            "name": "prefix",
-                            "desc": "选择框的前缀标签",
-                            "type": "ReactNode",
-                            "default": ""
-                        },
-                        {
-                            "name": "preventScroll",
-                            "desc": "指示浏览器是否应滚动文档以显示新聚焦的元素，作用于组件内的 focus 方法",
-                            "type": "boolean",
-                            "default": ""
-                        },
-                        {
-                            "name": "renderCreateItem",
-                            "desc": "allowCreate 为 true 时，可自定义创建标签的渲染。与虚拟化结合使用时，必须将第三个参数style传入自定义DOM中消费(v2.44.1后提供)",
-                            "type": "function(inputValue:string, isFocus: boolean, style: object)",
-                            "default": "inputValue => '创建' + inputValue"
-                        },
-                        {
-                            "name": "renderSelectedItem",
-                            "desc": "通过 renderSelectedItem 自定义选择框中已选项标签的渲染",
-                            "type": "function(option)",
-                            "default": ""
-                        },
-                        {
-                            "name": "renderOptionItem",
-                            "desc": "通过 renderOptionItem 完全自定义下拉列表中候选项的渲染",
-                            "type": "function(props) 入参详见 Demo",
-                            "default": ""
-                        },
-                        {
-                            "name": "restTagsPopoverProps",
-                            "desc": "Popover 的配置属性，可以控制 position、zIndex、trigger 等，具体参考Popover",
-                            "type": "PopoverProps",
-                            "default": "{}"
-                        },
-                        {
-                            "name": "remote",
-                            "desc": "是否开启远程搜索，当 remote 为 true 时，input 内容改变后不会进行本地筛选匹配",
-                            "type": "boolean",
+                            "name": "expandRestTagsOnClick",
+                            "desc": "点 +N 展开剩余标签",
+                            "type": "bool",
                             "default": "false"
-                        },
-                        {
-                            "name": "searchPosition",
-                            "desc": "filter开启时，搜索框的位置，默认在 trigger中，可以通过设为 'dropdown' 将搜索框置于下拉列表顶部。搭配 triggerRender 使用可以实现更高自由度的交互",
-                            "type": "string",
-                            "default": "'trigger'"
-                        },
-                        {
-                            "name": "size",
-                            "desc": "大小，可选值 default/small/large",
-                            "type": "string",
-                            "default": "'default'"
-                        },
-                        {
-                            "name": "style",
-                            "desc": "样式",
-                            "type": "object",
-                            "default": ""
-                        },
-                        {
-                            "name": "stopPropagation",
-                            "desc": "是否阻止浮层上的点击事件冒泡",
-                            "type": "boolean",
-                            "default": "true"
-                        },
-                        {
-                            "name": "suffix",
-                            "desc": "选择框的后缀标签",
-                            "type": "ReactNode",
-                            "default": ""
-                        },
-                        {
-                            "name": "showClear",
-                            "desc": "是否展示清除按钮",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "showArrow",
-                            "desc": "是否展示下拉箭头",
-                            "type": "boolean",
-                            "default": "true"
                         },
                         {
                             "name": "showRestTagsPopover",
-                            "desc": "当超过 maxTagCount，hover 到 +N 时，是否通过 Popover 显示剩余内容",
-                            "type": "boolean",
+                            "desc": "悬浮 +N 弹剩余标签",
+                            "type": "bool",
                             "default": "false"
                         },
                         {
-                            "name": "spacing",
-                            "desc": "浮层与选择器的距离",
-                            "type": "number",
-                            "default": "4"
+                            "name": "placeholder",
+                            "desc": "占位文字",
+                            "type": "string",
+                            "default": "qsTr(\"请选择\")"
                         },
                         {
-                            "name": "triggerRender",
-                            "desc": "自定义触发器渲染",
-                            "type": "function",
-                            "default": ""
+                            "name": "size",
+                            "desc": "尺寸：Enums.Size",
+                            "type": "int",
+                            "default": "Enums.Default"
                         },
                         {
-                            "name": "value",
-                            "desc": "当前选中的的值,传入该值时将作为受控组件，配合 onChange 使用",
-                            "type": "string\\",
-                            "default": "number\\"
+                            "name": "radius",
+                            "desc": "触发器圆角",
+                            "type": "real",
+                            "default": "radiusSmall"
                         },
                         {
                             "name": "validateStatus",
-                            "desc": "校验结果，可选warning、error、 default（只影响样式背景色）",
+                            "desc": "校验态：Enums.StatusType",
+                            "type": "int",
+                            "default": "Enums.StatusDefault"
+                        },
+                        {
+                            "name": "prefixIcon",
+                            "desc": "前缀图标名",
                             "type": "string",
-                            "default": "'default'"
+                            "default": "\"\""
                         },
                         {
-                            "name": "virtualize",
-                            "desc": "列表虚拟化，用于大量节点的情况优化性能表现，由 height, width, itemSize 组成。注意：当 height 大于默认值 270px 时，需同时设置 maxHeight 为相同值",
-                            "type": "object",
-                            "default": ""
-                        },
-                        {
-                            "name": "zIndex",
-                            "desc": "弹层的 zIndex",
-                            "type": "number",
-                            "default": "1030"
-                        },
-                        {
-                            "name": "onBlur",
-                            "desc": "失去焦点时的回调",
-                            "type": "function(event)",
-                            "default": ""
-                        },
-                        {
-                            "name": "onChange",
-                            "desc": "变化时回调函数",
-                            "type": "function(value:string\\",
-                            "default": "number\\"
-                        },
-                        {
-                            "name": "onCreate",
-                            "desc": "allowCreate 为 true，创建备选项时的回调",
-                            "type": "function(option)",
-                            "default": ""
-                        },
-                        {
-                            "name": "onClear",
-                            "desc": "清除按钮的回调",
-                            "type": "function",
-                            "default": ""
-                        },
-                        {
-                            "name": "onChangeWithObject",
-                            "desc": "是否将选中项 option 的其他属性作为回调。设为 true 时，onChange 的入参类型会从 string 变为 object: { value, label, ...rest }",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "onDropdownVisibleChange",
-                            "desc": "下拉菜单展开/收起时的回调",
-                            "type": "function(visible:boolean)",
-                            "default": ""
-                        },
-                        {
-                            "name": "onListScroll",
-                            "desc": "候选项列表滚动时的回调",
-                            "type": "function(e)",
-                            "default": ""
-                        },
-                        {
-                            "name": "onSearch",
-                            "desc": "input 输入框内容发生改变时回调函数，第二个参数于 v2.31 后提供",
-                            "type": "function(sugInput:string, e: ReactEvent)",
-                            "default": ""
-                        },
-                        {
-                            "name": "onSelect",
-                            "desc": "被选中时的回调",
-                            "type": "function(value, option)",
-                            "default": ""
-                        },
-                        {
-                            "name": "onDeselect",
-                            "desc": "取消选中时的回调，仅在多选时有效",
-                            "type": "function(value, option)",
-                            "default": ""
-                        },
-                        {
-                            "name": "onExceed",
-                            "desc": "当试图选择数超出 max 限制时的回调，仅在多选时生效",
-                            "type": "function(option)",
-                            "default": ""
-                        },
-                        {
-                            "name": "onFocus",
-                            "desc": "获得焦点时的回调",
-                            "type": "function(event)",
-                            "default": ""
-                        },
-                        {
-                            "name": "— Option Props —",
-                            "desc": "",
-                            "type": "",
-                            "default": ""
-                        },
-                        {
-                            "name": "className",
-                            "desc": "样式类名",
+                            "name": "insetLabel",
+                            "desc": "前置文字（贴在框内）",
                             "type": "string",
-                            "default": ""
+                            "default": "\"\""
                         },
                         {
-                            "name": "disabled",
-                            "desc": "是否禁用",
-                            "type": "boolean",
-                            "default": "false"
+                            "name": "topLeftRadius",
+                            "desc": "上左圆角（转给触发器）",
+                            "type": "alias",
+                            "default": "-"
                         },
                         {
-                            "name": "label",
-                            "desc": "展示的文本。渲染时优先取 label，若无则取 children、value，依次降级",
-                            "type": "string\\",
-                            "default": "ReactNode"
+                            "name": "topRightRadius",
+                            "desc": "上右圆角（转给触发器）",
+                            "type": "alias",
+                            "default": "-"
                         },
                         {
-                            "name": "showTick",
-                            "desc": "被选中时，展示 √ 的 Icon",
-                            "type": "boolean",
-                            "default": "true"
+                            "name": "bottomLeftRadius",
+                            "desc": "下左圆角（转给触发器）",
+                            "type": "alias",
+                            "default": "-"
                         },
                         {
-                            "name": "style",
-                            "desc": "样式",
-                            "type": "object",
-                            "default": ""
+                            "name": "bottomRightRadius",
+                            "desc": "下右圆角（转给触发器）",
+                            "type": "alias",
+                            "default": "-"
                         },
                         {
-                            "name": "value",
-                            "desc": "属性值",
-                            "type": "string\\",
-                            "default": "number"
-                        },
-                        {
-                            "name": "— OptGroup Props —",
-                            "desc": "",
-                            "type": "",
-                            "default": ""
-                        },
-                        {
-                            "name": "className",
-                            "desc": "样式类名",
+                            "name": "suffixIcon",
+                            "desc": "后缀图标名",
                             "type": "string",
-                            "default": ""
+                            "default": "\"\""
                         },
                         {
-                            "name": "label",
-                            "desc": "展示的文本",
-                            "type": "ReactNode",
-                            "default": ""
+                            "name": "renderSelectedItem",
+                            "desc": "选中项渲染：Component",
+                            "type": "Component",
+                            "default": "null"
                         },
                         {
-                            "name": "style",
-                            "desc": "样式",
-                            "type": "object",
-                            "default": ""
-                        },
-                        {
-                            "name": "— Methods —",
-                            "desc": "",
-                            "type": "",
-                            "default": ""
-                        },
-                        {
-                            "name": "close",
-                            "desc": "调用时可以手动关闭下拉列表",
-                            "type": "",
-                            "default": ""
-                        },
-                        {
-                            "name": "open",
-                            "desc": "调用时可以手动展开下拉列表",
-                            "type": "",
-                            "default": ""
-                        },
-                        {
-                            "name": "focus",
-                            "desc": "调用时可以手动聚焦",
-                            "type": "",
-                            "default": ""
-                        },
-                        {
-                            "name": "clearInput",
-                            "desc": "调用时可以手动清空 input 搜索框的值",
-                            "type": "",
-                            "default": ""
-                        },
-                        {
-                            "name": "deselectAll",
-                            "desc": "调用时可以手动清空所有已选项",
-                            "type": "",
-                            "default": ""
-                        },
-                        {
-                            "name": "selectAll",
-                            "desc": "调用时可以选中所有 Option",
-                            "type": "",
-                            "default": ""
-                        },
-                        {
-                            "name": "search(value: string, event: event)",
-                            "desc": "可通过 ref 调用该方法进行搜索，该搜索值会被置给 Input v2.35.0",
-                            "type": "",
-                            "default": ""
-                        },
-                        {
-                            "name": "rePosition",
-                            "desc": "调用时可以手动触发下拉层重新定位",
-                            "type": "",
-                            "default": ""
+                            "name": "renderOption",
+                            "desc": "选项渲染：Component",
+                            "type": "Component",
+                            "default": "null"
                         }
                     ],
                     "guidelines": [
@@ -7729,309 +6547,159 @@
                     ],
                     "api": [
                         {
-                            "name": "— Transfer Props —",
+                            "name": "— Transfer —",
                             "desc": "",
                             "type": "",
-                            "default": ""
-                        },
-                        {
-                            "name": "className",
-                            "desc": "样式类名",
-                            "type": "string",
                             "default": ""
                         },
                         {
                             "name": "dataSource",
-                            "desc": "数据源",
-                            "type": "Array<Item\\>\\",
-                            "default": "Array<GroupItem\\>\\"
+                            "desc": "数据源：[{key, label, …}]，treeList 带 children",
+                            "type": "var",
+                            "default": "[]"
+                        },
+                        {
+                            "name": "type",
+                            "desc": "列表形态：'list' / 'groupList' / 'treeList'",
+                            "type": "string",
+                            "default": "\"list\"              // \"list\" | \"groupList\" | \"treeList\""
+                        },
+                        {
+                            "name": "value",
+                            "desc": "受控的已选 key 数组",
+                            "type": "var",
+                            "default": "-"
                         },
                         {
                             "name": "defaultValue",
-                            "desc": "默认已选中值",
-                            "type": "Array<string\\",
-                            "default": "number>"
+                            "desc": "非受控初值",
+                            "type": "var",
+                            "default": "[]"
                         },
                         {
                             "name": "disabled",
-                            "desc": "是否禁用",
-                            "type": "boolean",
+                            "desc": "禁用",
+                            "type": "bool",
                             "default": "false"
                         },
                         {
                             "name": "draggable",
-                            "desc": "是否开启拖拽排序",
-                            "type": "boolean",
+                            "desc": "右侧可拖拽排序",
+                            "type": "bool",
                             "default": "false"
-                        },
-                        {
-                            "name": "emptyContent",
-                            "desc": "自定义空状态的提示文本，search 为无搜索结果时展示的文本，left 为左侧无源数据时的文本，right 为无勾选数据时的提示文本",
-                            "type": "{left: ReactNode; right: ReactNode; search: ReactNode;}",
-                            "default": ""
                         },
                         {
                             "name": "filter",
-                            "desc": "自定义筛选逻辑, 当为 false 时，不展示搜索框，传入函数可自定义搜素逻辑。当 type 为 treeList时，如需要自定义搜索逻辑，需设置 filter 为 true，并通过 treeProps 的 filterTreeNode 设置自定义的搜索函数。",
-                            "type": "boolean \\",
-                            "default": "(input:string, item: Item) => boolean"
+                            "desc": "搜索框：false 关掉，函数自定义筛选",
+                            "type": "var",
+                            "default": "true"
                         },
                         {
                             "name": "inputProps",
-                            "desc": "可用于自定义搜索框 Input，可配置属性参考 Input 组件，其中 value 和 onChange 参数在 Transfer 内部会被使用，用户请勿使用，如需通过外部数据进行搜索，可调用 Transfer 的 search 方法",
-                            "type": "InputProps",
-                            "default": ""
+                            "desc": "搜索框参数：{placeholder, size, showClear, …}",
+                            "type": "var",
+                            "default": "({})"
                         },
                         {
-                            "name": "loading",
-                            "desc": "是否正在加载左侧选项",
-                            "type": "boolean",
-                            "default": "-"
-                        },
-                        {
-                            "name": "onChange",
-                            "desc": "选中值发生变化时触发的回调, 拖拽排序变化后也会触发该回调",
-                            "type": "(values: Array<string\\",
-                            "default": "number>, items: Array<Item\\>) => void"
-                        },
-                        {
-                            "name": "onDeselect",
-                            "desc": "取消勾选时的回调",
-                            "type": "(item: Item) => void",
-                            "default": ""
-                        },
-                        {
-                            "name": "onSearch",
-                            "desc": "搜索框输入内容变化时调用",
-                            "type": "(inputValue: string) => void",
-                            "default": ""
-                        },
-                        {
-                            "name": "onSelect",
-                            "desc": "勾选时的回调",
-                            "type": "(item: Item) => void",
-                            "default": ""
-                        },
-                        {
-                            "name": "pagination",
-                            "desc": "左侧面板分页配置，仅对 list 和 groupList 类型生效",
-                            "type": "PaginationProps",
-                            "default": ""
-                        },
-                        {
-                            "name": "renderSelectedHeader",
-                            "desc": "自定义右侧面板头部信息的渲染",
-                            "type": "(props: SelectedHeaderProps) => ReactNode",
-                            "default": ""
-                        },
-                        {
-                            "name": "renderSelectedItem",
-                            "desc": "自定义右侧单个已选项的渲染；当 type=\"treeList\" 且 showPath 为 true 时，可通过 item.fullPath 获取完整路径",
-                            "type": "(item: { onRemove, sortableHandle } & Item) => ReactNode",
-                            "default": ""
-                        },
-                        {
-                            "name": "renderSelectedPanel",
-                            "desc": "自定义右侧已选面板的渲染",
-                            "type": "(selectedPanelProps) => ReactNode",
-                            "default": ""
-                        },
-                        {
-                            "name": "renderSourceHeader",
-                            "desc": "自定义左侧面板头部信息的渲染",
-                            "type": "(props: SourceHeaderProps) => ReactNode",
-                            "default": ""
-                        },
-                        {
-                            "name": "renderSourceItem",
-                            "desc": "自定义左侧单个候选项的渲染",
-                            "type": "(item: { onChange, checked } & Item) => ReactNode",
-                            "default": ""
-                        },
-                        {
-                            "name": "renderSourcePanel",
-                            "desc": "自定义左侧候选面板的渲染",
-                            "type": "(sourcePanelProps) => ReactNode",
-                            "default": ""
+                            "name": "emptyContent",
+                            "desc": "三处空态：{left, right, search}",
+                            "type": "var",
+                            "default": "({})"
                         },
                         {
                             "name": "showPath",
-                            "desc": "当 type 为treeList时，控制右侧选中项是否显示选择路径",
-                            "type": "boolean",
+                            "desc": "显示节点完整路径",
+                            "type": "bool",
                             "default": "false"
-                        },
-                        {
-                            "name": "style",
-                            "desc": "内联样式",
-                            "type": "CSSProperties",
-                            "default": ""
                         },
                         {
                             "name": "treeProps",
-                            "desc": "当 type 为treeList时，可作为 TreeProps 传入左侧的 Tree 组件",
-                            "type": "TreeProps",
-                            "default": ""
+                            "desc": "treeList 时透给左侧树（含 filterTreeNode）",
+                            "type": "var",
+                            "default": "({})"
                         },
                         {
-                            "name": "type",
-                            "desc": "Transfer 类型，可选list，groupList，treeList",
-                            "type": "string",
-                            "default": "'list'"
-                        },
-                        {
-                            "name": "virtualize",
-                            "desc": "右侧已选列表虚拟化，仅在默认右侧面板渲染且 draggable 为 false 时生效",
-                            "type": "VirtualizeProps",
-                            "default": ""
-                        },
-                        {
-                            "name": "value",
-                            "desc": "已选中值，传入该项时，将作为受控组件使用",
-                            "type": "Array<string\\",
-                            "default": "number>"
-                        },
-                        {
-                            "name": "— Item Interface —",
-                            "desc": "",
-                            "type": "",
-                            "default": ""
-                        },
-                        {
-                            "name": "className",
-                            "desc": "样式类名",
-                            "type": "string",
-                            "default": ""
-                        },
-                        {
-                            "name": "disabled",
-                            "desc": "是否禁用",
-                            "type": "boolean",
+                            "name": "loading",
+                            "desc": "加载态",
+                            "type": "bool",
                             "default": "false"
                         },
                         {
-                            "name": "key",
-                            "desc": "必填，每个选项的唯一标识，不允许重复",
-                            "type": "string \\",
-                            "default": "number"
+                            "name": "virtualize",
+                            "desc": "虚拟化：{height, width, itemSize}",
+                            "type": "var",
+                            "default": "({})"
                         },
                         {
-                            "name": "label",
-                            "desc": "选项展示内容",
-                            "type": "ReactNode",
-                            "default": ""
+                            "name": "pagination",
+                            "desc": "分页：{currentPage, pageSize}",
+                            "type": "var",
+                            "default": "-"
                         },
                         {
-                            "name": "fullPath",
-                            "desc": "当 type=\"treeList\" 且 showPath 为 true 时，返回当前节点从根节点到自身的完整路径节点数组",
-                            "type": "Array<Item\\>",
-                            "default": ""
+                            "name": "renderSourceItem",
+                            "desc": "左侧条目：Component",
+                            "type": "Component",
+                            "default": "null"
                         },
                         {
-                            "name": "style",
-                            "desc": "内联样式",
-                            "type": "CSSProperties",
-                            "default": ""
+                            "name": "renderSelectedItem",
+                            "desc": "右侧条目：Component",
+                            "type": "Component",
+                            "default": "null"
                         },
                         {
-                            "name": "value",
-                            "desc": "选项代表的值",
-                            "type": "string \\",
-                            "default": "number"
+                            "name": "renderSourcePanel",
+                            "desc": "整块左面板：Component",
+                            "type": "Component",
+                            "default": "null"
                         },
                         {
-                            "name": "— GroupItem Interface —",
-                            "desc": "",
-                            "type": "",
-                            "default": ""
+                            "name": "renderSelectedPanel",
+                            "desc": "整块右面板：Component",
+                            "type": "Component",
+                            "default": "null"
                         },
                         {
-                            "name": "children",
-                            "desc": "该分组的元素",
-                            "type": "Array<Item\\>",
-                            "default": ""
+                            "name": "renderSourceHeader",
+                            "desc": "左侧表头：Component",
+                            "type": "Component",
+                            "default": "null"
                         },
                         {
-                            "name": "title",
-                            "desc": "分组名称",
-                            "type": "string",
-                            "default": ""
+                            "name": "renderSelectedHeader",
+                            "desc": "右侧表头：Component",
+                            "type": "Component",
+                            "default": "null"
                         },
                         {
-                            "name": "— TreeItem Interface —",
-                            "desc": "",
-                            "type": "",
-                            "default": ""
+                            "name": "onChange",
+                            "desc": "已选集合变化时发：(values, items)",
+                            "type": "signal change(var values, var items)",
+                            "default": "-"
                         },
                         {
-                            "name": "children",
-                            "desc": "子元素",
-                            "type": "Array<TreeItem\\>",
-                            "default": ""
+                            "name": "onSelect",
+                            "desc": "移入右侧时发",
+                            "type": "signal select(var item)",
+                            "default": "-"
                         },
                         {
-                            "name": "— VirtualizeProps Interface —",
-                            "desc": "",
-                            "type": "",
-                            "default": ""
+                            "name": "onDeselect",
+                            "desc": "移出右侧时发",
+                            "type": "signal deselect(var item)",
+                            "default": "-"
                         },
                         {
-                            "name": "height",
-                            "desc": "虚拟列表高度，传入 number 则直接生效，传入 string（如 100%）则根据剩余高度自适应",
-                            "type": "number \\",
-                            "default": "string"
+                            "name": "onSearch",
+                            "desc": "搜索词变化时发",
+                            "type": "signal search(string input)",
+                            "default": "-"
                         },
                         {
-                            "name": "width",
-                            "desc": "虚拟列表宽度",
-                            "type": "number \\",
-                            "default": "string"
-                        },
-                        {
-                            "name": "itemSize",
-                            "desc": "每行高度（固定）",
-                            "type": "number",
-                            "default": ""
-                        },
-                        {
-                            "name": "— PaginationProps Interface —",
-                            "desc": "",
-                            "type": "",
-                            "default": ""
-                        },
-                        {
-                            "name": "currentPage",
-                            "desc": "当前页码（受控模式）",
-                            "type": "number",
-                            "default": ""
-                        },
-                        {
-                            "name": "defaultCurrentPage",
-                            "desc": "默认当前页码（非受控模式）",
-                            "type": "number",
-                            "default": "1"
-                        },
-                        {
-                            "name": "pageSize",
-                            "desc": "每页显示条数",
-                            "type": "number",
-                            "default": "10"
-                        },
-                        {
-                            "name": "onPageChange",
-                            "desc": "页码变化时的回调",
-                            "type": "(currentPage: number) => void",
-                            "default": ""
-                        },
-                        {
-                            "name": "— Methods —",
-                            "desc": "",
-                            "type": "",
-                            "default": ""
-                        },
-                        {
-                            "name": "search()",
-                            "desc": "可通过 ref 调用该方法进行搜索，该搜索值会被置给 Input。",
-                            "type": "(value: string) => void",
+                            "name": "onPageChanged",
+                            "desc": "页码变化时发",
+                            "type": "signal pageChanged(int currentPage)",
                             "default": "-"
                         }
                     ],
