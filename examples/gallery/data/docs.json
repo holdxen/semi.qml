@@ -3848,219 +3848,231 @@
                     ],
                     "api": [
                         {
-                            "name": "autofocus",
-                            "desc": "自动获取焦点",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "className",
-                            "desc": "类名",
-                            "type": "string",
-                            "default": "-"
-                        },
-                        {
-                            "name": "clearIcon",
-                            "desc": "可用于自定义清除按钮, showClear为true时有效",
-                            "type": "ReactNode",
-                            "default": ""
-                        },
-                        {
-                            "name": "currency",
-                            "desc": "货币种类，国际化模式下通过 currency={true} 开启，组件会自动根据 locale 展示对应货币种类, 也可以手动传入 localeCode 和 currency 指定展示的货币种类, currency 的可选值有 CNY,EUR,USD等",
-                            "type": "boolean\\",
-                            "default": "string"
-                        },
-                        {
-                            "name": "currencyDisplay",
-                            "desc": "货币展示方式，可选值：symbol、code、name",
-                            "type": "string",
-                            "default": "symbol"
-                        },
-                        {
-                            "name": "defaultValue",
-                            "desc": "默认值",
-                            "type": "number",
-                            "default": ""
-                        },
-                        {
-                            "name": "disabled",
-                            "desc": "禁用",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "formatter",
-                            "desc": "指定输入框展示值的格式",
-                            "type": "(value: number\\",
-                            "default": "string) => string"
-                        },
-                        {
-                            "name": "hideButtons",
-                            "desc": "为 true 时隐藏 \"上/下\" 按钮",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "innerButtons",
-                            "desc": "为 true 时 \"上/下\" 按钮显示在输入框内部",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "keepFocus",
-                            "desc": "点击按钮时保持输入框聚焦",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "localeCode",
-                            "desc": "货币模式下用于指定国家地区代码，可选值有 zh-CN, en-US, en-GB, ja-JP, ko-KR, ar, vi-VN, ru-RU, id-ID, ms-MY, th-TH, tr-TR, pt-BR, zh-TW, es, de, it, fr, ro, sv-SE, pl-PL, nl-NL等",
-                            "type": "string",
-                            "default": "-"
-                        },
-                        {
-                            "name": "max",
-                            "desc": "限定最大值",
-                            "type": "number",
-                            "default": "Infinity"
-                        },
-                        {
-                            "name": "min",
-                            "desc": "限定最小值",
-                            "type": "number",
-                            "default": "-Infinity"
-                        },
-                        {
-                            "name": "parser",
-                            "desc": "指定从 formatter 里转换回数字串的方式，和 formatter 搭配使用",
-                            "type": "(str: string) => string",
-                            "default": "-"
-                        },
-                        {
-                            "name": "precision",
-                            "desc": "数值精度",
-                            "type": "number",
-                            "default": "-"
-                        },
-                        {
-                            "name": "prefix",
-                            "desc": "前缀内容",
-                            "type": "string\\",
-                            "default": "ReactNode"
-                        },
-                        {
-                            "name": "pressInterval",
-                            "desc": "长按按钮时，多久触发一次点击事件，单位毫秒",
-                            "type": "number",
-                            "default": "250"
-                        },
-                        {
-                            "name": "pressTimeout",
-                            "desc": "长按按钮时，延迟多久后触发点击事件，单位毫秒",
-                            "type": "number",
-                            "default": "250"
-                        },
-                        {
-                            "name": "preventScroll",
-                            "desc": "指示浏览器是否应滚动文档以显示新聚焦的元素，作用于组件内的 focus 方法",
-                            "type": "boolean",
-                            "default": ""
-                        },
-                        {
-                            "name": "scientificNotation",
-                            "desc": "启用科学计数法显示，失去焦点时显示科学计数法，获得焦点时显示完整数字。可传入对象配置阈值 threshold，默认为 15 位有效数字。不支持货币模式",
-                            "type": "boolean\\",
-                            "default": "{ threshold?: number }"
-                        },
-                        {
-                            "name": "shiftStep",
-                            "desc": "按住 shift 键每次改变步数，可以为小数，v2.13 默认值由 1 调整为 10",
-                            "type": "number",
-                            "default": "10"
-                        },
-                        {
-                            "name": "showClear",
-                            "desc": "是否显示清除按钮",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "showCurrencySymbol",
-                            "desc": "是否显示货币符号/代码/名称，仅货币模式下生效",
-                            "type": "boolean",
-                            "default": "true"
-                        },
-                        {
-                            "name": "size",
-                            "desc": "输入框大小，可选值：\"default\"\\",
-                            "type": "\"small\"\\",
-                            "default": "\"large\""
-                        },
-                        {
-                            "name": "step",
-                            "desc": "每次改变步数，可以为小数",
-                            "type": "number",
-                            "default": "1"
-                        },
-                        {
-                            "name": "style",
-                            "desc": "样式",
-                            "type": "CSSProperties",
-                            "default": "-"
-                        },
-                        {
-                            "name": "suffix",
-                            "desc": "自定义后缀",
-                            "type": "ReactNode",
-                            "default": ""
-                        },
-                        {
-                            "name": "value",
-                            "desc": "当前值",
-                            "type": "number",
-                            "default": ""
-                        },
-                        {
-                            "name": "onBlur",
-                            "desc": "失去焦点时的回调",
-                            "type": "(e: domEvent) => void",
-                            "default": "() => {}"
-                        },
-                        {
-                            "name": "onChange",
-                            "desc": "变化回调",
-                            "type": "(value: number\\",
-                            "default": "string) => void"
-                        },
-                        {
-                            "name": "onFocus",
-                            "desc": "获得焦点时的回调",
-                            "type": "(e: domEvent) => void",
-                            "default": "() => {}"
-                        },
-                        {
-                            "name": "onNumberChange",
-                            "desc": "数字变化回调",
-                            "type": "(value: number) => void",
-                            "default": "-"
-                        },
-                        {
-                            "name": "— Methods —",
+                            "name": "— InputNumber —",
                             "desc": "",
                             "type": "",
                             "default": ""
                         },
                         {
-                            "name": "blur()",
-                            "desc": "移出焦点",
-                            "type": "() => void",
+                            "name": "value",
+                            "desc": "受控的值",
+                            "type": "var",
                             "default": "-"
                         },
                         {
-                            "name": "focus()",
-                            "desc": "获取焦点",
-                            "type": "() => void",
+                            "name": "defaultValue",
+                            "desc": "非受控初值",
+                            "type": "var",
+                            "default": "-"
+                        },
+                        {
+                            "name": "min",
+                            "desc": "最小值（缺省 -Infinity）",
+                            "type": "var",
+                            "default": "-Infinity"
+                        },
+                        {
+                            "name": "max",
+                            "desc": "最大值（缺省 Infinity）",
+                            "type": "var",
+                            "default": "Infinity"
+                        },
+                        {
+                            "name": "step",
+                            "desc": "步长",
+                            "type": "real",
+                            "default": "1"
+                        },
+                        {
+                            "name": "shiftStep",
+                            "desc": "按住 Shift 的步长",
+                            "type": "real",
+                            "default": "10"
+                        },
+                        {
+                            "name": "precision",
+                            "desc": "小数位；-1 不限",
+                            "type": "int",
+                            "default": "-1"
+                        },
+                        {
+                            "name": "formatter",
+                            "desc": "显示格式化函数（字符串档用）",
+                            "type": "var",
+                            "default": "null"
+                        },
+                        {
+                            "name": "parser",
+                            "desc": "输入解析函数",
+                            "type": "var",
+                            "default": "null"
+                        },
+                        {
+                            "name": "scientificNotation",
+                            "desc": "科学计数法：{minExp, maxExp}",
+                            "type": "var",
+                            "default": "-"
+                        },
+                        {
+                            "name": "currency",
+                            "desc": "千分位货币格式",
+                            "type": "var",
+                            "default": "false"
+                        },
+                        {
+                            "name": "currencyDisplay",
+                            "desc": "货币符号样式：symbol / code / name",
+                            "type": "string",
+                            "default": "\"symbol\""
+                        },
+                        {
+                            "name": "showCurrencySymbol",
+                            "desc": "显示货币符号",
+                            "type": "bool",
+                            "default": "true"
+                        },
+                        {
+                            "name": "localeCode",
+                            "desc": "区域码（影响千分位写法）",
+                            "type": "string",
+                            "default": "\"\""
+                        },
+                        {
+                            "name": "innerButtons",
+                            "desc": "加减号放在框内",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "hideButtons",
+                            "desc": "隐藏加减号",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "keepFocus",
+                            "desc": "点加减后保持焦点",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "pressTimeout",
+                            "desc": "长按多久开始连发（ms）",
+                            "type": "int",
+                            "default": "250"
+                        },
+                        {
+                            "name": "pressInterval",
+                            "desc": "连发间隔（ms）",
+                            "type": "int",
+                            "default": "250"
+                        },
+                        {
+                            "name": "size",
+                            "desc": "尺寸：Enums.Size",
+                            "type": "int",
+                            "default": "Enums.Default"
+                        },
+                        {
+                            "name": "placeholderText",
+                            "desc": "占位文字",
+                            "type": "string",
+                            "default": "\"\""
+                        },
+                        {
+                            "name": "prefix",
+                            "desc": "前缀：字符串或节点",
+                            "type": "var",
+                            "default": "-"
+                        },
+                        {
+                            "name": "suffix",
+                            "desc": "后缀：字符串或节点",
+                            "type": "var",
+                            "default": "-"
+                        },
+                        {
+                            "name": "insetLabel",
+                            "desc": "前置文字（贴在框内）",
+                            "type": "string",
+                            "default": "\"\""
+                        },
+                        {
+                            "name": "showClear",
+                            "desc": "有字时可清除",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "clearIcon",
+                            "desc": "清除图标名",
+                            "type": "string",
+                            "default": "\"\""
+                        },
+                        {
+                            "name": "borderless",
+                            "desc": "无边框",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "readOnly",
+                            "desc": "只读",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "autofocus",
+                            "desc": "挂载后聚焦",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "validateStatus",
+                            "desc": "校验态：Enums.StatusType",
+                            "type": "int",
+                            "default": "Enums.StatusDefault"
+                        },
+                        {
+                            "name": "radius",
+                            "desc": "圆角",
+                            "type": "real",
+                            "default": "radiusSmall"
+                        },
+                        {
+                            "name": "onFocused",
+                            "desc": "获得焦点时发",
+                            "type": "signal",
+                            "default": "-"
+                        },
+                        {
+                            "name": "onBlur",
+                            "desc": "失去焦点时发",
+                            "type": "signal",
+                            "default": "-"
+                        },
+                        {
+                            "name": "onChange",
+                            "desc": "文本变化时发（字符串态）",
+                            "type": "signal change(var value)",
+                            "default": "-"
+                        },
+                        {
+                            "name": "onNumberChange",
+                            "desc": "数值变化时发（number）",
+                            "type": "signal numberChange(var value)",
+                            "default": "-"
+                        },
+                        {
+                            "name": "onUpClick",
+                            "desc": "点加号时发",
+                            "type": "signal upClick(var value)",
+                            "default": "-"
+                        },
+                        {
+                            "name": "onDownClick",
+                            "desc": "点减号时发",
+                            "type": "signal downClick(var value)",
                             "default": "-"
                         }
                     ],
@@ -5855,238 +5867,268 @@
                     ],
                     "api": [
                         {
-                            "name": "addOnBlur",
-                            "desc": "是否在 blur 事件触发时，将当前 input 的值自动创建成 tag",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "allowDuplicates",
-                            "desc": "是否允许添加相同 tag",
-                            "type": "boolean",
-                            "default": "true"
-                        },
-                        {
-                            "name": "autoFocus",
-                            "desc": "初始渲染时是否自动 focus",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "className",
-                            "desc": "样式类名",
-                            "type": "string",
-                            "default": "-"
-                        },
-                        {
-                            "name": "defaultValue",
-                            "desc": "初始标签",
-                            "type": "string[]",
-                            "default": "-"
-                        },
-                        {
-                            "name": "disabled",
-                            "desc": "是否禁用",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "inputValue",
-                            "desc": "当前输入框，配合 onInputChange 实现受控",
-                            "type": "string",
-                            "default": "-"
-                        },
-                        {
-                            "name": "maxLength",
-                            "desc": "单个标签的最大长度",
-                            "type": "number",
-                            "default": "-"
-                        },
-                        {
-                            "name": "max",
-                            "desc": "允许标签的最大数量",
-                            "type": "number",
-                            "default": "-"
-                        },
-                        {
-                            "name": "maxTagCount",
-                            "desc": "标签的最大展示数量，超出后将以 +N 形式展示",
-                            "type": "number",
-                            "default": "-"
-                        },
-                        {
-                            "name": "showRestTagsPopover",
-                            "desc": "当超过 maxTagCount，hover 到 +N 时，是否通过 Popover 显示剩余内容",
-                            "type": "boolean",
-                            "default": "true"
-                        },
-                        {
-                            "name": "restTagsPopoverProps",
-                            "desc": "Popover 的配置属性，可以控制弹出方向、zIndex、trigger等，具体参考Popover",
-                            "type": "PopoverProps",
-                            "default": "{}"
-                        },
-                        {
-                            "name": "showContentTooltip",
-                            "desc": "当标签长度过长发生截断时，hover 标签的时候，是否通过 Tooltip 显示全部内容, 支持 Tooltip\\",
-                            "type": "Popover；opts，其他需要透传给浮层组件的属性",
-                            "default": "boolean\\"
-                        },
-                        {
-                            "name": "placeholder",
-                            "desc": "占位默认值",
-                            "type": "string",
-                            "default": "-"
-                        },
-                        {
-                            "name": "prefix",
-                            "desc": "前缀标签",
-                            "type": "ReactNode",
-                            "default": "-"
-                        },
-                        {
-                            "name": "preventScroll",
-                            "desc": "指示浏览器是否应滚动文档以显示新聚焦的元素，作用于组件内的 focus 方法",
-                            "type": "boolean",
-                            "default": ""
-                        },
-                        {
-                            "name": "renderTagItem",
-                            "desc": "自定义标签渲染, 参数 onClose 于版本2.23.0版本提供",
-                            "type": "React.ReactNode'>(params) => React.ReactNode",
-                            "default": "-"
-                        },
-                        {
-                            "name": "separator",
-                            "desc": "设置批量输入时的分隔符",
-                            "type": "string\\",
-                            "default": "string[]"
-                        },
-                        {
-                            "name": "showClear",
-                            "desc": "是否支持一键删除所有标签和输入内容",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "size",
-                            "desc": "设置输入框尺寸,可选: small、large、default",
-                            "type": "string",
-                            "default": "default"
-                        },
-                        {
-                            "name": "split",
-                            "desc": "自定义分隔符处理函数",
-                            "type": "(value: string, separator: string) => string[]",
-                            "default": "-"
-                        },
-                        {
-                            "name": "style",
-                            "desc": "内联样式",
-                            "type": "React.CSSProperties",
-                            "default": "-"
-                        },
-                        {
-                            "name": "suffix",
-                            "desc": "后缀标签",
-                            "type": "ReactNode",
-                            "default": "-"
-                        },
-                        {
-                            "name": "validateStatus",
-                            "desc": "设置校验状态样式,可选: default、warning、error",
-                            "type": "string",
-                            "default": "default"
-                        },
-                        {
-                            "name": "value",
-                            "desc": "当前标签，配合 onChange 实现受控",
-                            "type": "string[] \\",
-                            "default": "undefined"
-                        },
-                        {
-                            "name": "draggable",
-                            "desc": "设置是否可拖拽",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "expandRestTagsOnClick",
-                            "desc": "在不可拖拽的情况下，在 TagInput 被点击后是否展开多余的 Tag",
-                            "type": "boolean",
-                            "default": "true"
-                        },
-                        {
-                            "name": "onAdd",
-                            "desc": "添加标签时的回调",
-                            "type": "(addedValue: string[]) => void",
-                            "default": "-"
-                        },
-                        {
-                            "name": "onBlur",
-                            "desc": "输入框失去焦点时的回调",
-                            "type": "(e:React.MouseEvent) => void",
-                            "default": "-"
-                        },
-                        {
-                            "name": "onChange",
-                            "desc": "标签变化时的回调",
-                            "type": "(value:string[]) => void",
-                            "default": "-"
-                        },
-                        {
-                            "name": "onExceed",
-                            "desc": "超过 max 时的回调",
-                            "type": "(value:string[]) => void",
-                            "default": "-"
-                        },
-                        {
-                            "name": "onFocus",
-                            "desc": "输入框获取焦点时的回调",
-                            "type": "(e:React.MouseEvent) => void",
-                            "default": "-"
-                        },
-                        {
-                            "name": "onInputChange",
-                            "desc": "输入框内容变化时的回调",
-                            "type": "(value:string,e: React.KeyboardEvent) => void)",
-                            "default": "-"
-                        },
-                        {
-                            "name": "onInputExceed",
-                            "desc": "超过 maxLength 时的回调",
-                            "type": "(value:string) => void",
-                            "default": "-"
-                        },
-                        {
-                            "name": "onKeyDown",
-                            "desc": "keydown 回调",
-                            "type": "(e: React.KeyboardEvent) => void",
-                            "default": "-"
-                        },
-                        {
-                            "name": "onRemove",
-                            "desc": "移除标签时的回调",
-                            "type": "(removedValue: string, idx: number) => void",
-                            "default": "-"
-                        },
-                        {
-                            "name": "— Methods —",
+                            "name": "— TagInput —",
                             "desc": "",
                             "type": "",
                             "default": ""
                         },
                         {
-                            "name": "blur()",
-                            "desc": "移出焦点",
-                            "type": "",
-                            "default": ""
+                            "name": "value",
+                            "desc": "受控的标签数组",
+                            "type": "var",
+                            "default": "-"
                         },
                         {
-                            "name": "focus()",
-                            "desc": "获取焦点",
-                            "type": "",
-                            "default": ""
+                            "name": "defaultValue",
+                            "desc": "非受控初值",
+                            "type": "var",
+                            "default": "[]"
+                        },
+                        {
+                            "name": "inputValue",
+                            "desc": "受控的输入框文字",
+                            "type": "var",
+                            "default": "-"
+                        },
+                        {
+                            "name": "placeholder",
+                            "desc": "占位文字",
+                            "type": "string",
+                            "default": "\"\""
+                        },
+                        {
+                            "name": "separator",
+                            "desc": "回车之外的分隔符字符",
+                            "type": "var",
+                            "default": "\",\""
+                        },
+                        {
+                            "name": "split",
+                            "desc": "自定义切分函数（吃原串）",
+                            "type": "var",
+                            "default": "null"
+                        },
+                        {
+                            "name": "maxLength",
+                            "desc": "输入框最大长度；-1 不限",
+                            "type": "int",
+                            "default": "-1"
+                        },
+                        {
+                            "name": "max",
+                            "desc": "标签个数上限；-1 不限",
+                            "type": "int",
+                            "default": "-1"
+                        },
+                        {
+                            "name": "maxTagCount",
+                            "desc": "最多显示几个标签；-1 不限",
+                            "type": "int",
+                            "default": "-1"
+                        },
+                        {
+                            "name": "showRestTagsPopover",
+                            "desc": "悬浮 +N 弹剩余标签",
+                            "type": "bool",
+                            "default": "true"
+                        },
+                        {
+                            "name": "restTagsPopoverProps",
+                            "desc": "那张 Popover 的参数",
+                            "type": "var",
+                            "default": "({})"
+                        },
+                        {
+                            "name": "showContentTooltip",
+                            "desc": "标签超长时给 tooltip",
+                            "type": "var",
+                            "default": "true"
+                        },
+                        {
+                            "name": "allowDuplicates",
+                            "desc": "允许重复标签",
+                            "type": "bool",
+                            "default": "true"
+                        },
+                        {
+                            "name": "addOnBlur",
+                            "desc": "失焦时把输入收成标签",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "draggable",
+                            "desc": "标签可拖拽排序",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "expandRestTagsOnClick",
+                            "desc": "点 +N 展开",
+                            "type": "bool",
+                            "default": "true"
+                        },
+                        {
+                            "name": "showClear",
+                            "desc": "有内容时可清除",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "clearIcon",
+                            "desc": "清除图标名",
+                            "type": "string",
+                            "default": "\"\""
+                        },
+                        {
+                            "name": "insetLabel",
+                            "desc": "前置文字",
+                            "type": "string",
+                            "default": "\"\""
+                        },
+                        {
+                            "name": "size",
+                            "desc": "尺寸：Enums.Size",
+                            "type": "int",
+                            "default": "Enums.Default"
+                        },
+                        {
+                            "name": "validateStatus",
+                            "desc": "校验态：Enums.StatusType",
+                            "type": "int",
+                            "default": "Enums.StatusDefault"
+                        },
+                        {
+                            "name": "borderless",
+                            "desc": "无边框",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "autoFocus",
+                            "desc": "挂载后聚焦",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "ariaLabel",
+                            "desc": "无障碍标签",
+                            "type": "string",
+                            "default": "\"\""
+                        },
+                        {
+                            "name": "prefix",
+                            "desc": "前缀：字符串或节点",
+                            "type": "var",
+                            "default": "-"
+                        },
+                        {
+                            "name": "suffix",
+                            "desc": "后缀：字符串或节点",
+                            "type": "var",
+                            "default": "-"
+                        },
+                        {
+                            "name": "prefixIcon",
+                            "desc": "前缀图标名",
+                            "type": "string",
+                            "default": "\"\""
+                        },
+                        {
+                            "name": "suffixIcon",
+                            "desc": "后缀图标名",
+                            "type": "string",
+                            "default": "\"\""
+                        },
+                        {
+                            "name": "renderTagItem",
+                            "desc": "标签渲染：Component",
+                            "type": "Component",
+                            "default": "null"
+                        },
+                        {
+                            "name": "radius",
+                            "desc": "圆角",
+                            "type": "real",
+                            "default": "radiusSmall"
+                        },
+                        {
+                            "name": "topLeftRadius",
+                            "desc": "上左圆角",
+                            "type": "alias",
+                            "default": "-"
+                        },
+                        {
+                            "name": "topRightRadius",
+                            "desc": "上右圆角",
+                            "type": "alias",
+                            "default": "-"
+                        },
+                        {
+                            "name": "bottomLeftRadius",
+                            "desc": "下左圆角",
+                            "type": "alias",
+                            "default": "-"
+                        },
+                        {
+                            "name": "bottomRightRadius",
+                            "desc": "下右圆角",
+                            "type": "alias",
+                            "default": "-"
+                        },
+                        {
+                            "name": "onChange",
+                            "desc": "标签集合变化时发",
+                            "type": "signal change(var tags)",
+                            "default": "-"
+                        },
+                        {
+                            "name": "onAdd",
+                            "desc": "新增标签时发",
+                            "type": "signal add(var tags)",
+                            "default": "-"
+                        },
+                        {
+                            "name": "onRemove",
+                            "desc": "删除标签时发：(tag, index)",
+                            "type": "signal remove(string tag, int index)",
+                            "default": "-"
+                        },
+                        {
+                            "name": "onInputChange",
+                            "desc": "输入框文字变化时发",
+                            "type": "signal inputChange(string value)",
+                            "default": "-"
+                        },
+                        {
+                            "name": "onExceed",
+                            "desc": "标签数超 max 时发",
+                            "type": "signal exceed(var tags)",
+                            "default": "-"
+                        },
+                        {
+                            "name": "onInputExceed",
+                            "desc": "输入长度超 maxLength 时发",
+                            "type": "signal inputExceed(string value)",
+                            "default": "-"
+                        },
+                        {
+                            "name": "onFocused",
+                            "desc": "获得焦点时发",
+                            "type": "signal",
+                            "default": "-"
+                        },
+                        {
+                            "name": "onBlurred",
+                            "desc": "失去焦点时发",
+                            "type": "signal",
+                            "default": "-"
+                        },
+                        {
+                            "name": "onKeyDown",
+                            "desc": "按键时发：(key, modifiers)",
+                            "type": "signal keyDown(int key, int modifiers)",
+                            "default": "-"
                         }
                     ],
                     "guidelines": [
@@ -6175,291 +6217,243 @@
                     ],
                     "api": [
                         {
-                            "name": "autoAdjustOverflow",
-                            "desc": "浮层被遮挡时是否自动调整方向",
-                            "type": "boolean",
-                            "default": "true"
-                        },
-                        {
-                            "name": "autoFocus",
-                            "desc": "自动获取焦点",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "borderless",
-                            "desc": "无边框模式 >=2.33.0",
-                            "type": "boolean",
-                            "default": ""
-                        },
-                        {
-                            "name": "className",
-                            "desc": "外层样式名",
-                            "type": "string",
-                            "default": ""
-                        },
-                        {
-                            "name": "clearIcon",
-                            "desc": "可用于自定义清除按钮, showClear为true时有效",
-                            "type": "ReactNode",
-                            "default": ""
-                        },
-                        {
-                            "name": "defaultOpen",
-                            "desc": "面板是否默认打开",
-                            "type": "boolean",
-                            "default": ""
-                        },
-                        {
-                            "name": "defaultValue",
-                            "desc": "默认时间",
-                            "type": "Date\\",
-                            "default": "timeStamp\\"
-                        },
-                        {
-                            "name": "disabled",
-                            "desc": "禁用全部操作",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "disabledHours",
-                            "desc": "禁止选择部分小时选项",
-                            "type": "Function(): number[]",
-                            "default": ""
-                        },
-                        {
-                            "name": "disabledMinutes",
-                            "desc": "禁止选择部分分钟选项",
-                            "type": "Function(selectedHour: number): number[]",
-                            "default": ""
-                        },
-                        {
-                            "name": "disabledSeconds",
-                            "desc": "禁止选择部分秒选项",
-                            "type": "Function(selectedHour: number, selectedMinute: number): number[]",
-                            "default": ""
-                        },
-                        {
-                            "name": "disabledTime",
-                            "desc": "仅在 range 模式生效：根据当前已选 dates 与面板位置返回 disabled 配置，左右面板可分别给出不同规则。回调参数 value：当前已选时间数组（length 0/1/2）；panelType：'left' 或 'right'。返回值中存在的字段会覆盖对应的顶层 disabledHours / disabledMinutes / disabledSeconds，未返回的字段则回退到顶层（如需关闭顶层规则，请显式返回空数组的函数）。单选模式下该 prop 被忽略，请直接使用顶层 disabledHours / disabledMinutes / disabledSeconds",
-                            "type": "Function(value: Date[], panelType: 'left' \\",
-                            "default": "'right'): { disabledHours?: () => number[]; disabledMinutes?: (selectedHour: number) => number[]; disabledSeconds?: (selectedHour: number, selectedMinute: number) => number[] }"
-                        },
-                        {
-                            "name": "dropdownMargin",
-                            "desc": "浮层算溢出时的增加的冗余值，详见issue#549，作用同 Tooltip margin",
-                            "type": "object\\",
-                            "default": "number"
-                        },
-                        {
-                            "name": "focusOnOpen",
-                            "desc": "挂载时是否打开面板并focus输入框",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "format",
-                            "desc": "展示的时间格式",
-                            "type": "string",
-                            "default": "\"HH:mm:ss\""
-                        },
-                        {
-                            "name": "getPopupContainer",
-                            "desc": "指定容器，浮层将会渲染至该元素内，自定义需要设置 position: relative 这会改变浮层 DOM 树位置，但不会改变视图渲染位置。",
-                            "type": "Function(): HTMLElement",
-                            "default": "() => document.body"
-                        },
-                        {
-                            "name": "hideDisabledOptions",
-                            "desc": "隐藏禁止选择的选项",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "hourStep",
-                            "desc": "小时选项间隔",
-                            "type": "number",
-                            "default": "1"
-                        },
-                        {
-                            "name": "inputReadOnly",
-                            "desc": "设置输入框为只读（避免在移动设备上打开虚拟键盘）",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "minuteStep",
-                            "desc": "分钟选项间隔",
-                            "type": "number",
-                            "default": "1"
-                        },
-                        {
-                            "name": "motion",
-                            "desc": "是否展示弹出层动画",
-                            "type": "boolean",
-                            "default": "true"
-                        },
-                        {
-                            "name": "open",
-                            "desc": "面板是否打开的受控属性",
-                            "type": "boolean",
-                            "default": ""
-                        },
-                        {
-                            "name": "panelFooter",
-                            "desc": "面板底部 addon",
-                            "type": "ReactNode\\",
-                            "default": "ReactNode[]\\"
-                        },
-                        {
-                            "name": "panelHeader",
-                            "desc": "面板头部 addon",
-                            "type": "ReactNode\\",
-                            "default": "ReactNode[]\\"
-                        },
-                        {
-                            "name": "placeholder",
-                            "desc": "没有值的时候显示的内容",
-                            "type": "string",
-                            "default": "\"请选择时间\""
-                        },
-                        {
-                            "name": "popupClassName",
-                            "desc": "弹出层类名",
-                            "type": "string",
-                            "default": "''"
-                        },
-                        {
-                            "name": "popupStyle",
-                            "desc": "弹出层样式对象",
-                            "type": "object",
-                            "default": "-"
-                        },
-                        {
-                            "name": "position",
-                            "desc": "浮层位置",
-                            "type": "string",
-                            "default": "type=\"timeRange\"时默认为\"bottom\"，type=\"time\"时默认为\"bottomLeft\""
-                        },
-                        {
-                            "name": "prefix",
-                            "desc": "前缀内容",
-                            "type": "string\\",
-                            "default": "ReactNode"
-                        },
-                        {
-                            "name": "preventScroll",
-                            "desc": "指示浏览器是否应滚动文档以显示新聚焦的元素，作用于组件内的 focus 方法",
-                            "type": "boolean",
-                            "default": ""
-                        },
-                        {
-                            "name": "rangeSeparator",
-                            "desc": "时间范围分隔符",
-                            "type": "string",
-                            "default": "\" ~ \""
-                        },
-                        {
-                            "name": "scrollItemProps",
-                            "desc": "透传给 scrollItem 的属性，可选值同ScrollList#API",
-                            "type": "object",
-                            "default": ""
-                        },
-                        {
-                            "name": "secondStep",
-                            "desc": "秒选项间隔",
-                            "type": "number",
-                            "default": "1"
-                        },
-                        {
-                            "name": "showClear",
-                            "desc": "是否展示清除按钮",
-                            "type": "boolean",
-                            "default": "true"
-                        },
-                        {
-                            "name": "stopPropagation",
-                            "desc": "是否阻止弹出层上的点击事件冒泡",
-                            "type": "boolean",
-                            "default": "true"
-                        },
-                        {
-                            "name": "size",
-                            "desc": "输入框的大小，可选 'default'，'small'，'large'",
-                            "type": "string",
-                            "default": "'default'"
-                        },
-                        {
-                            "name": "triggerRender",
-                            "desc": "自定义触发器渲染方法",
-                            "type": "({ placeholder: string }) => ReactNode",
-                            "default": "-"
-                        },
-                        {
-                            "name": "type",
-                            "desc": "类型",
-                            "type": "\"time\"\\",
-                            "default": "\"timeRange\""
-                        },
-                        {
-                            "name": "use12Hours",
-                            "desc": "使用 12 小时制，为 true 时 format 默认为 h:mm:ss a",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "value",
-                            "desc": "当前时间",
-                            "type": "Date\\",
-                            "default": "timeStamp\\"
-                        },
-                        {
-                            "name": "onBlur",
-                            "desc": "失去焦点时的回调",
-                            "type": "(e: domEvent) => void",
-                            "default": "() => {}"
-                        },
-                        {
-                            "name": "onChange",
-                            "desc": "时间发生变化的回调",
-                            "type": "Function(time: Date, timeString: string): void （type=\"timeRange\"时入参皆为数组）",
-                            "default": "无"
-                        },
-                        {
-                            "name": "onChangeWithDateFirst",
-                            "desc": "设置为 true 时 onChange 的入参顺序为 (Date, string), false 时为 (string, Date)",
-                            "type": "boolean",
-                            "default": "true"
-                        },
-                        {
-                            "name": "onFocus",
-                            "desc": "获得焦点时的回调",
-                            "type": "(e: domEvent) => void",
-                            "default": "() => {}"
-                        },
-                        {
-                            "name": "onOpenChange",
-                            "desc": "面板打开/关闭时的回调",
-                            "type": "Function(isOpen: boolean): void",
-                            "default": "无"
-                        },
-                        {
-                            "name": "— Methods —",
+                            "name": "— TimePicker —",
                             "desc": "",
                             "type": "",
                             "default": ""
                         },
                         {
-                            "name": "blur()",
-                            "desc": "移除焦点",
-                            "type": "() => void",
+                            "name": "value",
+                            "desc": "受控的值：Date 或 [起, 止]",
+                            "type": "var",
                             "default": "-"
                         },
                         {
-                            "name": "focus()",
-                            "desc": "获取焦点",
-                            "type": "() => void",
+                            "name": "defaultValue",
+                            "desc": "非受控初值",
+                            "type": "var",
+                            "default": "-"
+                        },
+                        {
+                            "name": "type",
+                            "desc": "'time' 单档 / 'timeRange' 连续档",
+                            "type": "string",
+                            "default": "\"time\"              // \"time\" | \"timeRange\""
+                        },
+                        {
+                            "name": "format",
+                            "desc": "显示格式；空串按 locale 缺省",
+                            "type": "string",
+                            "default": "\"\""
+                        },
+                        {
+                            "name": "use12Hours",
+                            "desc": "12 小时制",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "hourStep",
+                            "desc": "小时步长",
+                            "type": "int",
+                            "default": "1"
+                        },
+                        {
+                            "name": "minuteStep",
+                            "desc": "分钟步长",
+                            "type": "int",
+                            "default": "1"
+                        },
+                        {
+                            "name": "secondStep",
+                            "desc": "秒步长",
+                            "type": "int",
+                            "default": "1"
+                        },
+                        {
+                            "name": "hideDisabledOptions",
+                            "desc": "隐藏被禁的项",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "disabledHours",
+                            "desc": "禁用小时：() => number[]",
+                            "type": "var",
+                            "default": "null"
+                        },
+                        {
+                            "name": "disabledMinutes",
+                            "desc": "禁用分钟：(hour) => number[]",
+                            "type": "var",
+                            "default": "null"
+                        },
+                        {
+                            "name": "disabledSeconds",
+                            "desc": "禁用秒：(hour, minute) => number[]",
+                            "type": "var",
+                            "default": "null"
+                        },
+                        {
+                            "name": "disabledTime",
+                            "desc": "整体禁用：(date) => bool",
+                            "type": "var",
+                            "default": "null"
+                        },
+                        {
+                            "name": "disabled",
+                            "desc": "禁用",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "showClear",
+                            "desc": "有值时可清除",
+                            "type": "bool",
+                            "default": "true"
+                        },
+                        {
+                            "name": "clearIcon",
+                            "desc": "清除图标名",
+                            "type": "string",
+                            "default": "\"\""
+                        },
+                        {
+                            "name": "placeholder",
+                            "desc": "占位文字；range 档收 [起, 止]",
+                            "type": "var",
+                            "default": "-"
+                        },
+                        {
+                            "name": "size",
+                            "desc": "尺寸：Enums.Size",
+                            "type": "int",
+                            "default": "Enums.Default"
+                        },
+                        {
+                            "name": "prefix",
+                            "desc": "前缀：字符串或节点",
+                            "type": "var",
+                            "default": "-"
+                        },
+                        {
+                            "name": "prefixIcon",
+                            "desc": "前缀图标名",
+                            "type": "string",
+                            "default": "\"\""
+                        },
+                        {
+                            "name": "insetLabel",
+                            "desc": "前置文字（贴在框内）",
+                            "type": "string",
+                            "default": "\"\""
+                        },
+                        {
+                            "name": "borderless",
+                            "desc": "无边框",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "inputReadOnly",
+                            "desc": "输入框只读",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "validateStatus",
+                            "desc": "校验态：Enums.StatusType",
+                            "type": "int",
+                            "default": "Enums.StatusDefault"
+                        },
+                        {
+                            "name": "rangeSeparator",
+                            "desc": "range 档中间的分隔符",
+                            "type": "string",
+                            "default": "\"~\""
+                        },
+                        {
+                            "name": "panelHeader",
+                            "desc": "面板头部：字符串 / Component；range 档 [起, 止]",
+                            "type": "var",
+                            "default": "-"
+                        },
+                        {
+                            "name": "panelFooter",
+                            "desc": "面板尾部：同上",
+                            "type": "var",
+                            "default": "-"
+                        },
+                        {
+                            "name": "open",
+                            "desc": "受控显隐；undefined 是非受控",
+                            "type": "var",
+                            "default": "-"
+                        },
+                        {
+                            "name": "defaultOpen",
+                            "desc": "非受控的初值是开着",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "autoFocus",
+                            "desc": "挂载后聚焦触发器",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "focusOnOpen",
+                            "desc": "打开后面板拿焦点",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "position",
+                            "desc": "浮层方位：Enums.Position",
+                            "type": "int",
+                            "default": "Enums.BottomLeft"
+                        },
+                        {
+                            "name": "autoAdjustOverflow",
+                            "desc": "越界自动换方位",
+                            "type": "bool",
+                            "default": "true"
+                        },
+                        {
+                            "name": "scrollItemProps",
+                            "desc": "面板列项的透传参数",
+                            "type": "var",
+                            "default": "null"
+                        },
+                        {
+                            "name": "triggerRender",
+                            "desc": "触发器自定义内容：Component",
+                            "type": "Component",
+                            "default": "null"
+                        },
+                        {
+                            "name": "onChanged",
+                            "desc": "值变化时发：(date, dateString)",
+                            "type": "signal changed(var date, var dateString)",
+                            "default": "-"
+                        },
+                        {
+                            "name": "onOpenChange",
+                            "desc": "显隐变化时发",
+                            "type": "signal openChange(bool isOpen)",
+                            "default": "-"
+                        },
+                        {
+                            "name": "onFocused",
+                            "desc": "触发器获得焦点时发",
+                            "type": "signal",
+                            "default": "-"
+                        },
+                        {
+                            "name": "onBlurred",
+                            "desc": "触发器失去焦点时发",
+                            "type": "signal",
                             "default": "-"
                         }
                     ],
