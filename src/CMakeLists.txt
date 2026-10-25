@@ -32,6 +32,12 @@ qt_add_qml_module(semi
         CarouselArrow.qml
         CarouselIndicator.qml
         Cascader.qml
+        Chat.qml
+        ChatActionGlyph.qml
+        ChatAttachment.qml
+        ChatBox.qml
+        ChatInputBox.qml
+        ChatMarkdown.js
         Checkbox.qml
         CheckboxGroup.qml
         ColorConvert.js

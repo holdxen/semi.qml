@@ -16,7 +16,7 @@ gallery 的每一页对应一个组件（`Tokens` 那页是设计变量浏览器
 | 数据录入 | AutoComplete · Cascader · Checkbox · ColorPicker · DatePicker · Form · Input · InputNumber · PinCode · Radio · Rating · Select · Slider · Spin · Steps · Switch · TagInput · TimePicker · Transfer · Upload |
 | 数据展示 | Avatar · Badge · Calendar · Card · Carousel · Collapse · Collapsible · Cropper · Descriptions · DragMove · Empty · Highlight · ImageView · List · OverflowList · Progress · ScrollList · Table · Tag · Timeline · Tree · TreeSelect |
 | 导航 | Anchor · Breadcrumb · Dropdown · FloatButton · Navigation · Pagination · Tabs |
-| 反馈与弹层 | BackTop · Banner · Feedback · HotKeys · Modal · Notification · Popconfirm · Popover · SideSheet · Toast · Tooltip · UserGuide |
+| 反馈与弹层 | BackTop · Banner · Chat · Feedback · HotKeys · Modal · Notification · Popconfirm · Popover · SideSheet · Toast · Tooltip · UserGuide |
 
 ## 快速开始
 

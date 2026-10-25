@@ -68,6 +68,7 @@ PAGES = {
     "Calendar": ["Calendar"],
     "Card": ["Card", "CardMeta", "CardGroup"],
     "Carousel": ["Carousel"],
+    "Chat": ["Chat"],
     "Collapse": ["Collapse"],
     "Collapsible": ["Collapsible"],
     "Cropper": ["Cropper"],

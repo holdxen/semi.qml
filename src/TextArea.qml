@@ -145,6 +145,13 @@ Rectangle {
         control.cleared();
     }
 
+    // 官方 <textarea>.focus() 的等价物：聚焦**内层 TextEdit 本体**。
+    // 不能用根项的 forceActiveFocus() —— 那只把 activeFocus 给外层 Rectangle，
+    // 键 events 不会落到 area，打不了字（点容器空白处/自定义渲染 onClick 都走过这条路）。
+    function focusInput() {
+        area.forceActiveFocus();
+    }
+
     // ---- 行号栏（.semi-input-textarea-lineNumber）----
     Rectangle {
         id: lineNumberPanel
@@ -243,9 +250,14 @@ Rectangle {
                 // showClear 时 textarea 的 padding-right 变 36（variables.scss:117）
                 - (control.showClear ? 36 - control.paddingX : 0))
             // 命中区 = 整个内容区。官方 <textarea> 是「盒子本身就是输入区」，点半空的地方光标落到文末；
-            // 这里只吃 implicitHeight（= 已有文本的行数）时，多行框里点中间与点底部都落在盒子内、
+            // 这里只吃内容高度时，多行框里点中间与点底部都落在盒子内、
             // 却在 TextEdit 外 —— 焦点与光标都进不来，只有贴着文本的那几行能点中。
-            height: Math.max(implicitHeight, scroller.height - control.paddingY)
+            // 用 contentHeight 而不是 implicitHeight：Qt 侧「改 height → geometryChange →
+            // updateSize → setImplicitHeight」会回写 implicitHeight 并通知，而这个绑定又读
+            // implicitHeight ⇒ 自指环（长内容才显形，报 Binding loop at height）。
+            // contentHeight（= contentSize.height()，updateSize 里同一处算出）语义相同、
+            // 无 notify 回路 —— 实测三种长内容形态 0 警告，几何不变。
+            height: Math.max(area.contentHeight, scroller.height - control.paddingY)
             color: Appearance.inputForeground(Theme.current, control.controlState)
             font.pixelSize: Theme.current.fontSizeRegular
             selectByMouse: true

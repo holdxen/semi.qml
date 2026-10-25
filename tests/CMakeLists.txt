@@ -90,6 +90,7 @@ set(SEMI_TEST_FILES
     tst_divider.qml
     tst_card.qml
     tst_carousel.qml
+    tst_chat.qml
     tst_badge.qml
     tst_tree.qml
     tst_steps.qml

@@ -170,21 +170,23 @@ cmake --build build/debug
 | Spin | 6 | **完成**（2026-10-16 按官方重写：如何引入 / 基本用法 / 尺寸 / 带文字的 / 自定义指示符 / 延迟显示） |
 | Toast | 11 | **完成**（如何引入 / 普通提示 / 其他提示类型 / 多色样式 / 链接文本 / 修改延时 / 手动关闭 / 更新消息内容 / 销毁所有 / 消费 Context / 创建不同配置 Toast —— 2026-10-16 按官方重写，见下） |
 
-### Plus（2）
+### Plus（3）
 
 | 组件 | 源站小节 | 状态 |
 | --- | --- | --- |
+| Chat | 10 | **完成**（如何引入 / 基本用法 / 消息状态 / 动态更新数据 / 清除上下文 / 自定义渲染会话框 / 自定义渲染输入框 / 提示信息 / 自定义提示信息渲染 / API —— 2026-10-26 落地，见下） |
 | DragMove | 6 | **完成**（如何引入 / 基本用法 / 限制拖动范围 / 自定义拖动后的位置处理） |
 | HotKeys | 7 | **完成**（如何引入 / 说明 / 基本用法 / 自定义内容） |
 
-### 跳过（14）
+### 跳过（13）
 
-AIChatDialogue、AIChatInput、AIComponent、Sidebar、Chat、CodeHighlight、
+AIChatDialogue、AIChatInput、AIComponent、Sidebar、CodeHighlight、
 Markdown 渲染器、JsonViewer、Lottie、AudioPlayer、VideoPlayer、
 Semi DV、ConfigProvider、LocaleProvider —— 未实现或第三方，
 侧边栏里不列（`content/ai` 与 `content/other` 两组整体不进 JSON）。
 （Feedback 原本也在这列，2026-10-17 落地后移入反馈类。
-Cropper 原本也在这列，2026-10-20 落地后移入展示类。）
+Cropper 原本也在这列，2026-10-20 落地后移入展示类。
+Chat 原本也在这列，2026-10-26 落地后移入 Plus。）
 
 ## 每轮记录
 

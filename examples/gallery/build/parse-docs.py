@@ -41,7 +41,7 @@ CATEGORIES = [
 # 侧边栏要显示它们并标注「未实现」，而不是藏起来。
 SKIPPED = {
     "aiComponent", "aiChatInput", "aiChatDialogue", "sidebar",
-    "chat", "codehighlight", "markdownrender", "jsonviewer", "lottie",
+    "codehighlight", "markdownrender", "jsonviewer", "lottie",
     "audioPlayer", "videoPlayer", "chart",
     "configprovider", "locale",
 }
