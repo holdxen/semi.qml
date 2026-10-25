@@ -179,6 +179,7 @@ qt_add_qml_module(semi
 
 # 下游统一用 Semi::Semi 引入
 set_target_properties(semi PROPERTIES EXPORT_NAME Semi)
+add_library(Semi::Semi ALIAS semi)
 
 target_link_libraries(semi PRIVATE Qt6::Quick)
 

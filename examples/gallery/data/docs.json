@@ -7426,136 +7426,184 @@
                             "default": ""
                         },
                         {
-                            "name": "autoCollapse",
-                            "desc": "滚动时动态显示下一级锚点",
-                            "type": "boolean",
-                            "default": "false"
+                            "name": "content",
+                            "desc": "默认子项：一串 AnchorLink",
+                            "type": "alias",
+                            "default": "-"
                         },
                         {
-                            "name": "className",
-                            "desc": "类名",
+                            "name": "size",
+                            "desc": "滑块与文字档：'small' / 'default'",
                             "type": "string",
-                            "default": "-"
-                        },
-                        {
-                            "name": "defaultAnchor",
-                            "desc": "默认高亮锚点",
-                            "type": "string",
-                            "default": "-"
-                        },
-                        {
-                            "name": "getContainer",
-                            "desc": "指定滚动的容器",
-                            "type": "() => HTMLElement",
-                            "default": "window"
-                        },
-                        {
-                            "name": "maxHeight",
-                            "desc": "组件的 max-height，超出时显示滚动条",
-                            "type": "string \\",
-                            "default": "number"
-                        },
-                        {
-                            "name": "maxWidth",
-                            "desc": "组件的 max-width，超出时显示...",
-                            "type": "string \\",
-                            "default": "number"
-                        },
-                        {
-                            "name": "offsetTop",
-                            "desc": "滚动内容距离容器顶部达到指定偏移量时触发",
-                            "type": "number",
-                            "default": "0"
-                        },
-                        {
-                            "name": "onChange",
-                            "desc": "改变锚点的回调函数",
-                            "type": "(currentLink, previousLink) => void",
-                            "default": "-"
-                        },
-                        {
-                            "name": "onClick",
-                            "desc": "点击锚点回调函数",
-                            "type": "(event, currentLink) => void",
-                            "default": "-"
-                        },
-                        {
-                            "name": "position",
-                            "desc": "Tooltip 显示位置，可选值同 Tooltip 组件 position",
-                            "type": "string",
-                            "default": "-"
+                            "default": "\"default\""
                         },
                         {
                             "name": "railTheme",
-                            "desc": "滑轨主题，可选值：primary，tertiary，muted",
+                            "desc": "主题色：primary / tertiary / muted",
                             "type": "string",
-                            "default": "primary"
+                            "default": "\"primary\""
+                        },
+                        {
+                            "name": "offsetTop",
+                            "desc": "滚动到位后的顶部留白",
+                            "type": "int",
+                            "default": "0"
+                        },
+                        {
+                            "name": "targetOffset",
+                            "desc": "锚点目标的额外偏移",
+                            "type": "int",
+                            "default": "0"
                         },
                         {
                             "name": "scrollMotion",
-                            "desc": "是否开启滚动动画",
-                            "type": "boolean",
+                            "desc": "滚动走动画",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "autoCollapse",
+                            "desc": "收起时自动高亮可见项",
+                            "type": "bool",
                             "default": "false"
                         },
                         {
                             "name": "showTooltip",
-                            "desc": "文字缩略时是否显示 Tooltip 及相关配置, type，浮层内容承载的组件，支持 Tooltip（默认） \\",
-                            "type": "Popover；opts，其他需要透传给浮层组件的属性, object 形式设置自 2.36.0 版本提供",
-                            "default": "boolean \\"
+                            "desc": "悬浮提示：false / {…}",
+                            "type": "var",
+                            "default": "false"
                         },
                         {
-                            "name": "size",
-                            "desc": "锚点尺寸，可选值： small，default",
+                            "name": "position",
+                            "desc": "提示方位（官方字符串档）",
                             "type": "string",
-                            "default": "default"
+                            "default": "\"\""
+                        },
+                        {
+                            "name": "defaultAnchor",
+                            "desc": "初始高亮项；不给时走一遍默认锚点",
+                            "type": "string",
+                            "default": "\"\""
+                        },
+                        {
+                            "name": "maxWidth",
+                            "desc": "提示宽度上限",
+                            "type": "var",
+                            "default": "\"200px\""
+                        },
+                        {
+                            "name": "maxHeight",
+                            "desc": "提示高度上限",
+                            "type": "var",
+                            "default": "\"750px\""
+                        },
+                        {
+                            "name": "className",
+                            "desc": "官方透传；本库无落点",
+                            "type": "string",
+                            "default": "\"\""
                         },
                         {
                             "name": "style",
-                            "desc": "样式对象",
-                            "type": "object",
+                            "desc": "官方透传；本库无落点",
+                            "type": "var",
                             "default": "-"
                         },
                         {
-                            "name": "targetOffset",
-                            "desc": "锚点滚动时距离顶部偏移量",
-                            "type": "number",
-                            "default": "0"
+                            "name": "ariaLabel",
+                            "desc": "无障碍标签",
+                            "type": "string",
+                            "default": "\"Side navigation\""
                         },
                         {
-                            "name": "— Anchor.Link —",
+                            "name": "container",
+                            "desc": "滚动容器：Flickable",
+                            "type": "Flickable",
+                            "default": "null"
+                        },
+                        {
+                            "name": "activeLink",
+                            "desc": "当前高亮的链接（状态，读不改）",
+                            "type": "var",
+                            "default": "\"\""
+                        },
+                        {
+                            "name": "onChange",
+                            "desc": "高亮变化：(currentLink, previousLink)",
+                            "type": "signal change(string currentLink, string previousLink)",
+                            "default": "-"
+                        },
+                        {
+                            "name": "onClick",
+                            "desc": "点击链接：(currentLink)",
+                            "type": "signal click(string currentLink)",
+                            "default": "-"
+                        },
+                        {
+                            "name": "— AnchorLink —",
                             "desc": "",
                             "type": "",
                             "default": ""
                         },
                         {
-                            "name": "className",
-                            "desc": "类名",
-                            "type": "string",
-                            "default": "-"
-                        },
-                        {
-                            "name": "disabled",
-                            "desc": "禁用，不响应点击跳转",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
                             "name": "href",
-                            "desc": "跳转的链接",
+                            "desc": "链接标识（对应目标 key）",
                             "type": "string",
-                            "default": "-"
-                        },
-                        {
-                            "name": "style",
-                            "desc": "样式对象",
-                            "type": "object",
-                            "default": "-"
+                            "default": "\"/\""
                         },
                         {
                             "name": "title",
-                            "desc": "文字内容",
-                            "type": "string\\",
-                            "default": "ReactNode"
+                            "desc": "链接文字",
+                            "type": "var",
+                            "default": "\"\""
+                        },
+                        {
+                            "name": "disabled",
+                            "desc": "禁用",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "className",
+                            "desc": "官方透传；本库无落点",
+                            "type": "string",
+                            "default": "\"\""
+                        },
+                        {
+                            "name": "style",
+                            "desc": "官方透传；本库无落点",
+                            "type": "var",
+                            "default": "-"
+                        },
+                        {
+                            "name": "sublinks",
+                            "desc": "默认子项：嵌套的 AnchorLink",
+                            "type": "alias",
+                            "default": "-"
+                        },
+                        {
+                            "name": "targetItem",
+                            "desc": "目标节点：Item（给了就不走 id 查找）",
+                            "type": "Item",
+                            "default": "null"
+                        },
+                        {
+                            "name": "level",
+                            "desc": "缩进层级，从 1 起",
+                            "type": "int",
+                            "default": "1"
+                        },
+                        {
+                            "name": "selected",
+                            "desc": "是否当前项（由 Anchor 推下来）",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "onClicked",
+                            "desc": "点击时发",
+                            "type": "signal",
+                            "default": "-"
                         }
                     ],
                     "guidelines": [
@@ -7623,39 +7671,63 @@
                     ],
                     "api": [
                         {
-                            "name": "className",
-                            "desc": "类名",
-                            "type": "string",
-                            "default": "-"
-                        },
-                        {
-                            "name": "duration",
-                            "desc": "滚动到顶部的时间",
-                            "type": "number",
-                            "default": "450"
-                        },
-                        {
-                            "name": "style",
-                            "desc": "样式名",
-                            "type": "CSSProperties",
-                            "default": "-"
+                            "name": "— BackTop —",
+                            "desc": "",
+                            "type": "",
+                            "default": ""
                         },
                         {
                             "name": "target",
-                            "desc": "返回值为需要监听其滚动事件的元素对应 DOM 元素的函数",
-                            "type": "() => any",
-                            "default": "() => window"
+                            "desc": "滚动容器：Flickable；不给用祖先里最近的",
+                            "type": "Flickable",
+                            "default": "null"
                         },
                         {
                             "name": "visibilityHeight",
-                            "desc": "出现 BackTop 需要达到的滚动高度",
-                            "type": "number",
+                            "desc": "超过这个距离才出现（px）",
+                            "type": "int",
                             "default": "400"
                         },
                         {
-                            "name": "onClick",
-                            "desc": "点击事件的回调函数",
-                            "type": "(e: MouseEvent) => void",
+                            "name": "duration",
+                            "desc": "回顶动画时长（ms）",
+                            "type": "int",
+                            "default": "450"
+                        },
+                        {
+                            "name": "content",
+                            "desc": "自定义内容：Component",
+                            "type": "var",
+                            "default": "null"
+                        },
+                        {
+                            "name": "style",
+                            "desc": "官方透传；本库无落点",
+                            "type": "var",
+                            "default": "-"
+                        },
+                        {
+                            "name": "className",
+                            "desc": "官方透传；本库无落点",
+                            "type": "string",
+                            "default": "\"\""
+                        },
+                        {
+                            "name": "rightMargin",
+                            "desc": "距右缘（官方 fixed right 100）",
+                            "type": "int",
+                            "default": "100"
+                        },
+                        {
+                            "name": "bottomMargin",
+                            "desc": "距下缘（官方 fixed bottom 50）",
+                            "type": "int",
+                            "default": "50"
+                        },
+                        {
+                            "name": "onClicked",
+                            "desc": "点击时发",
+                            "type": "signal",
                             "default": "-"
                         }
                     ],
@@ -7709,147 +7781,177 @@
                             "default": ""
                         },
                         {
-                            "name": "activeIndex",
-                            "desc": "受控使用，当前选择的导航序号",
-                            "type": "-",
-                            "default": "2.61.0"
-                        },
-                        {
-                            "name": "autoCollapse",
-                            "desc": "是否超出maxItemCount后自动折叠",
-                            "type": "boolean",
-                            "default": "true"
-                        },
-                        {
-                            "name": "className",
-                            "desc": "类名",
-                            "type": "string",
-                            "default": "-"
-                        },
-                        {
-                            "name": "compact",
-                            "desc": "显示尺寸，是否紧凑",
-                            "type": "boolean",
-                            "default": "true"
-                        },
-                        {
-                            "name": "maxItemCount",
-                            "desc": "超出多少个进行自动折叠",
-                            "type": "number",
-                            "default": "4"
-                        },
-                        {
-                            "name": "moreType",
-                            "desc": "内置的...区域的渲染类型，可选值为 'default'、'popover'",
-                            "type": "string",
-                            "default": "'default'"
-                        },
-                        {
-                            "name": "renderItem",
-                            "desc": "自定义链接函数，配合 routes 使用",
-                            "type": "(Route: Route) => ReactNode",
-                            "default": "-"
-                        },
-                        {
-                            "name": "renderMore",
-                            "desc": "自定义...区域的渲染",
-                            "type": "(restItem: ReactNode[]) => ReactNode",
-                            "default": "-"
-                        },
-                        {
                             "name": "routes",
-                            "desc": "router 的路由信息，由路由对象或字符串组成的数组，路由对象格式参考: Route",
-                            "type": "Array<Route \\",
-                            "default": "string\\>"
+                            "desc": "条目：[{text, href, icon, …}]",
+                            "type": "var",
+                            "default": "[]"
                         },
                         {
                             "name": "separator",
-                            "desc": "自定义的分隔符",
-                            "type": "ReactNode",
-                            "default": "'/'"
+                            "desc": "分隔符；空串算没给",
+                            "type": "var",
+                            "default": "\"/\""
+                        },
+                        {
+                            "name": "compact",
+                            "desc": "超 maxItemCount 自动折叠（官方 dead prop，端口按官方行为收）",
+                            "type": "bool",
+                            "default": "true"
                         },
                         {
                             "name": "showTooltip",
-                            "desc": "是否展示 Tooltip 及相关配置: width，溢出宽度； ellipsisPos，截断方式，从中间/末尾截断； opts，透传给Tooltip的属性",
-                            "type": "boolean \\",
-                            "default": "showToolTipProps"
+                            "desc": "截断时的提示：{width, ellipsisPos}",
+                            "type": "var",
+                            "default": "({ width: 150, ellipsisPos: \"end\" })"
+                        },
+                        {
+                            "name": "maxItemCount",
+                            "desc": "最多显示几条",
+                            "type": "int",
+                            "default": "4"
+                        },
+                        {
+                            "name": "autoCollapse",
+                            "desc": "自动折叠",
+                            "type": "bool",
+                            "default": "true"
+                        },
+                        {
+                            "name": "moreType",
+                            "desc": "省略号按钮档：default / icon",
+                            "type": "string",
+                            "default": "\"default\""
+                        },
+                        {
+                            "name": "renderItem",
+                            "desc": "条目渲染函数",
+                            "type": "var",
+                            "default": "null"
+                        },
+                        {
+                            "name": "renderMore",
+                            "desc": "省略号渲染函数",
+                            "type": "var",
+                            "default": "null"
+                        },
+                        {
+                            "name": "activeIndex",
+                            "desc": "当前页下标（严格等于才选中）",
+                            "type": "var",
+                            "default": "-"
+                        },
+                        {
+                            "name": "ariaLabel",
+                            "desc": "无障碍标签",
+                            "type": "string",
+                            "default": "\"Breadcrumb\""
+                        },
+                        {
+                            "name": "className",
+                            "desc": "官方透传；本库无落点",
+                            "type": "string",
+                            "default": "\"\""
                         },
                         {
                             "name": "style",
-                            "desc": "内联样式",
-                            "type": "CSSProperties",
+                            "desc": "官方透传；本库无落点",
+                            "type": "var",
                             "default": "-"
                         },
                         {
-                            "name": "onClick",
-                            "desc": "单击事件",
-                            "type": "(item: Route , e: Event) => void",
+                            "name": "onClicked",
+                            "desc": "点条目时发",
+                            "type": "signal clicked(var item)",
                             "default": "-"
                         },
                         {
-                            "name": "— Breadcrumb.Item —",
+                            "name": "— BreadcrumbItem —",
                             "desc": "",
                             "type": "",
                             "default": ""
                         },
                         {
-                            "name": "href",
-                            "desc": "链接的目的地",
-                            "type": "string",
+                            "name": "label",
+                            "desc": "条目文字",
+                            "type": "var",
                             "default": "-"
                         },
                         {
                             "name": "icon",
-                            "desc": "标签的显示图标",
-                            "type": "ReactNode",
-                            "default": "-"
+                            "desc": "图标：Component",
+                            "type": "var",
+                            "default": "null"
                         },
                         {
-                            "name": "onClick",
-                            "desc": "单击事件",
-                            "type": "function(item: Route, e: Event)",
-                            "default": "-"
+                            "name": "href",
+                            "desc": "链接地址（纯展示，QML 无跳转）",
+                            "type": "string",
+                            "default": "\"\""
                         },
                         {
                             "name": "separator",
-                            "desc": "分隔符，可以覆盖父级的分隔符",
-                            "type": "ReactNode",
+                            "desc": "分隔符；空串算没给",
+                            "type": "var",
                             "default": "-"
                         },
                         {
                             "name": "noLink",
-                            "desc": "移除 hover 和 active 的样式",
-                            "type": "boolean",
+                            "desc": "不当链接（无 hover 态）",
+                            "type": "bool",
                             "default": "false"
                         },
                         {
-                            "name": "— Route —",
+                            "name": "active",
+                            "desc": "当前页",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "shouldRenderSeparator",
+                            "desc": "是否画分隔符（端口克隆节点时用）",
+                            "type": "bool",
+                            "default": "true"
+                        },
+                        {
+                            "name": "route",
+                            "desc": "路由对象：{path, href}",
+                            "type": "var",
+                            "default": "-"
+                        },
+                        {
+                            "name": "host",
+                            "desc": "所属 Breadcrumb（id 或引用）",
+                            "type": "Breadcrumb",
+                            "default": "null"
+                        },
+                        {
+                            "name": "onClicked",
+                            "desc": "点击时发",
+                            "type": "signal clicked(var item)",
+                            "default": "-"
+                        },
+                        {
+                            "name": "— BreadcrumbMore —",
                             "desc": "",
                             "type": "",
                             "default": ""
                         },
                         {
-                            "name": "href",
-                            "desc": "链接目的地",
-                            "type": "string",
-                            "default": "-"
+                            "name": "host",
+                            "desc": "所属 Breadcrumb",
+                            "type": "var",
+                            "default": "null"
                         },
                         {
-                            "name": "icon",
-                            "desc": "标签的显示图标",
-                            "type": "ReactNode",
-                            "default": "-"
+                            "name": "restItems",
+                            "desc": "被折叠掉的那几条",
+                            "type": "var",
+                            "default": "[]"
                         },
                         {
-                            "name": "name",
-                            "desc": "路由名",
-                            "type": "string",
-                            "default": "-"
-                        },
-                        {
-                            "name": "path",
-                            "desc": "路由路径",
-                            "type": "string",
+                            "name": "onExpandRequested",
+                            "desc": "点省略号时发",
+                            "type": "signal",
                             "default": "-"
                         }
                     ],
@@ -7936,430 +8038,160 @@
                     ],
                     "api": [
                         {
-                            "name": "— Nav —",
+                            "name": "— Navigation —",
                             "desc": "",
                             "type": "",
                             "default": ""
                         },
                         {
-                            "name": "bodyStyle",
-                            "desc": "导航项列表的自定义样式",
-                            "type": "CSSProperties",
-                            "default": ""
-                        },
-                        {
-                            "name": "className",
-                            "desc": "最外层元素的样式名",
-                            "type": "string",
-                            "default": ""
-                        },
-                        {
-                            "name": "defaultIsCollapsed",
-                            "desc": "默认是否处于收起状态，仅 mode = \"vertical\" 时有效",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "defaultOpenKeys",
-                            "desc": "初始打开的子导航 itemKey 数组，仅 mode = \"vertical\" 且侧边栏处于展开状态时有效",
-                            "type": "string[]",
-                            "default": "[]"
-                        },
-                        {
-                            "name": "defaultSelectedKeys",
-                            "desc": "初始选中的导航项 itemKey 数组",
-                            "type": "string[]",
-                            "default": "[]"
-                        },
-                        {
-                            "name": "subDropdownProps",
-                            "desc": "用于控制 horizontal 或者 vertical && isCollapsed 下 nav.sub 中的 dropdown 参数(v >= 2.69)",
-                            "type": "DropdownProps",
-                            "default": ""
-                        },
-                        {
-                            "name": "expandIcon",
-                            "desc": "默认下拉箭头Icon, v>=2.36",
-                            "type": "ReactNode",
-                            "default": ""
-                        },
-                        {
-                            "name": "footer",
-                            "desc": "底部区域配置对象或元素，详见 Nav.Footer",
-                            "type": "object\\",
-                            "default": "ReactNode"
-                        },
-                        {
-                            "name": "getPopupContainer",
-                            "desc": "垂直 Nav 折叠或 水平 Nav中 Dropdown 的 getPopupContainer 配置，可指定弹出层容器 这会改变浮层 DOM 树位置，但不会改变视图渲染位置。 v>=2.24.0",
-                            "type": "Function",
-                            "default": ""
+                            "name": "content",
+                            "desc": "默认子项：自定义菜单项之外的内容",
+                            "type": "alias",
+                            "default": "-"
                         },
                         {
                             "name": "header",
-                            "desc": "头部区域配置对象或元素，详见 Nav.Header",
-                            "type": "object\\",
-                            "default": "ReactNode"
+                            "desc": "头部槽（别名，指向 headerSlot 的子项）",
+                            "type": "alias",
+                            "default": "-"
                         },
                         {
-                            "name": "isCollapsed",
-                            "desc": "是否处于收起状态的受控属性，仅 mode = \"vertical\" 时有效",
-                            "type": "boolean",
-                            "default": ""
+                            "name": "footer",
+                            "desc": "尾部槽（别名，指向 footerSlot 的子项）",
+                            "type": "alias",
+                            "default": "-"
                         },
                         {
                             "name": "items",
-                            "desc": "导航项目列表，每一项可以继续带有 items 属性。如果为 string 数组，则会取每一项作为 text 和 itemKey",
-                            "type": "object\\",
-                            "default": "string[]\\"
+                            "desc": "菜单项：[{key, text, icon, children, …}]（给了就用数据驱动）",
+                            "type": "var",
+                            "default": "-"
                         },
                         {
-                            "name": "limitIndent",
-                            "desc": "解除缩进限制，可使用 level 自定义导航项缩进，水平模式只能为true",
-                            "type": "boolean",
-                            "default": "true"
+                            "name": "isCollapsed",
+                            "desc": "受控的收起态；给了就是受控",
+                            "type": "var",
+                            "default": "-"
                         },
                         {
-                            "name": "mode",
-                            "desc": "导航类型，目前支持横向与竖直，可选值：vertical或horizontal",
-                            "type": "string",
-                            "default": "vertical"
-                        },
-                        {
-                            "name": "openKeys",
-                            "desc": "受控的打开的子导航 itemKey 数组，配合 onOpenChange 回调控制子导航项展开，仅 mode = \"vertical\" 且侧边栏处于展开状态时有效",
-                            "type": "string[]",
-                            "default": ""
-                        },
-                        {
-                            "name": "prefixCls",
-                            "desc": "类名前缀",
-                            "type": "string",
-                            "default": "semi"
-                        },
-                        {
-                            "name": "renderWrapper",
-                            "desc": "自定义导航项外层组件，v>=2.24.0",
-                            "type": "ReactNode'>(data) => ReactNode",
-                            "default": ""
+                            "name": "defaultIsCollapsed",
+                            "desc": "非受控初值",
+                            "type": "bool",
+                            "default": "false"
                         },
                         {
                             "name": "selectedKeys",
-                            "desc": "受控的导航项 itemKey 数组，配合 onSelect 回调控制导航项选择",
-                            "type": "string[]",
-                            "default": ""
+                            "desc": "受控的选中 key",
+                            "type": "var",
+                            "default": "-"
                         },
                         {
-                            "name": "style",
-                            "desc": "最外层元素的自定义样式",
-                            "type": "CSSProperties",
-                            "default": ""
+                            "name": "defaultSelectedKeys",
+                            "desc": "非受控初值",
+                            "type": "var",
+                            "default": "-"
                         },
                         {
-                            "name": "subNavCloseDelay",
-                            "desc": "子导航浮层关闭的延迟。collapse 为 true 或 mode 为 \"horizontal\" 时有效，单位为 ms",
-                            "type": "number",
-                            "default": "100"
+                            "name": "openKeys",
+                            "desc": "受控的展开 key",
+                            "type": "var",
+                            "default": "-"
+                        },
+                        {
+                            "name": "defaultOpenKeys",
+                            "desc": "非受控初值",
+                            "type": "var",
+                            "default": "-"
+                        },
+                        {
+                            "name": "mode",
+                            "desc": "方向：Enums.DirectionVertical / DirectionHorizontal",
+                            "type": "int",
+                            "default": "Enums.DirectionVertical"
+                        },
+                        {
+                            "name": "limitIndent",
+                            "desc": "子级缩进是否封顶",
+                            "type": "bool",
+                            "default": "true"
+                        },
+                        {
+                            "name": "toggleIconPosition",
+                            "desc": "箭头位置：left / right",
+                            "type": "string",
+                            "default": "\"right\""
+                        },
+                        {
+                            "name": "expandIcon",
+                            "desc": "展开图标：图标名或 Component",
+                            "type": "var",
+                            "default": "-"
                         },
                         {
                             "name": "subNavMotion",
-                            "desc": "子导航折叠动画",
-                            "type": "boolean",
+                            "desc": "子级展开收起动画",
+                            "type": "bool",
                             "default": "true"
                         },
                         {
                             "name": "subNavOpenDelay",
-                            "desc": "子导航浮层显示的延迟。collapse 为 true 或 mode 为 \"horizontal\" 时有效，单位为 ms",
-                            "type": "number",
+                            "desc": "悬浮展开延迟（ms）",
+                            "type": "int",
                             "default": "0"
                         },
                         {
-                            "name": "toggleIconPosition",
-                            "desc": "带有子导航项的的父级导航项箭头位置，可选 left或 right",
-                            "type": "string",
-                            "default": "'right'"
-                        },
-                        {
-                            "name": "tooltipHideDelay",
-                            "desc": "tooltip 隐藏的延迟，collapse 为 true 时有效，单位为 ms",
-                            "type": "number",
+                            "name": "subNavCloseDelay",
+                            "desc": "悬浮收起延迟（ms）",
+                            "type": "int",
                             "default": "100"
                         },
                         {
                             "name": "tooltipShowDelay",
-                            "desc": "tooltip 显示的延迟，collapse 为 true 时有效，单位为 ms",
-                            "type": "number",
+                            "desc": "折叠档提示延迟（ms）",
+                            "type": "int",
                             "default": "0"
                         },
                         {
-                            "name": "onClick",
-                            "desc": "点击任意导航项时触发",
-                            "type": "void'>(itemKey, event, isOpen) => void",
-                            "default": "() => {}"
+                            "name": "tooltipHideDelay",
+                            "desc": "提示隐藏延迟（ms）",
+                            "type": "int",
+                            "default": "100"
                         },
                         {
-                            "name": "onCollapseChange",
-                            "desc": "收起状态变化时的回调",
-                            "type": "void'>(isCollapsed)=> void",
-                            "default": "() => {}"
+                            "name": "subDropdownProps",
+                            "desc": "子级浮层的额外参数",
+                            "type": "var",
+                            "default": "({})"
                         },
                         {
-                            "name": "onOpenChange",
-                            "desc": "切换某个子导航项目显隐状态时触发",
-                            "type": "void'> ({itemKey, openKeys, event, isOpen})=>{}",
-                            "default": "() => {}"
+                            "name": "bodyStyle",
+                            "desc": "列表区样式；只认 height（= 官方 wrapper 的高）",
+                            "type": "var",
+                            "default": "-"
                         },
                         {
                             "name": "onSelect",
-                            "desc": "第一次选中某个可选中导航项目时触发",
-                            "type": "void'>(onSelectProps)=>{}",
-                            "default": "() => {}"
-                        },
-                        {
-                            "name": "— Nav.Item —",
-                            "desc": "",
-                            "type": "",
-                            "default": ""
-                        },
-                        {
-                            "name": "disabled",
-                            "desc": "是否禁用",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "icon",
-                            "desc": "导航项目图标",
-                            "type": "ReactNode",
-                            "default": ""
-                        },
-                        {
-                            "name": "indent",
-                            "desc": "如果 icon 为空，是否保留其占位，仅对一级导航生效",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "itemKey",
-                            "desc": "导航项目唯一 key",
-                            "type": "string",
-                            "default": "\"\""
-                        },
-                        {
-                            "name": "level",
-                            "desc": "当前项所在嵌套层级，limitIndent 为 true时，用于自定义缩进位置",
-                            "type": "number",
-                            "default": ""
-                        },
-                        {
-                            "name": "link",
-                            "desc": "导航项 href 链接，传入时导航项整体会包裹一个 a 标签",
-                            "type": "string",
+                            "desc": "选中时发",
+                            "type": "signal select(var data)",
                             "default": "-"
-                        },
-                        {
-                            "name": "linkOptions",
-                            "desc": "透传给 a 标签的参数",
-                            "type": "object",
-                            "default": "-"
-                        },
-                        {
-                            "name": "text",
-                            "desc": "导航项目文案或元素",
-                            "type": "string\\",
-                            "default": "ReactNode"
                         },
                         {
                             "name": "onClick",
-                            "desc": "点击任意导航项时触发",
-                            "type": "void'>({itemKey, domEvent, isOpen}) => void",
-                            "default": "() => {}"
-                        },
-                        {
-                            "name": "onMouseEnter",
-                            "desc": "mouse enter 时触发",
-                            "type": "function(e) => {}",
-                            "default": "() => {}"
-                        },
-                        {
-                            "name": "onMouseLeave",
-                            "desc": "mouse leave 时触发",
-                            "type": "function(e) => {}",
-                            "default": "() => {}"
-                        },
-                        {
-                            "name": "— Nav.Sub —",
-                            "desc": "",
-                            "type": "",
-                            "default": ""
-                        },
-                        {
-                            "name": "disabled",
-                            "desc": "是否禁用",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "dropdownProps",
-                            "desc": "弹出层 dropdown 参数配置 (v >= 2.69)",
-                            "type": "DropdownProps",
-                            "default": ""
-                        },
-                        {
-                            "name": "dropdownStyle",
-                            "desc": "弹出层的 style",
-                            "type": "CSSProperties",
-                            "default": ""
-                        },
-                        {
-                            "name": "icon",
-                            "desc": "导航项目图标",
-                            "type": "ReactNode",
-                            "default": ""
-                        },
-                        {
-                            "name": "indent",
-                            "desc": "如果 icon 为空，是否保留其占位，仅对一级导航生效",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "isCollapsed",
-                            "desc": "是否处于收起状态的受控属性，仅 mode = \"vertical\"",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "isOpen",
-                            "desc": "是否打开",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "itemKey",
-                            "desc": "导航项目唯一 key",
-                            "type": "string",
+                            "desc": "点击时发",
+                            "type": "signal click(var data)",
                             "default": "-"
                         },
                         {
-                            "name": "level",
-                            "desc": "当前项所在嵌套层级，limitIndent 为 true时，用于自定义缩进位置",
-                            "type": "number",
-                            "default": "0"
-                        },
-                        {
-                            "name": "maxHeight",
-                            "desc": "最大高度",
-                            "type": "number",
-                            "default": "999"
-                        },
-                        {
-                            "name": "text",
-                            "desc": "导航项目文案或组件",
-                            "type": "string\\",
-                            "default": "ReactNode"
-                        },
-                        {
-                            "name": "onMouseEnter",
-                            "desc": "mouse enter 时触发",
-                            "type": "function(e) => {}",
-                            "default": "() => {}"
-                        },
-                        {
-                            "name": "onMouseLeave",
-                            "desc": "mouse leave 时触发",
-                            "type": "function(e) => {}",
-                            "default": "() => {}"
-                        },
-                        {
-                            "name": "— Nav.Header —",
-                            "desc": "",
-                            "type": "",
-                            "default": ""
-                        },
-                        {
-                            "name": "children",
-                            "desc": "子元素",
-                            "type": "ReactNode",
-                            "default": ""
-                        },
-                        {
-                            "name": "className",
-                            "desc": "最外层样式名",
-                            "type": "string",
-                            "default": ""
-                        },
-                        {
-                            "name": "link",
-                            "desc": "导航项 href 链接，传入时导航项整体会包裹一个 a 标签",
-                            "type": "string",
+                            "name": "onOpenChange",
+                            "desc": "展开 key 变化时发",
+                            "type": "signal openChange(var data)",
                             "default": "-"
                         },
                         {
-                            "name": "linkOptions",
-                            "desc": "透传给 a 标签的参数",
-                            "type": "object",
+                            "name": "onCollapseChange",
+                            "desc": "收起态变化时发",
+                            "type": "signal collapseChange(bool isCollapsed)",
                             "default": "-"
-                        },
-                        {
-                            "name": "logo",
-                            "desc": "Logo",
-                            "type": "ReactNode",
-                            "default": ""
-                        },
-                        {
-                            "name": "style",
-                            "desc": "最外层样式",
-                            "type": "CSSProperties",
-                            "default": ""
-                        },
-                        {
-                            "name": "text",
-                            "desc": "Logo 文案",
-                            "type": "ReactNode",
-                            "default": ""
-                        },
-                        {
-                            "name": "— Nav.Footer —",
-                            "desc": "",
-                            "type": "",
-                            "default": ""
-                        },
-                        {
-                            "name": "children",
-                            "desc": "子元素",
-                            "type": "ReactNode",
-                            "default": ""
-                        },
-                        {
-                            "name": "className",
-                            "desc": "最外层样式名",
-                            "type": "string",
-                            "default": ""
-                        },
-                        {
-                            "name": "collapseButton",
-                            "desc": "是否展示底部“收起侧边栏”按钮，mode=\"vertical\" 且 Footer 组件的 children 参数为空才有效果",
-                            "type": "boolean\\",
-                            "default": "ReactNode"
-                        },
-                        {
-                            "name": "collapseText",
-                            "desc": "“收起”按钮的文案",
-                            "type": "(collapsed:boolean) => ReactNode",
-                            "default": ""
-                        },
-                        {
-                            "name": "style",
-                            "desc": "最外层样式",
-                            "type": "CSSProperties",
-                            "default": ""
-                        },
-                        {
-                            "name": "onClick",
-                            "desc": "点击事件回调",
-                            "type": "(event) => void",
-                            "default": ""
                         }
                     ],
                     "guidelines": [
@@ -8490,136 +8322,130 @@
                     ],
                     "api": [
                         {
-                            "name": "className",
-                            "desc": "类名",
-                            "type": "string",
+                            "name": "— Pagination —",
+                            "desc": "",
+                            "type": "",
                             "default": ""
-                        },
-                        {
-                            "name": "currentPage",
-                            "desc": "当前页码",
-                            "type": "number",
-                            "default": ""
-                        },
-                        {
-                            "name": "defaultCurrentPage",
-                            "desc": "默认的当前页码",
-                            "type": "number",
-                            "default": ""
-                        },
-                        {
-                            "name": "disabled",
-                            "desc": "禁用",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "hideOnSinglePage",
-                            "desc": "总页数小于 2 时，是否自动隐藏分页器，当 showSizeChanger 为true时，此开关不再生效",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "hoverShowPageSelect",
-                            "desc": "hover 页码时是否展示切换页数的Select控件，仅当 size = 'small'时生效",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "nextText",
-                            "desc": "下一页文本",
-                            "type": "string\\",
-                            "default": "ReactNode"
-                        },
-                        {
-                            "name": "pageSize",
-                            "desc": "每页条数",
-                            "type": "number",
-                            "default": "10"
-                        },
-                        {
-                            "name": "pageSizeOpts",
-                            "desc": "指定每页显示多少条",
-                            "type": "array",
-                            "default": "\\[10, 20, 40, 100\\]"
-                        },
-                        {
-                            "name": "popoverPosition",
-                            "desc": "浮层方向，具体可见 Popover·API 参考·position",
-                            "type": "string",
-                            "default": "\"bottomLeft\""
-                        },
-                        {
-                            "name": "popoverZIndex",
-                            "desc": "浮层 z-index 值",
-                            "type": "number",
-                            "default": "1030"
-                        },
-                        {
-                            "name": "prevText",
-                            "desc": "上一页文本",
-                            "type": "string\\",
-                            "default": "ReactNode"
-                        },
-                        {
-                            "name": "preventPageChangeOnPageSizeChange",
-                            "desc": "切换 pageSize 时是否阻止自动调整 currentPage。默认情况下，切换 pageSize 时组件会自动计算新的 currentPage 以保持当前数据位置，设为 true 后由用户自行控制页码变化",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "style",
-                            "desc": "样式",
-                            "type": "object",
-                            "default": ""
-                        },
-                        {
-                            "name": "size",
-                            "desc": "尺寸",
-                            "type": "string",
-                            "default": ""
-                        },
-                        {
-                            "name": "showTotal",
-                            "desc": "是否显示总页数",
-                            "type": "boolean",
-                            "default": ""
-                        },
-                        {
-                            "name": "showSizeChanger",
-                            "desc": "是否显示切换页容量的 Select，size为small时不生效",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "showQuickJumper",
-                            "desc": "是否显示切换页码的 Input",
-                            "type": "boolean",
-                            "default": "false"
                         },
                         {
                             "name": "total",
                             "desc": "总条数",
-                            "type": "number",
+                            "type": "int",
                             "default": "1"
                         },
                         {
-                            "name": "onChange",
-                            "desc": "页码、每页容量变化时的回调函数",
-                            "type": "function(currentPage: number, pageSize: number)",
-                            "default": ""
+                            "name": "showTotal",
+                            "desc": "显示总数",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "pageSize",
+                            "desc": "每页条数（给了就盖过 pageSizeOpts）",
+                            "type": "var",
+                            "default": "-"
+                        },
+                        {
+                            "name": "pageSizeOpts",
+                            "desc": "每页条数候选",
+                            "type": "var",
+                            "default": "[10, 20, 40, 100]"
+                        },
+                        {
+                            "name": "size",
+                            "desc": "尺寸：Enums.Size（官方 'default' / 'small'）",
+                            "type": "int",
+                            "default": "Enums.Default"
+                        },
+                        {
+                            "name": "currentPage",
+                            "desc": "受控的当前页",
+                            "type": "var",
+                            "default": "-"
+                        },
+                        {
+                            "name": "defaultCurrentPage",
+                            "desc": "非受控初值",
+                            "type": "int",
+                            "default": "1"
+                        },
+                        {
+                            "name": "prevText",
+                            "desc": "上一页按钮文字",
+                            "type": "var",
+                            "default": "-"
+                        },
+                        {
+                            "name": "nextText",
+                            "desc": "下一页按钮文字",
+                            "type": "var",
+                            "default": "-"
+                        },
+                        {
+                            "name": "showSizeChanger",
+                            "desc": "显示每页条数选择",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "showQuickJumper",
+                            "desc": "显示跳页输入",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "popoverZIndex",
+                            "desc": "每页条数浮层的层级",
+                            "type": "int",
+                            "default": "1030"
+                        },
+                        {
+                            "name": "popoverPosition",
+                            "desc": "浮层方位（官方字符串档）",
+                            "type": "var",
+                            "default": "-"
+                        },
+                        {
+                            "name": "hideOnSinglePage",
+                            "desc": "只有一页时整个不画",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "hoverShowPageSelect",
+                            "desc": "悬浮页码才出条数选择（官方缺省没这条）",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "disabled",
+                            "desc": "禁用",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "preventPageChangeOnPageSizeChange",
+                            "desc": "改条数时不跳回第 1 页",
+                            "type": "bool",
+                            "default": "false"
                         },
                         {
                             "name": "onPageChange",
-                            "desc": "页码变化的回调函数",
-                            "type": "function(currentPage: number)",
-                            "default": ""
+                            "desc": "页码变化时发",
+                            "type": "signal pageChange(int page)",
+                            "default": "-"
                         },
                         {
                             "name": "onPageSizeChange",
-                            "desc": "每页容量变化时的回调函数",
-                            "type": "function(pageSize: number)",
-                            "default": ""
+                            "desc": "每页条数变化时发",
+                            "type": "signal pageSizeChange(int size)",
+                            "default": "-"
+                        },
+                        {
+                            "name": "onChange",
+                            "desc": "页码或条数变化时发：(page, size)",
+                            "type": "signal change(int page, int size)",
+                            "default": "-"
                         }
                     ],
                     "guidelines": [
@@ -8716,129 +8542,63 @@
                             "default": ""
                         },
                         {
-                            "name": "className",
-                            "desc": "类名",
+                            "name": "type",
+                            "desc": "档位：fill（缺省）/ basic / nav",
                             "type": "string",
-                            "default": ""
+                            "default": "\"fill\""
                         },
                         {
                             "name": "current",
-                            "desc": "指定当前步骤（从 0 起算）",
-                            "type": "number",
+                            "desc": "当前步，从 0 起算",
+                            "type": "int",
                             "default": "0"
-                        },
-                        {
-                            "name": "direction",
-                            "desc": "方向：horizontal / vertical",
-                            "type": "string",
-                            "default": "horizontal"
-                        },
-                        {
-                            "name": "hasLine",
-                            "desc": "basic 档是否显示连接线",
-                            "type": "boolean",
-                            "default": "true"
                         },
                         {
                             "name": "initial",
-                            "desc": "起始序号，从 0 起算",
-                            "type": "number",
+                            "desc": "初始步（非受控用）",
+                            "type": "int",
                             "default": "0"
                         },
                         {
                             "name": "status",
-                            "desc": "当前步骤状态",
+                            "desc": "状态：wait / process / finish / error / warning；nav 不读",
                             "type": "string",
-                            "default": "process"
+                            "default": "\"process\""
+                        },
+                        {
+                            "name": "direction",
+                            "desc": "方向：horizontal / vertical；nav 不读",
+                            "type": "string",
+                            "default": "\"horizontal\""
                         },
                         {
                             "name": "size",
-                            "desc": "尺寸（fill 档不读）",
+                            "desc": "尺寸：default / small；fill 不读",
                             "type": "string",
-                            "default": "default"
+                            "default": "\"default\""
                         },
                         {
-                            "name": "style",
-                            "desc": "样式",
-                            "type": "CSSProperties",
-                            "default": ""
+                            "name": "hasLine",
+                            "desc": "连接线（只管 basic 档）",
+                            "type": "bool",
+                            "default": "true"
                         },
                         {
-                            "name": "type",
-                            "desc": "步骤条类型：fill / basic / nav",
+                            "name": "ariaLabel",
+                            "desc": "无障碍标签",
                             "type": "string",
-                            "default": "fill"
+                            "default": "\"\""
+                        },
+                        {
+                            "name": "items",
+                            "desc": "步骤项：[{title, description, icon}]",
+                            "type": "var",
+                            "default": "[]"
                         },
                         {
                             "name": "onChange",
-                            "desc": "切换步骤的回调",
-                            "type": "(index: number) => void",
-                            "default": "-"
-                        },
-                        {
-                            "name": "— Steps.Step —",
-                            "desc": "",
-                            "type": "",
-                            "default": ""
-                        },
-                        {
-                            "name": "aria-label",
-                            "desc": "容器 aria-label",
-                            "type": "React.AriaAttributes[\"aria-label\"]",
-                            "default": ""
-                        },
-                        {
-                            "name": "className",
-                            "desc": "类名",
-                            "type": "string",
-                            "default": ""
-                        },
-                        {
-                            "name": "description",
-                            "desc": "步骤的详情描述",
-                            "type": "ReactNode",
-                            "default": "-"
-                        },
-                        {
-                            "name": "icon",
-                            "desc": "步骤图标，可自定义",
-                            "type": "ReactNode",
-                            "default": "-"
-                        },
-                        {
-                            "name": "role",
-                            "desc": "容器 role",
-                            "type": "React.AriaRole",
-                            "default": "-"
-                        },
-                        {
-                            "name": "status",
-                            "desc": "指定该步状态；不给就由 Steps.current 推",
-                            "type": "string",
-                            "default": "wait"
-                        },
-                        {
-                            "name": "style",
-                            "desc": "样式",
-                            "type": "CSSProperties",
-                            "default": ""
-                        },
-                        {
-                            "name": "title",
-                            "desc": "标题",
-                            "type": "ReactNode",
-                            "default": "-"
-                        },
-                        {
-                            "name": "onClick",
-                            "desc": "点击回调",
-                            "type": "function",
-                            "default": "-"
-                        },
-                        {
-                            "name": "onKeyDown",
-                            "desc": "回车事件回调",
-                            "type": "function",
+                            "desc": "点某一步时发：(index)",
+                            "type": "signal change(int index)",
                             "default": "-"
                         }
                     ],
