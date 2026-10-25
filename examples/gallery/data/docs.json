@@ -1843,147 +1843,111 @@
                             "default": ""
                         },
                         {
-                            "name": "addonId",
-                            "desc": "addon 节点 id，aria-labelledby 指向这个 id，若无设置会随机生成一个 id v2.11.0 后提供",
-                            "type": "string",
-                            "default": ""
-                        },
-                        {
-                            "name": "aria-label",
-                            "desc": "定义 Checkbox 的作用",
-                            "type": "string",
-                            "default": "-"
-                        },
-                        {
                             "name": "checked",
-                            "desc": "指定当前Checkbox是否选中（在Group中使用时无效）",
-                            "type": "boolean",
+                            "desc": "受控的选中态",
+                            "type": "bool",
                             "default": "false"
                         },
                         {
-                            "name": "type",
-                            "desc": "设置checkbox 的样式类型，可选值为: default、card、pureCard v2.18.0 后提供",
-                            "type": "string",
-                            "default": "default"
+                            "name": "defaultChecked",
+                            "desc": "非受控的初值",
+                            "type": "bool",
+                            "default": "false"
                         },
                         {
-                            "name": "defaultChecked",
-                            "desc": "初始是否选中（在Group中使用时无效）",
-                            "type": "boolean",
+                            "name": "indeterminate",
+                            "desc": "半选样式",
+                            "type": "bool",
                             "default": "false"
                         },
                         {
                             "name": "disabled",
-                            "desc": "失效状态",
-                            "type": "boolean",
+                            "desc": "禁用",
+                            "type": "bool",
                             "default": "false"
+                        },
+                        {
+                            "name": "value",
+                            "desc": "在组里的取值（给 CheckboxGroup 收集）",
+                            "type": "var",
+                            "default": "-"
+                        },
+                        {
+                            "name": "text",
+                            "desc": "标签文字（官方是 children，本库只收字符串）",
+                            "type": "string",
+                            "default": "\"\"                  // 官方是 children（ReactNode），本库只收字符串"
                         },
                         {
                             "name": "extra",
                             "desc": "副文本",
-                            "type": "ReactNode",
-                            "default": "-"
-                        },
-                        {
-                            "name": "extraId",
-                            "desc": "副文本的 id，aria-describedby 指向这个 id，若无设置会随机生成一个 id v2.11.0 后提供",
-                            "type": "ReactNode",
-                            "default": "-"
-                        },
-                        {
-                            "name": "value",
-                            "desc": "该checkbox在CheckboxGroup中代表的value",
-                            "type": "any",
-                            "default": "-"
-                        },
-                        {
-                            "name": "indeterminate",
-                            "desc": "设置 indeterminate 状态，只负责样式控制",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "preventScroll",
-                            "desc": "指示浏览器是否应滚动文档以显示新聚焦的元素，作用于组件内的 focus 方法",
-                            "type": "boolean",
-                            "default": ""
-                        },
-                        {
-                            "name": "onChange",
-                            "desc": "变化时回调函数",
-                            "type": "function(e:Event)",
-                            "default": "-"
-                        },
-                        {
-                            "name": "— Checkbox Group —",
-                            "desc": "",
-                            "type": "",
-                            "default": ""
-                        },
-                        {
-                            "name": "defaultValue",
-                            "desc": "组内默认选中的选项，会与Checkbox的value值做匹配",
-                            "type": "any\\[]",
-                            "default": "\\[]"
-                        },
-                        {
-                            "name": "direction",
-                            "desc": "组内checkbox布局，可选水平horizontal或vertical",
                             "type": "string",
-                            "default": "vertical"
-                        },
-                        {
-                            "name": "disabled",
-                            "desc": "整组失效",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "name",
-                            "desc": "CheckboxGroup 下所有 input[type=\"checkbox\"] 的 name 属性",
-                            "type": "string",
-                            "default": "-"
-                        },
-                        {
-                            "name": "options",
-                            "desc": "指定可选项",
-                            "type": "any\\[]",
-                            "default": "\\[]"
+                            "default": "\"\"                 // 副文本"
                         },
                         {
                             "name": "type",
-                            "desc": "设置所有 checkbox 的样式类型，可选值为: default、card、pureCard",
-                            "type": "string",
-                            "default": "default"
+                            "desc": "形态：Enums.ChoiceDefault / ChoiceCard / ChoicePureCard",
+                            "type": "int",
+                            "default": "Enums.ChoiceDefault"
                         },
                         {
-                            "name": "value",
-                            "desc": "指定选中的选项",
-                            "type": "any\\[]",
-                            "default": "\\[]"
-                        },
-                        {
-                            "name": "onChange",
-                            "desc": "变化时回调函数",
-                            "type": "function(checkedValue)",
+                            "name": "onToggled",
+                            "desc": "点击翻面时发",
+                            "type": "signal",
                             "default": "-"
                         },
                         {
-                            "name": "— Checkbox —",
+                            "name": "— CheckboxGroup —",
                             "desc": "",
                             "type": "",
                             "default": ""
                         },
                         {
-                            "name": "blur()",
-                            "desc": "移除焦点",
-                            "type": "() => void",
+                            "name": "options",
+                            "desc": "选项：字符串，或 {label, value, extra, disabled}",
+                            "type": "var",
                             "default": "-"
                         },
                         {
-                            "name": "focus()",
-                            "desc": "获取焦点",
-                            "type": "() => void",
+                            "name": "value",
+                            "desc": "受控的选中值数组",
+                            "type": "var",
+                            "default": "-"
+                        },
+                        {
+                            "name": "defaultValue",
+                            "desc": "非受控的初值数组",
+                            "type": "var",
+                            "default": "[]"
+                        },
+                        {
+                            "name": "disabled",
+                            "desc": "整组禁用",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "direction",
+                            "desc": "排列：Enums.DirectionVertical / DirectionHorizontal",
+                            "type": "int",
+                            "default": "Enums.DirectionVertical"
+                        },
+                        {
+                            "name": "type",
+                            "desc": "形态：Enums.ChoiceType",
+                            "type": "int",
+                            "default": "Enums.ChoiceDefault"
+                        },
+                        {
+                            "name": "content",
+                            "desc": "默认子项：可选，铺在选项之外",
+                            "type": "alias",
+                            "default": "-"
+                        },
+                        {
+                            "name": "onChanged",
+                            "desc": "选中集合变化时发，参数是新的 value 数组",
+                            "type": "signal changed(var checkedValue)",
                             "default": "-"
                         }
                     ],
@@ -4999,88 +4963,64 @@
                     ],
                     "api": [
                         {
-                            "name": "autoFocus",
-                            "desc": "是否自动聚焦到第一个元素",
-                            "type": "boolean",
-                            "default": "true"
-                        },
-                        {
-                            "name": "className",
-                            "desc": "类名",
-                            "type": "string",
-                            "default": ""
-                        },
-                        {
-                            "name": "count",
-                            "desc": "验证码位数",
-                            "type": "number",
-                            "default": "6"
-                        },
-                        {
-                            "name": "defaultValue",
-                            "desc": "输入框内容默认值",
-                            "type": "string",
-                            "default": ""
-                        },
-                        {
-                            "name": "disabled",
-                            "desc": "禁用",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "format",
-                            "desc": "验证码单个字符格式限制",
-                            "type": "'number'\\",
-                            "default": "'number'"
-                        },
-                        {
-                            "name": "size",
-                            "desc": "输入框大小，large、default、small",
-                            "type": "string",
-                            "default": "'default'"
-                        },
-                        {
-                            "name": "style",
-                            "desc": "样式",
-                            "type": "object",
-                            "default": ""
-                        },
-                        {
-                            "name": "value",
-                            "desc": "输入框内容",
-                            "type": "string",
-                            "default": ""
-                        },
-                        {
-                            "name": "onChange",
-                            "desc": "输入回调",
-                            "type": "(value:string)=>void",
-                            "default": ""
-                        },
-                        {
-                            "name": "onComplete",
-                            "desc": "验证码所有位数输入完毕回调",
-                            "type": "(value: string) => void",
-                            "default": ""
-                        },
-                        {
-                            "name": "— Methods —",
+                            "name": "— PinCode —",
                             "desc": "",
                             "type": "",
                             "default": ""
                         },
                         {
-                            "name": "focus",
-                            "desc": "聚焦，入参为验证码第几位",
-                            "type": "",
-                            "default": ""
+                            "name": "value",
+                            "desc": "受控的验证码串",
+                            "type": "var",
+                            "default": "-"
                         },
                         {
-                            "name": "blur",
-                            "desc": "移出焦点，入参为验证码第几位",
-                            "type": "",
-                            "default": ""
+                            "name": "defaultValue",
+                            "desc": "非受控的初值",
+                            "type": "string",
+                            "default": "\"\""
+                        },
+                        {
+                            "name": "count",
+                            "desc": "格数",
+                            "type": "int",
+                            "default": "6"
+                        },
+                        {
+                            "name": "format",
+                            "desc": "单格格式：'number' / 'mixed' / 正则 / 判断函数",
+                            "type": "var",
+                            "default": "\"number\""
+                        },
+                        {
+                            "name": "size",
+                            "desc": "'small' / 'default' / 'large'（透传给 Input）",
+                            "type": "string",
+                            "default": "\"default\""
+                        },
+                        {
+                            "name": "disabled",
+                            "desc": "禁用",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "autoFocus",
+                            "desc": "挂载后聚焦第一格（缺省 true）",
+                            "type": "bool",
+                            "default": "true"
+                        },
+                        {
+                            "name": "onChanged",
+                            "desc": "每次输入都发",
+                            "type": "signal changed(string value)",
+                            "default": "-"
+                        },
+                        {
+                            "name": "onCompleted",
+                            "desc": "填满全部格子时发",
+                            "type": "signal completed(string value)",
+                            "default": "-"
                         }
                     ],
                     "guidelines": [],
@@ -5145,123 +5085,81 @@
                             "default": ""
                         },
                         {
-                            "name": "addonClassName",
-                            "desc": "包裹内容容器的样式类名",
-                            "type": "string",
-                            "default": ""
-                        },
-                        {
-                            "name": "addonId",
-                            "desc": "addon 节点 id，aria-labelledby 指向这个 id，若无设置会随机生成一个 id v2.11.0 后提供",
-                            "type": "string",
-                            "default": ""
-                        },
-                        {
-                            "name": "addonStyle",
-                            "desc": "包裹内容容器的内联样式",
-                            "type": "CSSProperties",
-                            "default": ""
-                        },
-                        {
-                            "name": "aria-label",
-                            "desc": "Radio 的 label",
-                            "type": "string",
-                            "default": "-"
-                        },
-                        {
-                            "name": "autoFocus",
-                            "desc": "自动获取焦点",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
                             "name": "checked",
-                            "desc": "指定当前是否选中",
-                            "type": "boolean",
+                            "desc": "受控的选中态",
+                            "type": "bool",
                             "default": "false"
-                        },
-                        {
-                            "name": "className",
-                            "desc": "样式类名",
-                            "type": "string",
-                            "default": ""
                         },
                         {
                             "name": "defaultChecked",
-                            "desc": "初始是否选中",
-                            "type": "boolean",
+                            "desc": "非受控的初值",
+                            "type": "bool",
                             "default": "false"
                         },
                         {
-                            "name": "disabled",
-                            "desc": "禁选单选框",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "extra",
-                            "desc": "副文本，只对type='default'生效",
-                            "type": "ReactNode",
+                            "name": "value",
+                            "desc": "在组里的取值（给 RadioGroup 收集）",
+                            "type": "var",
                             "default": "-"
                         },
                         {
-                            "name": "extraId",
-                            "desc": "副文本的 id，aria-describedby 指向这个 id，若无设置会随机生成一个 id v2.11.0 后提供",
-                            "type": "ReactNode",
+                            "name": "disabled",
+                            "desc": "禁用",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "text",
+                            "desc": "标签文字（官方是 children，本库只收字符串）",
+                            "type": "string",
+                            "default": "\"\"                  // 官方是 children（ReactNode），本库只收字符串"
+                        },
+                        {
+                            "name": "extra",
+                            "desc": "副文本：字符串或 Component",
+                            "type": "var",
                             "default": "-"
                         },
                         {
                             "name": "mode",
-                            "desc": "高级和普通模式，高级模式可以在 checked 时点击变成 unchecked，可选值 advanced",
+                            "desc": "空串；'button' 是按钮档的内部标记",
                             "type": "string",
-                            "default": "-"
-                        },
-                        {
-                            "name": "name",
-                            "desc": "Radio组件中input[type=\"radio\"]的name属性，具有相同name的Radio属于同一个RadioGroup，name属性可参考 MDN Radio",
-                            "type": "string",
-                            "default": "-"
-                        },
-                        {
-                            "name": "preventScroll",
-                            "desc": "指示浏览器是否应滚动文档以显示新聚焦的元素，作用于组件内的 focus 方法",
-                            "type": "boolean",
-                            "default": ""
-                        },
-                        {
-                            "name": "style",
-                            "desc": "内联样式",
-                            "type": "CSSProperties",
-                            "default": ""
+                            "default": "\"\""
                         },
                         {
                             "name": "type",
-                            "desc": "设置 radio的样式类型，可选值为：default、button、card、pureCard 该 api 在 v2.18.0 后提供",
-                            "type": "string",
-                            "default": "default"
+                            "desc": "形态：Enums.ChoiceType（在组里被 RadioGroup 覆盖）",
+                            "type": "int",
+                            "default": "Enums.ChoiceDefault"
                         },
                         {
-                            "name": "value",
-                            "desc": "根据 value 进行比较，判断是否选中",
-                            "type": "string \\",
-                            "default": "number"
+                            "name": "autoFocus",
+                            "desc": "挂载后聚焦",
+                            "type": "bool",
+                            "default": "false"
                         },
                         {
-                            "name": "onChange",
-                            "desc": "选项变化时的回调函数",
-                            "type": "function(e:Event)",
+                            "name": "onToggled",
+                            "desc": "点击翻面时发",
+                            "type": "signal",
                             "default": "-"
                         },
                         {
-                            "name": "onMouseEnter",
-                            "desc": "鼠标移入选项时的回调函数",
-                            "type": "function(e:Event)",
+                            "name": "onChanged",
+                            "desc": "选中变化时发（非受控档）",
+                            "type": "signal changed(var value)",
                             "default": "-"
                         },
                         {
-                            "name": "onMouseLeave",
-                            "desc": "鼠标移出选项时的回调函数",
-                            "type": "function(e:Event)",
+                            "name": "onMouseEntered",
+                            "desc": "指针进入时发",
+                            "type": "signal",
+                            "default": "-"
+                        },
+                        {
+                            "name": "onMouseLeft",
+                            "desc": "指针离开时发",
+                            "type": "signal",
                             "default": "-"
                         },
                         {
@@ -5271,99 +5169,69 @@
                             "default": ""
                         },
                         {
-                            "name": "aria-label",
-                            "desc": "RadioGroup 的 label",
-                            "type": "string",
+                            "name": "value",
+                            "desc": "受控的选中值",
+                            "type": "var",
                             "default": "-"
-                        },
-                        {
-                            "name": "buttonSize",
-                            "desc": "type='button'的radio的尺寸大小，可选值为：small、middle、large",
-                            "type": "string",
-                            "default": "middle"
-                        },
-                        {
-                            "name": "className",
-                            "desc": "样式类名",
-                            "type": "string",
-                            "default": ""
                         },
                         {
                             "name": "defaultValue",
-                            "desc": "默认选中的值",
-                            "type": "string \\",
-                            "default": "number"
-                        },
-                        {
-                            "name": "direction",
-                            "desc": "radio 排列方向, 只对type='default'生效，可选值horizontal、vertical",
-                            "type": "string",
-                            "default": "horizontal"
-                        },
-                        {
-                            "name": "disabled",
-                            "desc": "禁选所有子单选器",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "mode",
-                            "desc": "高级和普通模式，可以在 checked 时点击变成 unchecked，可选值 advanced",
-                            "type": "string",
-                            "default": "-"
-                        },
-                        {
-                            "name": "name",
-                            "desc": "RadioGroup 下所有 input[type=\"radio\"] 的 name 属性",
-                            "type": "string",
+                            "desc": "非受控的初值",
+                            "type": "var",
                             "default": "-"
                         },
                         {
                             "name": "options",
-                            "desc": "以配置形式设置子元素",
-                            "type": "Array",
+                            "desc": "选项：字符串，或 {label, value, extra, disabled}",
+                            "type": "var",
                             "default": "-"
                         },
                         {
-                            "name": "style",
-                            "desc": "内联样式",
-                            "type": "CSSProperties",
-                            "default": ""
+                            "name": "disabled",
+                            "desc": "整组禁用",
+                            "type": "bool",
+                            "default": "false"
                         },
                         {
-                            "name": "value",
-                            "desc": "用于设置当前选中的值",
-                            "type": "string \\",
-                            "default": "number"
+                            "name": "direction",
+                            "desc": "排列：Enums.DirectionHorizontal / DirectionVertical",
+                            "type": "int",
+                            "default": "Enums.DirectionHorizontal"
                         },
                         {
                             "name": "type",
-                            "desc": "设置所有radio的样式类型，可选值为：default、button、card、pureCard",
+                            "desc": "形态：Enums.ChoiceType（含 ChoiceButton）",
+                            "type": "int",
+                            "default": "Enums.ChoiceDefault"
+                        },
+                        {
+                            "name": "buttonSize",
+                            "desc": "按钮档的尺寸：Enums.RadioButtonSize",
+                            "type": "int",
+                            "default": "Enums.RadioButtonMiddle"
+                        },
+                        {
+                            "name": "mode",
+                            "desc": "空串；'button' 切按钮档",
                             "type": "string",
-                            "default": "default"
+                            "default": "\"\""
                         },
                         {
-                            "name": "onChange",
-                            "desc": "选项变化时的回调函数",
-                            "type": "function(e:Event)",
+                            "name": "name",
+                            "desc": "原生 name，本库未消费",
+                            "type": "string",
+                            "default": "\"\""
+                        },
+                        {
+                            "name": "content",
+                            "desc": "默认子项：可选，铺在选项之外",
+                            "type": "alias",
                             "default": "-"
                         },
                         {
-                            "name": "— Radio —",
-                            "desc": "",
-                            "type": "",
-                            "default": ""
-                        },
-                        {
-                            "name": "blur()",
-                            "desc": "移除焦点",
-                            "type": "() => void",
-                            "default": "-"
-                        },
-                        {
-                            "name": "focus()",
-                            "desc": "获取焦点",
-                            "type": "() => void",
+                            "name": "onChanged",
+                            "desc": "选中值变化时发",
+                            "type": "signal changed(var value)",
                             "default": "-"
                         }
                     ],
@@ -5493,111 +5361,105 @@
                     ],
                     "api": [
                         {
-                            "name": "allowClear",
-                            "desc": "是否允许再次点击后清除",
-                            "type": "boolean",
-                            "default": "true"
-                        },
-                        {
-                            "name": "allowHalf",
-                            "desc": "是否允许半选",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "autoFocus",
-                            "desc": "自动获取焦点",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "character",
-                            "desc": "自定义字符",
-                            "type": "ReactNode",
-                            "default": "<IconStar size=\"extra-large\"/>"
-                        },
-                        {
-                            "name": "className",
-                            "desc": "自定义样式类名",
-                            "type": "string",
-                            "default": "-"
-                        },
-                        {
-                            "name": "count",
-                            "desc": "star 总数",
-                            "type": "number",
-                            "default": "5"
-                        },
-                        {
-                            "name": "defaultValue",
-                            "desc": "默认值",
-                            "type": "number",
-                            "default": "0"
-                        },
-                        {
-                            "name": "disabled",
-                            "desc": "只读，无法进行交互",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "preventScroll",
-                            "desc": "指示浏览器是否应滚动文档以显示新聚焦的元素，作用于组件内的 focus 方法",
-                            "type": "boolean",
+                            "name": "— Rating —",
+                            "desc": "",
+                            "type": "",
                             "default": ""
                         },
                         {
-                            "name": "size",
-                            "desc": "尺寸， default， small，支持传入 number 类型自定义尺寸",
-                            "type": "string | number",
-                            "default": "default"
+                            "name": "value",
+                            "desc": "受控的分值",
+                            "type": "var",
+                            "default": "-"
                         },
                         {
-                            "name": "style",
-                            "desc": "自定义样式对象",
-                            "type": "object",
+                            "name": "defaultValue",
+                            "desc": "非受控时的初值",
+                            "type": "real",
+                            "default": "0"
+                        },
+                        {
+                            "name": "count",
+                            "desc": "星数",
+                            "type": "int",
+                            "default": "5"
+                        },
+                        {
+                            "name": "allowHalf",
+                            "desc": "允许半星",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "allowClear",
+                            "desc": "再点一次清空",
+                            "type": "bool",
+                            "default": "true"
+                        },
+                        {
+                            "name": "disabled",
+                            "desc": "禁用",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "size",
+                            "desc": "'default' / 'small' / 数字（当边长用）",
+                            "type": "var",
+                            "default": "\"default\""
+                        },
+                        {
+                            "name": "character",
+                            "desc": "自定义字符：字符串或 Component",
+                            "type": "var",
                             "default": "-"
                         },
                         {
                             "name": "tooltips",
-                            "desc": "自定义每项的提示信息",
-                            "type": "string[]",
+                            "desc": "每颗星的悬浮提示，按颗给",
+                            "type": "var",
                             "default": "-"
                         },
                         {
-                            "name": "value",
-                            "desc": "当前受控值",
-                            "type": "number",
+                            "name": "autoFocus",
+                            "desc": "挂载后聚焦",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "color",
+                            "desc": "星星颜色；缺省 yellow[5]",
+                            "type": "color",
+                            "default": "yellow[5]"
+                        },
+                        {
+                            "name": "onChanged",
+                            "desc": "点击改值时发（受控档不写回）",
+                            "type": "signal changed(real value)",
                             "default": "-"
                         },
                         {
-                            "name": "onBlur",
-                            "desc": "失去焦点时的回调",
-                            "type": "function()",
+                            "name": "onHoverChanged",
+                            "desc": "指针移到某颗星上时发",
+                            "type": "signal hoverChanged(var value)",
                             "default": "-"
                         },
                         {
-                            "name": "onChange",
-                            "desc": "选择时的回调",
-                            "type": "function(value: number)",
+                            "name": "onFocused",
+                            "desc": "获得焦点时发",
+                            "type": "signal",
                             "default": "-"
                         },
                         {
-                            "name": "onFocus",
-                            "desc": "获取焦点时的回调",
-                            "type": "function()",
+                            "name": "onBlurred",
+                            "desc": "失去焦点时发",
+                            "type": "signal",
                             "default": "-"
                         },
                         {
-                            "name": "onHoverChange",
-                            "desc": "鼠标经过时数值变化的回调",
-                            "type": "function(value: number)",
-                            "default": "-"
-                        },
-                        {
-                            "name": "onKeyDown",
-                            "desc": "按键回调",
-                            "type": "function(e: event)",
+                            "name": "onKeyPressed",
+                            "desc": "方向键加分时发",
+                            "type": "signal",
                             "default": "-"
                         }
                     ],
@@ -6685,159 +6547,135 @@
                     ],
                     "api": [
                         {
-                            "name": "aria-label",
-                            "desc": "aria-label属性，用来给当前元素加上的标签描述, 提升可访问性",
-                            "type": "string",
-                            "default": "-"
+                            "name": "— Slider —",
+                            "desc": "",
+                            "type": "",
+                            "default": ""
                         },
                         {
-                            "name": "aria-labelledby",
-                            "desc": "aria-labelledby属性，表明某些元素的 id 是某一对象的标签。它被用来确定控件或控件组与它们标签之间的联系, 提升可访问性",
-                            "type": "string",
-                            "default": "-"
-                        },
-                        {
-                            "name": "aria-valuetext",
-                            "desc": "aria-valuetext属性，为滑块的当前值提供用户友好的名称。",
-                            "type": "string",
-                            "default": "-"
-                        },
-                        {
-                            "name": "defaultValue",
-                            "desc": "设置初始取值",
-                            "type": "number | number[]",
+                            "name": "value",
+                            "desc": "受控的值",
+                            "type": "real",
                             "default": "0"
-                        },
-                        {
-                            "name": "disabled",
-                            "desc": "滑块是否禁用",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "handleDot",
-                            "desc": "滑块是否带有圆点 2.52.0",
-                            "type": "{ color: string, size: string} | { color: string, size: string}[]",
-                            "default": "-"
-                        },
-                        {
-                            "name": "included",
-                            "desc": "marks 不为空对象时有效，值为 true 时表示值为包含关系，false 表示并列",
-                            "type": "boolean",
-                            "default": "true"
-                        },
-                        {
-                            "name": "marks",
-                            "desc": "刻度，key 的类型必须为 number 且取值在闭区间 \\[min, max] 内",
-                            "type": "Record<number, string \\>",
-                            "default": "无"
-                        },
-                        {
-                            "name": "max",
-                            "desc": "最大值",
-                            "type": "number",
-                            "default": "100"
                         },
                         {
                             "name": "min",
                             "desc": "最小值",
-                            "type": "number",
+                            "type": "real",
                             "default": "0"
                         },
                         {
-                            "name": "railStyle",
-                            "desc": "滑块轨道的样式",
-                            "type": "CSSProperties",
-                            "default": "-"
-                        },
-                        {
-                            "name": "range",
-                            "desc": "是否支持两边同时可滑动",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "showArrow",
-                            "desc": "tooltip 是否带箭头 2.48.0",
-                            "type": "boolean",
-                            "default": "true"
-                        },
-                        {
-                            "name": "showBoundary",
-                            "desc": "是否在 hover 时展示最大值最小值",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "showMarkLabel",
-                            "desc": "是否隐藏标签 2.48.0",
-                            "type": "boolean",
-                            "default": "true"
+                            "name": "max",
+                            "desc": "最大值",
+                            "type": "real",
+                            "default": "100"
                         },
                         {
                             "name": "step",
                             "desc": "步长",
-                            "type": "number",
+                            "type": "real",
                             "default": "1"
                         },
                         {
-                            "name": "tipFormatter",
-                            "desc": "设置Tooltip的展示格式，默认显示当前选值",
-                            "type": "(value: string | number | boolean | (string | number | boolean)[]) => any",
-                            "default": "v => v"
+                            "name": "range",
+                            "desc": "双滑块档（配合 values）",
+                            "type": "bool",
+                            "default": "false"
                         },
                         {
-                            "name": "tooltipOnMark",
-                            "desc": "滑轨上的 mark 是否带有 tooltip",
-                            "type": "false",
-                            "default": "2.48.0"
-                        },
-                        {
-                            "name": "tooltipVisible",
-                            "desc": "是否始终显示Tooltip",
-                            "type": "boolean",
-                            "default": "无"
-                        },
-                        {
-                            "name": "value",
-                            "desc": "设置当前取值",
-                            "type": "number | number[]",
-                            "default": ""
+                            "name": "values",
+                            "desc": "双滑块档的两个值 [低, 高]",
+                            "type": "var",
+                            "default": "[0, 100]"
                         },
                         {
                             "name": "vertical",
-                            "desc": "是否设置方向为垂直",
-                            "type": "boolean",
+                            "desc": "竖直",
+                            "type": "bool",
                             "default": "false"
                         },
                         {
                             "name": "verticalReverse",
-                            "desc": "反转垂直方向，即上大下小",
-                            "type": "boolean",
+                            "desc": "竖直且反向（大值在上）",
+                            "type": "bool",
                             "default": "false"
                         },
                         {
+                            "name": "marks",
+                            "desc": "刻度：数值数组或 [{value, style, label}]",
+                            "type": "var",
+                            "default": "[]"
+                        },
+                        {
+                            "name": "included",
+                            "desc": "两块之间的轨道上色",
+                            "type": "bool",
+                            "default": "true"
+                        },
+                        {
+                            "name": "showMarkLabel",
+                            "desc": "显示刻度标签",
+                            "type": "bool",
+                            "default": "true"
+                        },
+                        {
+                            "name": "tooltipOnMark",
+                            "desc": "悬浮刻度时给提示",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "handleDot",
+                            "desc": "可拖节点：null 用缺省条，或给 Component",
+                            "type": "var",
+                            "default": "null"
+                        },
+                        {
+                            "name": "showValue",
+                            "desc": "显示当前值",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "suffix",
+                            "desc": "值后面的后缀文字",
+                            "type": "string",
+                            "default": "\"\""
+                        },
+                        {
+                            "name": "tipFormatter",
+                            "desc": "提示文字的格式化函数",
+                            "type": "var",
+                            "default": "null"
+                        },
+                        {
+                            "name": "showBoundary",
+                            "desc": "显示 min / max 两个端点",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "railGradient",
+                            "desc": "轨道渐变（Gradient）",
+                            "type": "Gradient",
+                            "default": "null"
+                        },
+                        {
+                            "name": "railContent",
+                            "desc": "默认子项：铺在轨道里的内容",
+                            "type": "alias",
+                            "default": "-"
+                        },
+                        {
+                            "name": "onMoved",
+                            "desc": "拖动过程中发",
+                            "type": "signal moved(var value)",
+                            "default": "-"
+                        },
+                        {
                             "name": "onAfterChange",
-                            "desc": "值变化后触发，把当前值作为参数传入",
-                            "type": "(value: number | number[]) => void",
-                            "default": "无"
-                        },
-                        {
-                            "name": "onChange",
-                            "desc": "当 Slider 的值发生改变时的回调",
-                            "type": "(value: number | number[]) => void",
-                            "default": "无"
-                        },
-                        {
-                            "name": "onMouseUp",
-                            "desc": "鼠标松开滑块时触发 2.41.0",
-                            "type": "(e: React.MouseEvent<HTMLDivElement\\>) => void",
-                            "default": "无"
-                        },
-                        {
-                            "name": "getAriaValueText",
-                            "desc": "用于给滑块的当前值提供一个用户友好的名称，对屏幕阅读器用户很重要，参数value为当前滑块的值，index为当前滑块的顺序",
-                            "type": "(value: number, index?: number) => string",
+                            "desc": "松手之后发",
+                            "type": "signal afterChange(var value)",
                             "default": "-"
                         }
                     ],
@@ -7007,88 +6845,46 @@
                     ],
                     "api": [
                         {
-                            "name": "aria-label",
-                            "desc": "aria-label属性，用来给当前元素加上的标签描述, 提升可访问性",
-                            "type": "string",
-                            "default": ""
-                        },
-                        {
-                            "name": "aria-labelledby",
-                            "desc": "aria-labelledby属性，表明某些元素的 id 是某一对象的标签。它被用来确定控件或控件组与它们标签之间的联系, 提升可访问性",
-                            "type": "string",
-                            "default": ""
-                        },
-                        {
-                            "name": "className",
-                            "desc": "类名",
-                            "type": "string",
+                            "name": "— Switch —",
+                            "desc": "",
+                            "type": "",
                             "default": ""
                         },
                         {
                             "name": "checked",
-                            "desc": "指示当前是否选中,配合 onChange 使用",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "checkedText",
-                            "desc": "打开时展示的内容, size 为 small 时无效",
-                            "type": "ReactNode",
-                            "default": ""
-                        },
-                        {
-                            "name": "defaultChecked",
-                            "desc": "初始是否选中",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "disabled",
-                            "desc": "是否禁用",
-                            "type": "boolean",
+                            "desc": "受控的开关状态",
+                            "type": "bool",
                             "default": "false"
                         },
                         {
                             "name": "loading",
-                            "desc": "设置加载状态",
-                            "type": "boolean",
+                            "desc": "转圈并拦下点击",
+                            "type": "bool",
                             "default": "false"
                         },
                         {
-                            "name": "onChange",
-                            "desc": "变化时回调函数",
-                            "type": "function(checked:boolean)",
-                            "default": ""
-                        },
-                        {
-                            "name": "onMouseEnter",
-                            "desc": "鼠标移入时回调",
-                            "type": "function()",
-                            "default": ""
-                        },
-                        {
-                            "name": "onMouseLeave",
-                            "desc": "鼠标移出时回调",
-                            "type": "function()",
-                            "default": ""
-                        },
-                        {
-                            "name": "size",
-                            "desc": "尺寸,可选值large,default,small",
+                            "name": "checkedText",
+                            "desc": "开启时的文字",
                             "type": "string",
-                            "default": "'default'"
-                        },
-                        {
-                            "name": "style",
-                            "desc": "内联样式",
-                            "type": "object",
-                            "default": ""
+                            "default": "\"\""
                         },
                         {
                             "name": "uncheckedText",
-                            "desc": "关闭时展示的内容, size 为 small 时无效",
-                            "type": "ReactNode",
-                            "default": ""
+                            "desc": "关闭时的文字",
+                            "type": "string",
+                            "default": "\"\""
+                        },
+                        {
+                            "name": "size",
+                            "desc": "尺寸：Enums.Size",
+                            "type": "int",
+                            "default": "Enums.Default"
+                        },
+                        {
+                            "name": "onToggled",
+                            "desc": "点击翻面时发",
+                            "type": "signal",
+                            "default": "-"
                         }
                     ],
                     "guidelines": [

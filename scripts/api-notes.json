@@ -73,5 +73,125 @@
     "Title": {
         "level": "标题级别 1..6（历史名字，保留）",
         "heading": "官方名；>0 时覆盖 level"
+    },
+
+    "Switch": {
+        "checked": "受控的开关状态",
+        "loading": "转圈并拦下点击",
+        "checkedText": "开启时的文字",
+        "uncheckedText": "关闭时的文字",
+        "size": "尺寸：Enums.Size",
+        "onToggled": "点击翻面时发"
+    },
+
+    "Rating": {
+        "value": "受控的分值",
+        "defaultValue": "非受控时的初值",
+        "count": "星数",
+        "allowHalf": "允许半星",
+        "allowClear": "再点一次清空",
+        "disabled": "禁用",
+        "size": "'default' / 'small' / 数字（当边长用）",
+        "character": "自定义字符：字符串或 Component",
+        "tooltips": "每颗星的悬浮提示，按颗给",
+        "autoFocus": "挂载后聚焦",
+        "color": "星星颜色；缺省 yellow[5]",
+        "onChanged": "点击改值时发（受控档不写回）",
+        "onHoverChanged": "指针移到某颗星上时发",
+        "onFocused": "获得焦点时发",
+        "onBlurred": "失去焦点时发",
+        "onKeyPressed": "方向键加分时发"
+    },
+
+    "PinCode": {
+        "value": "受控的验证码串",
+        "defaultValue": "非受控的初值",
+        "count": "格数",
+        "format": "单格格式：'number' / 'mixed' / 正则 / 判断函数",
+        "size": "'small' / 'default' / 'large'（透传给 Input）",
+        "disabled": "禁用",
+        "autoFocus": "挂载后聚焦第一格（缺省 true）",
+        "onChanged": "每次输入都发",
+        "onCompleted": "填满全部格子时发"
+    },
+
+    "Checkbox": {
+        "checked": "受控的选中态",
+        "defaultChecked": "非受控的初值",
+        "indeterminate": "半选样式",
+        "disabled": "禁用",
+        "value": "在组里的取值（给 CheckboxGroup 收集）",
+        "text": "标签文字（官方是 children，本库只收字符串）",
+        "extra": "副文本",
+        "type": "形态：Enums.ChoiceDefault / ChoiceCard / ChoicePureCard",
+        "onToggled": "点击翻面时发"
+    },
+
+    "CheckboxGroup": {
+        "content": "默认子项：可选，铺在选项之外",
+        "options": "选项：字符串，或 {label, value, extra, disabled}",
+        "value": "受控的选中值数组",
+        "defaultValue": "非受控的初值数组",
+        "disabled": "整组禁用",
+        "direction": "排列：Enums.DirectionVertical / DirectionHorizontal",
+        "type": "形态：Enums.ChoiceType",
+        "onChanged": "选中集合变化时发，参数是新的 value 数组",
+        "skip": ["itemSpacing"]
+    },
+
+    "Radio": {
+        "checked": "受控的选中态",
+        "defaultChecked": "非受控的初值",
+        "value": "在组里的取值（给 RadioGroup 收集）",
+        "disabled": "禁用",
+        "text": "标签文字（官方是 children，本库只收字符串）",
+        "extra": "副文本：字符串或 Component",
+        "mode": "空串；'button' 是按钮档的内部标记",
+        "type": "形态：Enums.ChoiceType（在组里被 RadioGroup 覆盖）",
+        "autoFocus": "挂载后聚焦",
+        "onToggled": "点击翻面时发",
+        "onChanged": "选中变化时发（非受控档）",
+        "onMouseEntered": "指针进入时发",
+        "onMouseLeft": "指针离开时发",
+        "skip": ["groupTail"]
+    },
+
+    "RadioGroup": {
+        "content": "默认子项：可选，铺在选项之外",
+        "value": "受控的选中值",
+        "defaultValue": "非受控的初值",
+        "options": "选项：字符串，或 {label, value, extra, disabled}",
+        "disabled": "整组禁用",
+        "direction": "排列：Enums.DirectionHorizontal / DirectionVertical",
+        "type": "形态：Enums.ChoiceType（含 ChoiceButton）",
+        "buttonSize": "按钮档的尺寸：Enums.RadioButtonSize",
+        "mode": "空串；'button' 切按钮档",
+        "name": "原生 name，本库未消费",
+        "onChanged": "选中值变化时发"
+    },
+
+    "Slider": {
+        "value": "受控的值",
+        "min": "最小值",
+        "max": "最大值",
+        "step": "步长",
+        "range": "双滑块档（配合 values）",
+        "values": "双滑块档的两个值 [低, 高]",
+        "vertical": "竖直",
+        "verticalReverse": "竖直且反向（大值在上）",
+        "marks": "刻度：数值数组或 [{value, style, label}]",
+        "included": "两块之间的轨道上色",
+        "showMarkLabel": "显示刻度标签",
+        "tooltipOnMark": "悬浮刻度时给提示",
+        "handleDot": "可拖节点：null 用缺省条，或给 Component",
+        "showValue": "显示当前值",
+        "suffix": "值后面的后缀文字",
+        "tipFormatter": "提示文字的格式化函数",
+        "showBoundary": "显示 min / max 两个端点",
+        "railGradient": "轨道渐变（Gradient）",
+        "railContent": "默认子项：铺在轨道里的内容",
+        "onMoved": "拖动过程中发",
+        "onAfterChange": "松手之后发",
+        "skip": ["dragHandle", "dragOffset"]
     }
 }
