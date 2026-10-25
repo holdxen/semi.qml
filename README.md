@@ -1,143 +1,103 @@
-# Semi
+# Semi.qml
 
-Semi Design 的 QML 复刻。Qt 6.5+。
+[Semi Design](https://semi.design) 的 Qt Quick 移植：同一套设计令牌、同一套 prop 名，把 Semi 的界面直接搬到 Qt 应用里。
 
-> 当前做到哪一步、下一步做什么、有哪些坑，见 [PROGRESS.md](./PROGRESS.md)。
+- **60+ 组件**，逐个按官方 scss / tsx 核对行为（不是"长得像"，是连缺省值、怪癖、动画时长都抄）
+- **383 个设计令牌**，明暗双主题，语义色由色阶派生 —— 改一个 `blue[5]`，`colorPrimary` 跟着变
+- **Qt 6.5+**，除 Qt Quick 外无第三方依赖（裁切结果的像素管线走自带的 `QImage` / `QPainter`）
 
-## 环境要求
+## 组件
 
-Qt 6.5 或更高（含 Qt Quick、Qt Quick Test）、CMake 3.21+、Ninja。
+gallery 的每一页对应一个组件（`Tokens` 那页是设计变量浏览器，不是组件）：
 
-## 构建与测试
+| 类别 | 组件 |
+| --- | --- |
+| 基础 | Button · Divider · Icon · Skeleton · Space · Title |
+| 数据录入 | AutoComplete · Cascader · Checkbox · ColorPicker · DatePicker · Form · Input · InputNumber · PinCode · Radio · Rating · Select · Slider · Spin · Steps · Switch · TagInput · TimePicker · Transfer · Upload |
+| 数据展示 | Avatar · Badge · Calendar · Card · Carousel · Collapse · Collapsible · Cropper · Descriptions · DragMove · Empty · Highlight · ImageView · List · OverflowList · Progress · ScrollList · Table · Tag · Timeline · Tree · TreeSelect |
+| 导航 | Anchor · Breadcrumb · Dropdown · FloatButton · Navigation · Pagination · Tabs |
+| 反馈与弹层 | BackTop · Banner · Feedback · HotKeys · Modal · Notification · Popconfirm · Popover · SideSheet · Toast · Tooltip · UserGuide |
+
+## 快速开始
+
+### 构建
+
+Qt 6.5+（含 Qt Quick 与 Qt Quick Test）、CMake 3.21+、Ninja。
 
 ```sh
 cmake --preset debug
 cmake --build build/debug
-ctest --preset debug
-cmake --build build/debug --target all_qmllint    # QML 静态检查
 ```
+
+产物：
 
 | 目标 | 说明 |
 | --- | --- |
-| `semi` | QML 模块 `Semi`，产物 `build/debug/src/libsemi.dylib` |
-| `semi-gallery` | 组件预览，`build/debug/examples/gallery/semi-gallery` |
-| `tst_semi` | 测试入口，用 `-input <file.qml>` 指定单个用例 |
+| `semi` | QML 模块 `Semi`，`build/debug/src/libsemi.dylib` |
+| `semi-gallery` | 组件预览应用，`build/debug/examples/gallery/semi-gallery` |
+| `tst_semi` | 测试入口，`-input <file.qml>` 指定单个用例 |
 
-## 主题
-
-令牌层共 **383 个**，由 `scripts/gen-theme-tokens.py` 从 Semi 源码提取生成：
+装进系统（QML 插件与 `qmldir` 落到 Qt 的 QML 导入目录，另装一份 `find_package` 用的 CMake 配置）：
 
 ```sh
-python3 scripts/gen-theme-tokens.py            # 默认从 ~/Documents/Code/Html/semi-design 读
-python3 scripts/gen-theme-tokens.py --semi-root /path/to/semi-design
+cmake --install build/debug --prefix /your/prefix
 ```
 
-它会重新生成 `src/SemiThemeValues.h/.cpp`，并跑 15 项自检（色板值、暗色反转、派生关系、各类令牌计数）。**不要手改这两个 C++ 文件。**
-
 ### 在 QML 里用
-
-组件一律读 `Theme.current.xxx`，**不要缓存色值** —— 令牌一变绑定会自动重新求值。
 
 ```qml
 import Semi
 
-Rectangle {
-    color: Theme.current.colorBg0
-    radius: Theme.current.radiusSmall
-}
-```
-
-### 定制
-
-`customize()` 只覆盖写出来的令牌，其余继承 Semi 默认值；明暗两套一起改。
-
-```qml
-Component.onCompleted: Theme.customize({
-    colorPrimary: "#7c3aed",                       // 换品牌色
-    radiusSmall: 12, radiusLarge: 18               // 改圆角
-})
-
-Theme.customizeLight({ /* 只改浅色 */ })
-Theme.dark.colorPrimary = "#9d7bff"                // 精细控制
-Theme.reset()                                      // 还原
-Theme.mode = Theme.Dark                            // 切明暗
-```
-
-字段名见 `src/SemiThemeValues.h`，或跑 gallery 看 **Tokens 设计变量** 页（383 项完整清单，含明暗两套色值、搜索与点击复制）。
-
-### 令牌是怎么组织的
-
-三层引用，和 Semi 的 CSS 变量体系一一对应：
-
-```
-色阶（16 色系 + AI 紫，各 10 级）
-  └─> 语义色（colorPrimary / colorDanger / …）
-        └─> 组件
-```
-
-**语义色默认由色阶派生，不存死值**：`colorPrimary` 取 `blue[5]`，`colorPrimaryHover` 取 `blue[6]`。所以改一整条色阶，底下引用它的语义色会全部跟上：
-
-```qml
-const blue = Theme.light.blue.slice()
-blue[5] = "#7c3aed"
-Theme.light.blue = blue          // colorPrimary 随即变成 #7c3aed
-```
-
-单独设过值的语义色优先，不再参与派生（`Theme.reset()` 可清除）。
-
-注意 **暗色模式的色阶方向是整体反转的**（`grey-0` 浅色是 `#f9f9f9`、深色是 `#1c1f23`），测试里锁住了这条性质，别按"越深越重"的直觉去改。
-
-## 目录结构
-
-```
-src/
-  SemiThemeValues.h/.cpp   生成物：383 个令牌属性 + 派生逻辑
-  Theme.h/.cpp             单例：light / dark / current / customize / reset
-  Button.qml Card.qml Switch.qml
-examples/gallery/          预览应用（含主题定制演示）
-tests/                     Qt Quick Test
-scripts/gen-theme-tokens.py
-docs/                      计划与令牌清单（本地起 http.server 预览）
-```
-
-## 组件
-
-```qml
 Button {
     text: "确定"
     tone: Enums.Primary       // Primary / Secondary / Tertiary / Warning / Danger / Info / Success
     variant: Enums.Solid      // Solid / Light / Outline / Borderless
     size: Enums.Default       // Small / Default / Large
-    onClicked: window.count++
+    onClicked: console.log("clicked")
 }
 ```
 
-形态 × 色调 × 状态（normal / hovered / pressed / disabled）的色值解析集中在 `Appearance`，
-对应 Semi 的 `$color-button-*` 展开；尺寸与焦点环也在那里。组件本身不写外观 if-else。
+### 在 CMake 工程里用
 
-**外观函数必须显式接收令牌**：
-
-```qml
-color: Appearance.buttonBackground(Theme.current, tone, variant, controlState)
+```cmake
+find_package(Semi REQUIRED)
+target_link_libraries(myapp PRIVATE Semi::Semi)
 ```
 
-`Theme.current` 不能省。QML 只追踪绑定表达式里**直接读到**的属性，C++ 函数内部去读全局单例
-的话，主题一变这个绑定不会重新求值 —— 颜色卡在旧值上，而且**没有任何报错**。这是踩过的坑，
-`tests/tst_appearance.qml` 里 `test_buttonFollowsModeChange` / `test_buttonFollowsCustomize`
-就是为此加的回归。
+## 主题
 
-## 新增组件
+组件一律读 `Theme.current.xxx`；**不要把色值缓存进 `var`** —— 令牌一改，绑定会自动重新求值，缓存的那份不会。
 
-1. 在 `src/` 下写 `Foo.qml`，登记到 `src/CMakeLists.txt` 的 `QML_FILES`。
-2. Gallery 里加一段展示，`tests/` 下补 `tst_foo.qml` 并登记到 `SEMI_TEST_FILES`。
-3. 视觉参数统一取自 `Theme.current`，不在组件里硬编码颜色与尺寸。
+```qml
+Theme.customize({
+    colorPrimary: "#7c3aed",                     // 换品牌色
+    radiusSmall: 12, radiusLarge: 18             // 改圆角
+})
 
-## 已知坑
+Theme.customizeLight({ /* 只改浅色 */ })
+Theme.mode = Theme.Dark                          // 明暗切换
+Theme.reset()                                    // 还原
+```
 
-**Qt Quick Test 的项可见性**。`TestCase` 根项读到的 `effectiveVisible` 在窗口 show 之后不会立即刷新，此时测试项全部不可见，合成鼠标事件会被静默丢弃（断言失败但无报错）。每个测试的 `init()` 里需要 `testCase.visible = true` 重新置位。
+383 项令牌（含明暗两套色值）在 gallery 的 **Tokens 设计变量** 页可以搜索、点击复制；组织方式与派生规则见 [docs/README.md](docs/README.md#令牌是怎么组织的)。
 
-**QML 模块的安装导出**。`qt_add_qml_module` 用 `STATIC` 会生成不在导出集里的 `_resources_N` 目标导致 `install(EXPORT)` 失败，故本模块用 `SHARED`；导出名需 `set_target_properties(semi PROPERTIES EXPORT_NAME Semi)` 才是 `Semi::Semi`。
+## 预览与文档
 
-**Qt 6.11 起 `qt_add_qml_module` 不再负责安装**，必须自己写 `install(TARGETS)`，qmldir 与 .qmltypes 路径用 `qt_query_qml_module(... QMLDIR ... TYPEINFO ...)` 取。
+```sh
+build/debug/examples/gallery/semi-gallery          # 组件预览：68 页，含主题定制演示
+python3 -m http.server --directory docs            # 本地文档站（docs/index.html）
+```
 
-**`qqmlintegration.h` 的路径**是 `<QtQmlIntegration/qqmlintegration.h>`，写成 `QtQml/` 在 framework 布局的 Qt 下找不到。
+## 与官方的差异
+
+本项目的目标是**逐行对齐上游 scss / tsx**，包括上游的 bug（只记录、不擅自"修好"）。每一轮的对齐记录、官方怪癖清单、验证口径都写在：
+
+- [docs/PROGRESS.md](docs/PROGRESS.md) —— 进度、逐轮差异、已知坑（141 条）
+- [docs/gallery-progress.md](docs/gallery-progress.md) —— 68 页 gallery 的复刻进度
+
+## 开发
+
+- 开发者视角的 README（构建细节、令牌体系、新增组件的约定）：[docs/README.md](docs/README.md)
+- 全量测试（offscreen，约 4 分钟）：`python3 scripts/run-tests.py -j 4`
+- QML 静态检查：`cmake --build build/debug --target all_qmllint`
+- 令牌从 Semi 源码重新生成：`python3 scripts/gen-theme-tokens.py --semi-root /path/to/semi-design`（不要手改 `src/SemiThemeValues.*`）

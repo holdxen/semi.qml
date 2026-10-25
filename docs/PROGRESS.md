@@ -127,7 +127,8 @@ P1 至此收满（22/22，另加官方 Tag 文档页同页的 `TagGroup` / `Spli
 
 - `docs/index.html` —— 复刻计划（工程量、令牌体系、架构、分期、风险、待决策）
 - `docs/gallery-plan.md` / `docs/gallery-progress.md` —— gallery 复刻计划与逐轮进度
-- `README.md` —— 构建、主题用法、已知坑
+- `docs/README.md` —— 开发者视角：构建、主题用法、新增组件的约定、已知坑
+- 仓库根目录 `README.md` —— 用户视角：接入、示例、组件清单
 - 令牌清单不再单独出 HTML 页：gallery 的 **Tokens 设计变量** 页取代了它（含搜索与点击复制）
 
 ## 下一步

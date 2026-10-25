@@ -33,7 +33,7 @@ ROOT = subprocess.run(["git", "rev-parse", "--show-toplevel"], capture_output=Tr
                       ).stdout.strip() or os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PLATFORM = os.environ.get("PROBE_PLATFORM", "offscreen")
 BUILD_JOBS = os.environ.get("MUTATE_BUILD_JOBS", "2")     # 每 worker 的编译并行度
-CARRY = ("src", "tests", "cmake", "CMakeLists.txt", "README.md")
+CARRY = ("src", "tests", "cmake", "CMakeLists.txt", "docs/README.md")
 
 
 def load_spec(path):
