@@ -116,9 +116,9 @@ def default_of(raw, kind=""):
         return "-"
     v = raw.strip()
     if v.startswith('"'):
-        if v.endswith('"'):
-            return f'"{v[1:-1]}"'
-        return v                       # 带尾注释的字符串，原样保留前半段
+        # "vertical"          // 注释  ->  "vertical"：只取到闭合引号为止
+        end = v.find('"', 1)
+        return v[:end + 1] if end != -1 else v
     v = v.split(" //", 1)[0].strip()   # 声明行尾的注释不算缺省值的一部分
     if v == "undefined":
         return "-"                      # 不给时走缺省档，与官方表的写法一致
@@ -191,8 +191,12 @@ def build_rows(page):
             if not note:
                 missing.append(f"{page}.{name}")
             rows.append({"name": name, "desc": note, "type": sig, "default": "-"})
-    for extra in notes.get("extra", []):
-        rows.append(extra)
+    for extra in notes.get("extraRows", []):
+        # 只收 dict；字符串（比如属性名恰好叫 extra 的那条说明）不能当成行列表去迭代
+        if isinstance(extra, dict):
+            rows.append(extra)
+        else:
+            raise SystemExit(f"[bad extraRows] {type} / {page}: {extra!r} 不是 dict")
     return rows, missing
 
 

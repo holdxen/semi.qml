@@ -904,13 +904,13 @@
                             "name": "prefixIcon",
                             "desc": "前缀图标名（官方 prefix）",
                             "type": "string",
-                            "default": "\"\"             // 官方 prefix（ReactNode → 这里收图标名）"
+                            "default": "\"\""
                         },
                         {
                             "name": "suffixIcon",
                             "desc": "后缀图标名（官方 suffix）",
                             "type": "string",
-                            "default": "\"\"             // 官方 suffix"
+                            "default": "\"\""
                         },
                         {
                             "name": "validateStatus",
@@ -1360,13 +1360,13 @@
                             "name": "text",
                             "desc": "标签文字（官方是 children，本库只收字符串）",
                             "type": "string",
-                            "default": "\"\"                  // 官方是 children（ReactNode），本库只收字符串"
+                            "default": "\"\""
                         },
                         {
                             "name": "extra",
                             "desc": "副文本",
                             "type": "string",
-                            "default": "\"\"                 // 副文本"
+                            "default": "\"\""
                         },
                         {
                             "name": "type",
@@ -1811,13 +1811,13 @@
                             "name": "format",
                             "desc": "显示格式；空串按 type 取缺省",
                             "type": "string",
-                            "default": "\"\"                  // 空 = 按 type 取默认"
+                            "default": "\"\""
                         },
                         {
                             "name": "rangeSeparator",
                             "desc": "range 档分隔符（展示时两侧各补空格）",
                             "type": "string",
-                            "default": "\"~\"         // constants.ts:47，展示时两侧各补一个空格"
+                            "default": "\"~\""
                         },
                         {
                             "name": "weekStartsOn",
@@ -2333,748 +2333,394 @@
                     ],
                     "api": [
                         {
-                            "name": "— Form Props —",
+                            "name": "— Form —",
                             "desc": "",
                             "type": "",
                             "default": ""
                         },
                         {
-                            "name": "autoScrollToError",
-                            "desc": "若为 true，submit 或者调用 formApi.validate()校验失败时，将会自动滚动至出错的字段。object 型配置参考options",
-                            "type": "boolean| object",
+                            "name": "content",
+                            "desc": "默认子项：一串 FormItem",
+                            "type": "alias",
+                            "default": "-"
+                        },
+                        {
+                            "name": "layout",
+                            "desc": "布局：vertical / horizontal",
+                            "type": "string",
+                            "default": "\"vertical\""
+                        },
+                        {
+                            "name": "labelPosition",
+                            "desc": "标签位置：top / left / inset",
+                            "type": "string",
+                            "default": "\"top\""
+                        },
+                        {
+                            "name": "labelAlign",
+                            "desc": "标签对齐：left / right",
+                            "type": "string",
+                            "default": "\"left\""
+                        },
+                        {
+                            "name": "labelWidth",
+                            "desc": "标签宽；0 跟随内容",
+                            "type": "real",
+                            "default": "0"
+                        },
+                        {
+                            "name": "labelCol",
+                            "desc": "标签栅格：{span, offset}，给了即启用栅格布局",
+                            "type": "var",
+                            "default": "({})"
+                        },
+                        {
+                            "name": "wrapperCol",
+                            "desc": "内容栅格：{span, offset}",
+                            "type": "var",
+                            "default": "({})"
+                        },
+                        {
+                            "name": "extraTextPosition",
+                            "desc": "extra 位置：bottom / middle",
+                            "type": "string",
+                            "default": "\"bottom\""
+                        },
+                        {
+                            "name": "values",
+                            "desc": "表单值（可读可写）",
+                            "type": "var",
+                            "default": "({})"
+                        },
+                        {
+                            "name": "errors",
+                            "desc": "错误集合（可读）",
+                            "type": "var",
+                            "default": "({})"
+                        },
+                        {
+                            "name": "touched",
+                            "desc": "触碰记录（只读）",
+                            "type": "var",
+                            "default": "({})"
+                        },
+                        {
+                            "name": "initValues",
+                            "desc": "初值；只在挂载时消费一次",
+                            "type": "var",
+                            "default": "({})"
+                        },
+                        {
+                            "name": "validator",
+                            "desc": "Form 级校验：(values) => errors",
+                            "type": "var",
+                            "default": "null"
+                        },
+                        {
+                            "name": "validateFields",
+                            "desc": "官方已废弃的旧名，仍兼容",
+                            "type": "var",
+                            "default": "null"
+                        },
+                        {
+                            "name": "trigger",
+                            "desc": "校验时机：change / blur / mount / custom 或数组",
+                            "type": "var",
+                            "default": "\"change\""
+                        },
+                        {
+                            "name": "stopValidateWithError",
+                            "desc": "有错就停后续校验",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "showValidateIcon",
+                            "desc": "显示校验图标",
+                            "type": "bool",
+                            "default": "true"
+                        },
+                        {
+                            "name": "disabled",
+                            "desc": "下发给每个 Field",
+                            "type": "bool",
                             "default": "false"
                         },
                         {
                             "name": "allowEmpty",
-                            "desc": "是否保留values中为空值的field的key，true时保留key，false时移除key",
-                            "type": "boolean",
+                            "desc": "false 时空值不留在 values 里",
+                            "type": "bool",
                             "default": "false"
                         },
                         {
-                            "name": "className",
-                            "desc": "form 标签的 classname",
-                            "type": "string",
-                            "default": ""
-                        },
-                        {
-                            "name": "component",
-                            "desc": "用于声明表单控件，不可与 render、props.children 同时使用",
-                            "type": "ReactNode",
-                            "default": ""
-                        },
-                        {
-                            "name": "disabled",
-                            "desc": "统一应用在每个 Field 的 disabled 属性",
-                            "type": "boolean",
+                            "name": "autoScrollToError",
+                            "desc": "出错时滚到那一项",
+                            "type": "bool",
                             "default": "false"
-                        },
-                        {
-                            "name": "extraTextPosition",
-                            "desc": "统一应用在每个 Field 上的extraTextPosition属性，控制extraText的显示位置，可选middle（垂直方向以Label、extraText、Field主体的顺序显示）、bottom (垂直方向以Label、Field主体、extraText的顺序显示)",
-                            "type": "string",
-                            "default": "'bottom'"
                         },
                         {
                             "name": "getFormApi",
-                            "desc": "form mounted 时会回调该函数，将 formAPI 作为参数传入。formApi 可用于修改 form 内部状态（值、校验状态、错误信息）",
-                            "type": "function(formApi:object)",
-                            "default": ""
-                        },
-                        {
-                            "name": "form",
-                            "desc": "外部传入的 formApi 实例，可通过 Form.useForm() 创建。用于在 Form 外部控制表单状态。>=2.94.0",
-                            "type": "object",
-                            "default": ""
-                        },
-                        {
-                            "name": "initValues",
-                            "desc": "用于统一设置表单初始值（仅会在组件挂载时消费一次），例如{fieldA:'hello', fieldB:['arr1', 'arr2']}",
-                            "type": "object",
-                            "default": ""
-                        },
-                        {
-                            "name": "layout",
-                            "desc": "Form 表单控件间的布局，目前支持水平(horizontal)、垂直(vertical)两种",
-                            "type": "string",
-                            "default": "'vertical'"
-                        },
-                        {
-                            "name": "labelAlign",
-                            "desc": "统一配置label 的 text-align 值",
-                            "type": "string",
-                            "default": "'left'"
-                        },
-                        {
-                            "name": "labelCol",
-                            "desc": "统一应用在每个 Field 的 label 标签布局，同Col 组件，设置span、offset值，如{span: 6, offset: 2}",
-                            "type": "object",
-                            "default": ""
-                        },
-                        {
-                            "name": "labelPosition",
-                            "desc": "统一配置Field 中 label 的位置，可选'top'、'left'、'inset'(inset 标签内嵌仅部分组件支持)",
-                            "type": "string",
-                            "default": "'top'"
-                        },
-                        {
-                            "name": "labelWidth",
-                            "desc": "统一配置label 宽度",
-                            "type": "string|number",
-                            "default": ""
+                            "desc": "拿 formApi：(formApi) => void",
+                            "type": "var",
+                            "default": "null"
                         },
                         {
                             "name": "onChange",
-                            "desc": "form 更新时触发，包括表单控件挂载/卸载/值变更/blur/验证状态变更/错误提示变更, 入参为 formState",
-                            "type": "function(formState:object)",
-                            "default": ""
+                            "desc": "表单态变化：(formState)",
+                            "type": "signal change(var formState)",
+                            "default": "-"
                         },
                         {
                             "name": "onValueChange",
-                            "desc": "form 的值被更新时触发，仅在表单控件值发生变化时触发。第一个入参为 formState.values，第二个入参为当前发生变化的 field",
-                            "type": "function(values:object, changedValue: object)",
-                            "default": ""
+                            "desc": "值变化：(values, changedValue)",
+                            "type": "signal valueChange(var values, var changedValue)",
+                            "default": "-"
                         },
                         {
                             "name": "onErrorChange",
-                            "desc": "form 的校验状态被更新时触发。第一个入参为 formState.errors，第二个入参为当前发生变化的 field 的名称与校验结果（v2.66后提供）",
-                            "type": "function(values:object, changedError: object)",
-                            "default": ""
+                            "desc": "错误变化：(errors, changedError)",
+                            "type": "signal errorChange(var errors, var changedError)",
+                            "default": "-"
                         },
                         {
-                            "name": "onReset",
-                            "desc": "点击 reset 按钮或调用 formApi.reset()时的回调函数",
-                            "type": "function()",
-                            "default": ""
+                            "name": "onResetTriggered",
+                            "desc": "reset 之后发",
+                            "type": "signal",
+                            "default": "-"
                         },
                         {
                             "name": "onSubmit",
-                            "desc": "点击 submit 按钮或调用 formApi.submitForm()，数据验证成功后的回调函数",
-                            "type": "function(values:object, e: event)",
-                            "default": ""
+                            "desc": "提交时发：(values)",
+                            "type": "signal submit(var values)",
+                            "default": "-"
                         },
                         {
                             "name": "onSubmitFail",
-                            "desc": "点击 submit 按钮或调用 formApi.submitForm()，数据验证失败后的回调函数",
-                            "type": "function(errors:object, values:object, e: event)",
-                            "default": ""
+                            "desc": "校验不过时发：(errors, values)",
+                            "type": "signal submitFail(var errors, var values)",
+                            "default": "-"
                         },
                         {
-                            "name": "render",
-                            "desc": "用于声明表单控件，不可与 component、props.children 同时使用",
-                            "type": "function",
-                            "default": ""
-                        },
-                        {
-                            "name": "showValidateIcon",
-                            "desc": "Field 内的校验信息区块否自动添加对应状态的 icon 展示",
-                            "type": "boolean",
-                            "default": "true"
-                        },
-                        {
-                            "name": "style",
-                            "desc": "可将内联样式传入 form 标签",
-                            "type": "object",
-                            "default": ""
-                        },
-                        {
-                            "name": "stopValidateWithError",
-                            "desc": "统一应用在每个 Field 的 stopValidateWithError，使用说明见 Field props中同名 API （v2.42后提供）",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "stopPropagation",
-                            "desc": "是否阻止 submit或reset事件冒泡，用于嵌套 Form 场景下，内部 Form submit或reset时阻止事件往外传播，触发外部Form的事件。默认为 { reset: false, submit: false }（v2.63后提供）",
-                            "type": "object",
-                            "default": ""
-                        },
-                        {
-                            "name": "trigger",
-                            "desc": "统一应用在每个 Field 的 trigger，使用说明详见 Field props中同名 API（v2.42后提供）",
-                            "type": "string|array",
-                            "default": "'change'"
-                        },
-                        {
-                            "name": "validator",
-                            "desc": "Form 级别的自定义校验函数（推荐，v2.97.0 后提供），submit 时或 formApi.validate 时会被调用（配置 Form 级别校验器后，Field 级别校验器在 submit 或 formApi.validate() 时不会再被触发）。支持同步校验、异步校验",
-                            "type": "function(values)",
-                            "default": ""
-                        },
-                        {
-                            "name": "validateFields",
-                            "desc": "Form 级别的自定义校验函数（已废弃，建议使用 validator；仍保持兼容）。submit 时或 formApi.validate 时会被调用（配置 Form 级别校验器后，Field 级别校验器在 submit 或 formApi.validate() 时不会再被触发）。支持同步校验、异步校验",
-                            "type": "function(values)",
-                            "default": ""
-                        },
-                        {
-                            "name": "wrapperCol",
-                            "desc": "统一应用在每个 Field 上的布局，同Col 组件，设置span、offset值，如{span: 20, offset: 4}",
-                            "type": "object",
-                            "default": ""
-                        },
-                        {
-                            "name": "— FormState —",
+                            "name": "— FormItem —",
                             "desc": "",
                             "type": "",
                             "default": ""
                         },
                         {
-                            "name": "values",
-                            "desc": "表单的值 {} { fieldA: 'str', fieldB: true }",
-                            "type": "",
-                            "default": ""
+                            "name": "content",
+                            "desc": "默认子项：控件与提示文字",
+                            "type": "alias",
+                            "default": "-"
                         },
                         {
-                            "name": "errors",
-                            "desc": "表单错误信息集合,你可以通过判断是否有错误信息来决定是否允许用户提交 {} { fieldA: 'length not valid'}",
-                            "type": "",
-                            "default": ""
-                        },
-                        {
-                            "name": "touched",
-                            "desc": "用户点击过的 field 集合 {} { fieldA: true }",
-                            "type": "",
-                            "default": ""
-                        },
-                        {
-                            "name": "— FormApi —",
-                            "desc": "",
-                            "type": "",
-                            "default": ""
-                        },
-                        {
-                            "name": "Function",
-                            "desc": "说明",
-                            "type": "example",
-                            "default": ""
-                        },
-                        {
-                            "name": "getFormProps",
-                            "desc": "获取 Form 组件上当前所有props的值，例如可用于读取 disabled 等。v 2.57.0 后提供",
-                            "type": "formApi.getFormProps(propNames?: string[])",
-                            "default": ""
-                        },
-                        {
-                            "name": "getFormState",
-                            "desc": "获取 FormState",
-                            "type": "formApi.getFormState()",
-                            "default": ""
-                        },
-                        {
-                            "name": "submitForm",
-                            "desc": "可手动触发 submit 提交操作",
-                            "type": "formApi.submitForm()",
-                            "default": ""
-                        },
-                        {
-                            "name": "reset",
-                            "desc": "可手动对 form 进行重置",
-                            "type": "formApi.reset(fields?: Array <string\\>)",
-                            "default": ""
-                        },
-                        {
-                            "name": "validate",
-                            "desc": "可手动触发对表单的校验，不传参时默认触发整全体Field的校验（配置Form级别校验器后，Field级别校验器在submit或formApi.validate()时不会再被触发），若想触发部分field的校验，将目标field数组传入即可 v2.94.0 版本后支持静默校验：传入 { silent: true } 可在不触发 UI 更新（不显示错误提示、不设置 touched 状态）的情况下获取校验结果，也可通过 { fields: ['fieldA'], silent: true } 对指定字段进行静默校验",
-                            "type": "formApi.validate() .then(values=>{}) .catch(errors=>{}) 或 formApi.validate(\\['fieldA','fieldB'\\]) 或 formApi.validate({ silent: true }) 或 formApi.validate({ fields: \\['fieldA'\\], silent: true })",
-                            "default": ""
-                        },
-                        {
-                            "name": "setValues",
-                            "desc": "设置整个表单的值。第二个参数中的 isOverride 默认为 false isOverride 为 false 时：遍历 Form 中所有已注册的 field，从 newValues 中取对应字段的值更新到 formState.values 中。如果 newValues 中不包含某个已注册 field 的值，该字段会被设置为 undefined。 isOverride 为 true 时：直接用 newValues 整体替换 formState.values，包括 newValues 中存在但表单中没有对应 field 的额外 key 也会写入。 推荐用法：如果只需要更新部分字段，建议使用 formApi.setValue(field, value) 逐个更新，或者先获取当前值再合并：formApi.setValues({ ...formApi.getValues(), name: newValue })",
-                            "type": "formApi.setValues(newValues: object, { isOverride: boolean })",
-                            "default": ""
-                        },
-                        {
-                            "name": "setValue",
-                            "desc": "提供直接修改 formState.values 方法，与 setValues 的区别是它仅修改单个 field",
-                            "type": "formApi.setValue(field: string, newFieldValue: any)",
-                            "default": ""
-                        },
-                        {
-                            "name": "getValue",
-                            "desc": "获取 单个 Field 的值",
-                            "type": "formApi.getValue() formApi.getValue(field: string)",
-                            "default": ""
-                        },
-                        {
-                            "name": "getValues",
-                            "desc": "获取 所有 Field 的值",
-                            "type": "formApi.getValues()",
-                            "default": ""
-                        },
-                        {
-                            "name": "setTouched",
-                            "desc": "修改 formState.touched",
-                            "type": "formApi.setTouched(field: string, isTouched: boolean)",
-                            "default": ""
-                        },
-                        {
-                            "name": "getTouched",
-                            "desc": "获取 Field 的 touched 状态",
-                            "type": "formApi.getTouched(field: string)",
-                            "default": ""
-                        },
-                        {
-                            "name": "setError",
-                            "desc": "修改 某个 field 的 error 信息",
-                            "type": "formApi.setError(field: string, fieldErrorMessage: string)",
-                            "default": ""
-                        },
-                        {
-                            "name": "getError",
-                            "desc": "获取 Field 的 error 状态",
-                            "type": "formApi.getError(field: string)",
-                            "default": ""
-                        },
-                        {
-                            "name": "getFieldExist",
-                            "desc": "获取 Form 中是否存在对应的 field",
-                            "type": "formApi.getFieldExist(field: string)",
-                            "default": ""
-                        },
-                        {
-                            "name": "scrollToField",
-                            "desc": "滚动至指定的 field, 第二个入参将透传至scroll-into-view-if-needed",
-                            "type": "formApi.scrollToField(field: string, scrollOpts: ScrollIntoViewOptions)",
-                            "default": ""
-                        },
-                        {
-                            "name": "scrollToError",
-                            "desc": "滚动至校验错误的field，可传指定 field 或者 index，传入 index 则滚动到第 index 个错误的 DOM，若不传参则滚动到DOM树中第一个校验出错的位置。 v2.61.0后提供",
-                            "type": "formApi.scrollToError(ScrollToErrorOptions)",
-                            "default": ""
-                        },
-                        {
-                            "name": "— Field Props —",
-                            "desc": "",
-                            "type": "",
-                            "default": ""
-                        },
-                        {
-                            "name": "convert",
-                            "desc": "field 值改变后，在 rerender 前，对 filed 的值进行二次更新 使用示例: (value) => newValue",
-                            "type": "function(fieldValue)",
-                            "default": ""
+                            "name": "form",
+                            "desc": "所属 Form（id 或直接引用）",
+                            "type": "var",
+                            "default": "null"
                         },
                         {
                             "name": "field",
-                            "desc": "该表单控件的值在 formState.values 中的映射路径，Form 会使用该值来区分内部的表单控件 必填!!! 示例：Bindding Syntax",
+                            "desc": "字段名（唯一标识）",
                             "type": "string",
-                            "default": ""
+                            "default": "\"\""
                         },
                         {
                             "name": "label",
-                            "desc": "该表单控件的 label 标签文本，不传的时候默认与 field 同名, 传入 object 时会将其透传给 Form.Label，具体配置请参考Label",
-                            "type": "string|object",
-                            "default": ""
+                            "desc": "标签文字",
+                            "type": "var",
+                            "default": "-"
+                        },
+                        {
+                            "name": "required",
+                            "desc": "必填星号",
+                            "type": "bool",
+                            "default": "false"
                         },
                         {
                             "name": "labelPosition",
-                            "desc": "该表单控件的 label 位置，可选'top'/'left'/'inset'。在Form与Field上同时传入时，以Field props为准",
+                            "desc": "覆盖 Form 的标签位置",
                             "type": "string",
-                            "default": ""
+                            "default": "\"\""
                         },
                         {
                             "name": "labelAlign",
-                            "desc": "该表单控件的 label 文本的 text-align。在Form与Field上同时传入时，以Field props为准",
+                            "desc": "覆盖标签对齐",
                             "type": "string",
-                            "default": ""
+                            "default": "\"\""
                         },
                         {
                             "name": "labelWidth",
-                            "desc": "该表单控件的 label 文本的 width。在Form与Field上同时传入时，以Field props为准",
-                            "type": "string|number",
-                            "default": ""
+                            "desc": "覆盖标签宽",
+                            "type": "real",
+                            "default": "0"
                         },
                         {
                             "name": "noLabel",
-                            "desc": "当你不需要自动添加 label 时，可以将该值置为 true",
-                            "type": "boolean",
-                            "default": ""
+                            "desc": "不显示标签",
+                            "type": "bool",
+                            "default": "false"
                         },
                         {
                             "name": "noErrorMessage",
-                            "desc": "当你不需要自动添加 ErrorMessage 模块时，可以将该值置为 true，注意此时 helpText 也不会被展示",
-                            "type": "boolean",
-                            "default": ""
-                        },
-                        {
-                            "name": "name",
-                            "desc": "控件名称，传入时会自动在对应 field wrapper div 追加对应的 className，如：abc => '.semi-form-field-abc'。 v2.24 后，还会将 name 透传至底层组件消费，例如你可以用于配置 input的name属性",
-                            "type": "string",
-                            "default": ""
-                        },
-                        {
-                            "name": "fieldClassName",
-                            "desc": "整个 fieldWrapper 的 className，作用与 name 参数一致，区别是不会自动追加前缀",
-                            "type": "string",
-                            "default": ""
-                        },
-                        {
-                            "name": "fieldStyle",
-                            "desc": "整个 fieldWrapper 的 内联样式",
-                            "type": "object",
-                            "default": ""
+                            "desc": "不显示错误行",
+                            "type": "bool",
+                            "default": "false"
                         },
                         {
                             "name": "initValue",
-                            "desc": "该表单控件的初始值（仅在 Field mounted 时消费一次，后续更新无效），相比 Form 的 initValues 中的值，它的优先级更高",
-                            "type": "any（类型取决于当前组件，详细见各组件的 api）",
-                            "default": ""
-                        },
-                        {
-                            "name": "validator",
-                            "desc": "推荐（v2.97.0 后提供）。该表单控件的自定义校验函数。支持同步、异步校验（通过返回 promise）。 设置了 validator 时，rules 不会生效 使用示例：(fieldValue, values) => fieldValue >= 5 ? 'value not valid' : ''",
-                            "type": "function(fieldValue, values)",
-                            "default": ""
-                        },
-                        {
-                            "name": "validate",
-                            "desc": "已废弃（仍兼容）。请使用 validator 替代。该表单控件的自定义校验函数。支持同步、异步校验（通过返回 promise）。 设置了 validate 时，rules 不会生效 使用示例：(fieldValue, values) => fieldValue >= 5 ? 'value not valid' : ''",
-                            "type": "function(fieldValue, values)",
-                            "default": ""
+                            "desc": "该项初值",
+                            "type": "var",
+                            "default": "-"
                         },
                         {
                             "name": "rules",
-                            "desc": "校验规则，校验库基于async-validator 使用示例：const rules=\\[{ required: true, message: 'can't be null ' }, { max: 10, message: 'can't more than 10 word' }\\]",
-                            "type": "array",
-                            "default": ""
+                            "desc": "校验规则：[{required, message, …}]",
+                            "type": "var",
+                            "default": "[]"
+                        },
+                        {
+                            "name": "validator",
+                            "desc": "项级校验函数",
+                            "type": "var",
+                            "default": "null"
                         },
                         {
                             "name": "validateStatus",
-                            "desc": "该表单控件的校验结果状态（仅影响样式），可选值:success/error/warning/default",
+                            "desc": "强制校验态：pass / warning / error",
                             "type": "string",
-                            "default": "'default'"
+                            "default": "\"\""
                         },
                         {
                             "name": "trigger",
-                            "desc": "触发校验的时机，可选值:blur/change/custom/mount，或以上值的组合\\['blur','change'\\] 1、设置为 custom 时，仅会由 formApi/fieldApi 触发校验时被触发 2、mount（挂载时即触发一次校验）",
-                            "type": "string/array",
-                            "default": "'change'"
+                            "desc": "覆盖校验时机",
+                            "type": "var",
+                            "default": "\"\""
                         },
                         {
-                            "name": "onChange",
-                            "desc": "值变化时触发的回调。v2.99.0+：回调函数的最后一个参数为最新的表单值 latestValues，可用于解决 React 闭包陷阱问题。 使用示例：onChange={(value, e, ...other) => { const latestValues = other[other.length - 1]; }}",
-                            "type": "function(fieldValue: any | ev: { target: { value: any }}, ...args: any[], latestValues?: object) （具体参见各组件的 onChange 方法）",
-                            "default": ""
+                            "name": "valueTransform",
+                            "desc": "值出参时的转换",
+                            "type": "var",
+                            "default": "null"
                         },
                         {
-                            "name": "onBlur",
-                            "desc": "失去焦点时触发的回调",
-                            "type": "function() （具体参见各组件的 onBlur 方法）",
-                            "default": ""
-                        },
-                        {
-                            "name": "transform",
-                            "desc": "校验前转换字段值，转换后的值仅会在校验时被消费，对 formState 无影响 使用示例: (value) => Number",
-                            "type": "function(fieldValue)",
-                            "default": ""
+                            "name": "convert",
+                            "desc": "值入参时的转换",
+                            "type": "var",
+                            "default": "null"
                         },
                         {
                             "name": "allowEmptyString",
-                            "desc": "是否允许值为空字符串。默认情况下值为''时，该 field 对应的 key 会从 values 中移除，如果你希望保留该 key，那么需要将 allowEmptyString 设为 true",
-                            "type": "boolean",
+                            "desc": "允许空字符串",
+                            "type": "bool",
                             "default": "false"
                         },
                         {
                             "name": "keepState",
-                            "desc": "是否在 Field 卸载后保留其状态（value、error、touched）。为 true 时，Field 卸载后其值、校验信息、交互状态不会丢失，再次挂载时会自动恢复",
-                            "type": "boolean",
+                            "desc": "字段销毁后留值",
+                            "type": "bool",
                             "default": "false"
                         },
                         {
                             "name": "stopValidateWithError",
-                            "desc": "为 true 时，使用 rules 校验，碰到第一个检验不通过的 rules 后，将不再触发后续 rules 的校验",
-                            "type": "boolean",
+                            "desc": "有错就停",
+                            "type": "bool",
                             "default": "false"
                         },
                         {
                             "name": "helpText",
-                            "desc": "自定义提示信息，与校验信息公用同一区块展示，两者均有值时，优先展示校验信息",
-                            "type": "ReactNode",
-                            "default": ""
+                            "desc": "帮助文字（错误行下方）",
+                            "type": "var",
+                            "default": "\"\""
                         },
                         {
                             "name": "extraText",
-                            "desc": "额外的提示信息，当需要错误信息和提示文案同时出现时，可以使用这个，位于 helpText/errorMessage 后",
-                            "type": "ReactNode",
-                            "default": ""
-                        },
-                        {
-                            "name": "pure",
-                            "desc": "是否仅接管数据流，为 true 时不会自动插入 ErrorMessage、Label、extraText 等模块，样式、DOM 结构与原始的组件保持一致",
-                            "type": "boolean",
-                            "default": "false"
+                            "desc": "extra 文字",
+                            "type": "var",
+                            "default": "\"\""
                         },
                         {
                             "name": "extraTextPosition",
-                            "desc": "控制extraText的显示位置，可选middle（垂直方向以Label、extraText、Field主体的顺序显示）、bottom (垂直方向以Label、Field主体、extraText的顺序显示)；在Form与Field上同时传入时，以Field props为准",
+                            "desc": "extra 位置",
                             "type": "string",
-                            "default": "'bottom'"
+                            "default": "\"\""
                         },
                         {
-                            "name": "...other",
-                            "desc": "组件的其他可配置属性，与上面的属性平级一并传入即可，例如 Input 的 size/placeholder，Field 会将其透传至组件本身",
-                            "type": "",
-                            "default": ""
+                            "name": "pure",
+                            "desc": "纯展示，不注册字段",
+                            "type": "bool",
+                            "default": "false"
                         },
                         {
-                            "name": "— ArrayField Props —",
-                            "desc": "",
-                            "type": "",
-                            "default": ""
-                        },
-                        {
-                            "name": "field",
-                            "desc": "该表单控件的值在 formState.values 中的映射路径 必填，例如存在 ArrayField负责 a[0].name、a[1].name、a[2].name三行渲染，他们的父级为a，此处props.field应为 a",
+                            "name": "valueKey",
+                            "desc": "数组值取哪个 key",
                             "type": "string",
-                            "default": ""
+                            "default": "\"\""
                         },
                         {
-                            "name": "initValue",
-                            "desc": "ArrayField的初始值，如果同时在 formProps.initValues 与 arrayFieldProps.initValue 中都配置了初始值，后者优先级更高",
-                            "type": "Array",
-                            "default": "[]"
+                            "name": "onChange",
+                            "desc": "该项值变化：(value)",
+                            "type": "signal change(var value)",
+                            "default": "-"
                         },
                         {
-                            "name": "children",
-                            "desc": "ArrayField的内容，类型为 Function，函数入参为 add、addWithInitValue 等操作函数 及 arrayFields，执行后应当返回 ReactNode",
-                            "type": "Function(ArrayFieldChildrenProps) => ReactNode",
-                            "default": ""
-                        },
-                        {
-                            "name": "— Form.Section —",
+                            "name": "— FormLabel —",
                             "desc": "",
                             "type": "",
                             "default": ""
                         },
                         {
                             "name": "text",
-                            "desc": "段落标题",
-                            "type": "ReactNode",
-                            "default": ""
-                        },
-                        {
-                            "name": "className",
-                            "desc": "样式类名",
-                            "type": "string",
-                            "default": ""
-                        },
-                        {
-                            "name": "style",
-                            "desc": "内联样式",
-                            "type": "object",
-                            "default": ""
-                        },
-                        {
-                            "name": "children",
-                            "desc": "段落内容",
-                            "type": "ReactNode",
-                            "default": ""
-                        },
-                        {
-                            "name": "— Form.Label —",
-                            "desc": "",
-                            "type": "",
-                            "default": ""
-                        },
-                        {
-                            "name": "text",
-                            "desc": "Label 内容",
-                            "type": "ReactNode",
-                            "default": ""
+                            "desc": "标签文字",
+                            "type": "var",
+                            "default": "\"\""
                         },
                         {
                             "name": "required",
-                            "desc": "是否展示必填的\\*号",
-                            "type": "boolean",
+                            "desc": "必填星号",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "optional",
+                            "desc": "optional 后缀",
+                            "type": "bool",
                             "default": "false"
                         },
                         {
                             "name": "extra",
-                            "desc": "跟随在 required 后的内容",
-                            "type": "ReactNode",
-                            "default": ""
+                            "desc": "extra 节点：Component",
+                            "type": "Component",
+                            "default": "null"
                         },
                         {
                             "name": "align",
-                            "desc": "text-align",
+                            "desc": "对齐：left / right",
                             "type": "string",
-                            "default": "'left'"
+                            "default": "\"left\""
                         },
                         {
-                            "name": "className",
-                            "desc": "样式类名",
-                            "type": "string",
-                            "default": ""
+                            "name": "labelWidth",
+                            "desc": "标签宽",
+                            "type": "real",
+                            "default": "0"
                         },
                         {
-                            "name": "style",
-                            "desc": "内联样式",
-                            "type": "string",
-                            "default": ""
-                        },
-                        {
-                            "name": "width",
-                            "desc": "label 宽度",
-                            "type": "number/string",
-                            "default": ""
-                        },
-                        {
-                            "name": "optional",
-                            "desc": "是否自动在text后追加\"（可选）\"文字标识（根据Locale配置的不同语言自动切换相同语义文本）。当该项为true时，required的\\*号将不再展示。若当表单项多数均为必填时，仅强调可选项会更使得整体视觉更简洁 v2.18.0",
-                            "type": "boolean",
+                            "name": "disabled",
+                            "desc": "禁用色",
+                            "type": "bool",
                             "default": "false"
                         },
                         {
-                            "name": "— Form.InputGroup —",
-                            "desc": "",
-                            "type": "",
-                            "default": ""
+                            "name": "blockLevel",
+                            "desc": "占满整行",
+                            "type": "bool",
+                            "default": "true"
                         },
                         {
-                            "name": "className",
-                            "desc": "样式类名",
-                            "type": "string",
-                            "default": ""
-                        },
-                        {
-                            "name": "style",
-                            "desc": "内联样式",
-                            "type": "object",
-                            "default": ""
-                        },
-                        {
-                            "name": "label",
-                            "desc": "InputGroup 的 label 标签文本",
-                            "type": "Label | string",
-                            "default": ""
-                        },
-                        {
-                            "name": "labelPosition",
-                            "desc": "该表单控件的 label 位置，可选'top'/'left'/'inset'。在 Form 与 InputGroup 同时传入时，以 InputGroup props为准",
-                            "type": "string",
-                            "default": "'top'"
-                        },
-                        {
-                            "name": "extraText",
-                            "desc": "额外的提示信息，当需要错误信息和提示文案同时出现时，可以使用这个，位于 errorMessage 后 v2.29.0",
-                            "type": "ReactNode",
-                            "default": ""
-                        },
-                        {
-                            "name": "extraTextPosition",
-                            "desc": "控制extraText的显示位置，可选middle（垂直方向以Label、extraText、Group的顺序显示）、bottom (垂直方向以Label、Group、extraText的顺序显示) v2.29.0",
-                            "type": "string",
-                            "default": "'bottom'"
-                        },
-                        {
-                            "name": "— Form.Slot —",
-                            "desc": "",
-                            "type": "",
-                            "default": ""
-                        },
-                        {
-                            "name": "label",
-                            "desc": "slot 的Label 配置, 例如{ text: 'semi', align: 'left' }；也可以直接传入 string，Slot 内部会自动封装成合法 Label 格式",
-                            "type": "object|string",
-                            "default": ""
-                        },
-                        {
-                            "name": "labelPosition",
-                            "desc": "slot 的 label 位置，默认情况下继承自 Form props，也可单独覆盖。可选'top'、'left'",
-                            "type": "string",
-                            "default": ""
-                        },
-                        {
-                            "name": "className",
-                            "desc": "slot 样式类名",
-                            "type": "string",
-                            "default": ""
-                        },
-                        {
-                            "name": "style",
-                            "desc": "slot 内联样式",
-                            "type": "object",
-                            "default": ""
-                        },
-                        {
-                            "name": "children",
-                            "desc": "slot 的主体内容",
-                            "type": "ReactNode",
-                            "default": ""
-                        },
-                        {
-                            "name": "error",
-                            "desc": "slot 的错误提示信息",
-                            "type": "ErrorMessage|ReactNode",
-                            "default": ""
-                        },
-                        {
-                            "name": "— Form.ErrorMessage —",
-                            "desc": "",
-                            "type": "",
-                            "default": ""
-                        },
-                        {
-                            "name": "error",
-                            "desc": "错误信息内容",
-                            "type": "string|array|ReactNode|boolean",
-                            "default": ""
-                        },
-                        {
-                            "name": "className",
-                            "desc": "样式类名",
-                            "type": "string",
-                            "default": ""
-                        },
-                        {
-                            "name": "style",
-                            "desc": "内联样式",
-                            "type": "object",
-                            "default": ""
-                        },
-                        {
-                            "name": "showValidateIcon",
-                            "desc": "是否自动加上 validateStatus 对应的 icon",
-                            "type": "boolean",
-                            "default": ""
-                        },
-                        {
-                            "name": "validateStatus",
-                            "desc": "信息所属的校验状态，可选 default/error/warning/success（success一般建议与default样式相同）",
-                            "type": "string",
-                            "default": ""
-                        },
-                        {
-                            "name": "— withFieldOption —",
-                            "desc": "",
-                            "type": "",
-                            "default": ""
-                        },
-                        {
-                            "name": "key",
-                            "desc": "描述",
-                            "type": "默认值",
-                            "default": ""
-                        },
-                        {
-                            "name": "valueKey",
-                            "desc": "组件表示值的属性，如 Switch、Radio 的是'checked'，Input 的是'value'",
-                            "type": "'value'",
-                            "default": ""
-                        },
-                        {
-                            "name": "onKeyChangeFnName",
-                            "desc": "组件值变化时的回调函数，一般为'onChange'",
-                            "type": "'onChange'",
-                            "default": ""
-                        },
-                        {
-                            "name": "valuePath",
-                            "desc": "值属性在回调函数中第一个参数的路径,如 Radio 的 onChange(e.target.checked)，那么该值需要设为 target.checked；RadioGroup 的 onChange(e.target.value)，该值为'target.value'；若第一个参数就是值本身，无需再往下取值，该项不需要设",
-                            "type": "",
-                            "default": ""
+                            "name": "padTop",
+                            "desc": "顶部留白（对齐内容用）",
+                            "type": "real",
+                            "default": "0"
                         }
                     ],
                     "guidelines": [
@@ -4170,7 +3816,7 @@
                             "name": "text",
                             "desc": "标签文字（官方是 children，本库只收字符串）",
                             "type": "string",
-                            "default": "\"\"                  // 官方是 children（ReactNode），本库只收字符串"
+                            "default": "\"\""
                         },
                         {
                             "name": "extra",
@@ -6100,7 +5746,7 @@
                             "name": "type",
                             "desc": "'time' 单档 / 'timeRange' 连续档",
                             "type": "string",
-                            "default": "\"time\"              // \"time\" | \"timeRange\""
+                            "default": "\"time\""
                         },
                         {
                             "name": "format",
@@ -6418,7 +6064,7 @@
                             "name": "type",
                             "desc": "列表形态：'list' / 'groupList' / 'treeList'",
                             "type": "string",
-                            "default": "\"list\"              // \"list\" | \"groupList\" | \"treeList\""
+                            "default": "\"list\""
                         },
                         {
                             "name": "value",
@@ -6678,519 +6324,399 @@
                             "default": ""
                         },
                         {
-                            "name": "arrowIcon",
-                            "desc": "自定义右侧下拉箭头Icon，当showClear开关打开且当前有选中值时，hover会优先显示clear icon",
-                            "type": "ReactNode",
-                            "default": ""
-                        },
-                        {
-                            "name": "autoAdjustOverflow",
-                            "desc": "浮层被遮挡时是否自动调整方向（暂时仅支持竖直方向，且插入的父级为 body）",
-                            "type": "boolean",
-                            "default": "true"
-                        },
-                        {
-                            "name": "autoExpandParent",
-                            "desc": "是否自动展开父节点",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "autoMergeValue",
-                            "desc": "设置自动合并 value。具体而言是，开启后，当某个父节点被选中时，value 将不包括该节点的子孙节点。（在leafOnly为false的情况下生效）。v2.61.0 后提供",
-                            "type": "boolean",
-                            "default": "true"
-                        },
-                        {
-                            "name": "borderless",
-                            "desc": "无边框模式，v2.33.0后提供",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "checkRelation",
-                            "desc": "多选时，节点之间选中状态的关系，可选：'related'、'unRelated'。v2.5.0后提供",
-                            "type": "string",
-                            "default": "'related'"
-                        },
-                        {
-                            "name": "className",
-                            "desc": "选择框的 className 属性",
-                            "type": "string",
-                            "default": "-"
-                        },
-                        {
-                            "name": "clearIcon",
-                            "desc": "可用于自定义清除按钮, showClear为true时有效。v2.25.0后提供",
-                            "type": "ReactNode",
-                            "default": "-"
-                        },
-                        {
-                            "name": "clickToHide",
-                            "desc": "选择后是否自动关闭下拉弹层，仅单选模式有效",
-                            "type": "boolean",
-                            "default": "true"
-                        },
-                        {
-                            "name": "clickTriggerToHide",
-                            "desc": "面板打开状态下，点击 Trigger 后是否关闭面板。v2.32.0后提供",
-                            "type": "boolean",
-                            "default": "true"
-                        },
-                        {
-                            "name": "defaultExpandAll",
-                            "desc": "设置在初始化时是否展开所有节点。而如果后续数据(treeData)发生改变，这个 api 是无法影响节点的展开情况的，如果有这个需要可以使用 expandAll",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "defaultExpandedKeys",
-                            "desc": "默认展开的节点，显示其直接子级",
-                            "type": "string\\[]",
-                            "default": "-"
-                        },
-                        {
-                            "name": "defaultOpen",
-                            "desc": "默认展开下拉菜单",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "defaultValue",
-                            "desc": "指定默认选中的条目",
-                            "type": "ValueType",
-                            "default": "-"
-                        },
-                        {
-                            "name": "disabled",
-                            "desc": "是否禁用",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "disableStrictly",
-                            "desc": "是否严格禁用",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "dropdownClassName",
-                            "desc": "下拉菜单的 className 属性",
-                            "type": "string",
-                            "default": "-"
-                        },
-                        {
-                            "name": "dropdownMatchSelectWidth",
-                            "desc": "下拉菜单最小宽度是否等于Select",
-                            "type": "boolean",
-                            "default": "true"
-                        },
-                        {
-                            "name": "dropdownMargin",
-                            "desc": "下拉菜单计算溢出时的增加的冗余值，详见issue#549，作用同 Tooltip margin。v2.25.0后提供",
-                            "type": "object|number",
-                            "default": ""
-                        },
-                        {
-                            "name": "dropdownStyle",
-                            "desc": "下拉菜单的样式",
-                            "type": "CSSProperties",
-                            "default": "-"
-                        },
-                        {
-                            "name": "emptyContent",
-                            "desc": "当搜索无结果时展示的内容",
-                            "type": "ReactNode",
-                            "default": "暂无数据"
-                        },
-                        {
-                            "name": "expandAction",
-                            "desc": "展开逻辑，可选 false, 'click', 'doubleClick'。默认值为 false，即仅当点击展开按钮时才会展开",
-                            "type": "boolean | string",
-                            "default": "false"
-                        },
-                        {
-                            "name": "expandAll",
-                            "desc": "设置是否默认展开所有节点，若后续数据(treeData)发生改变，默认的展开情况也是会受到这个 api 影响的",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "expandedKeys",
-                            "desc": "（受控）展开的节点，默认展开节点显示其直接子级",
-                            "type": "string[]",
-                            "default": "-"
-                        },
-                        {
-                            "name": "expandIcon",
-                            "desc": "自定义展开图标，使用示例",
-                            "type": "ReactNode | (props: expandProps)=>ReactNode",
-                            "default": "-"
+                            "name": "treeData",
+                            "desc": "树数据：[{key, label, children, …}]",
+                            "type": "var",
+                            "default": "[]"
                         },
                         {
                             "name": "keyMaps",
-                            "desc": "自定义节点中 key、label、value 的字段。v2.47.0后提供。如果 keyMaps 中设置 label 的自定义名称并且开启了搜索，为保证搜索正确，需要将 treeNodeFilterProp 设置为 treeData 的键之一或者通过 filterTreeNode 自定义搜索函数",
-                            "type": "object",
-                            "default": "-"
-                        },
-                        {
-                            "name": "filterTreeNode",
-                            "desc": "是否根据输入项进行筛选，默认用 treeNodeFilterProp 的值作为要筛选的 TreeNodeData 的属性值, data 参数自 v2.28.0 开始提供",
-                            "type": "boolean| boolean'>Function",
-                            "default": "false"
-                        },
-                        {
-                            "name": "remote",
-                            "desc": "是否启用远程搜索。开启后，输入时跳过本地过滤，仅触发 onSearch 回调，用户可自行处理远程数据获取并更新 treeData",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "getPopupContainer",
-                            "desc": "指定父级 DOM，弹层将会渲染至该 DOM 中，自定义需要设置 position: relative 这会改变浮层 DOM 树位置，但不会改变视图渲染位置。",
-                            "type": "function():HTMLElement",
-                            "default": "-"
-                        },
-                        {
-                            "name": "labelEllipsis",
-                            "desc": "是否开启label的超出省略，默认虚拟化状态下开启",
-                            "type": "boolean",
-                            "default": "false|true(虚拟化)"
-                        },
-                        {
-                            "name": "leafOnly",
-                            "desc": "多选模式下是否开启 onChange 回调入参及展示标签只有叶子节点",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "loadData",
-                            "desc": "异步加载数据，需要返回一个Promise",
-                            "type": "(treeNode: TreeNodeData) => Promise",
-                            "default": "-"
-                        },
-                        {
-                            "name": "loadedKeys",
-                            "desc": "（受控）已经加载的节点，配合 loadData 使用",
-                            "type": "Set< string >",
-                            "default": "-"
-                        },
-                        {
-                            "name": "maxTagCount",
-                            "desc": "最多显示多少个 tag",
-                            "type": "number",
-                            "default": "-"
-                        },
-                        {
-                            "name": "motionExpand",
-                            "desc": "是否开启选项树节点动画",
-                            "type": "boolean",
-                            "default": "true"
-                        },
-                        {
-                            "name": "multiple",
-                            "desc": "是否支持多选",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "optionListStyle",
-                            "desc": "optionList的样式",
-                            "type": "CSSProperties",
-                            "default": "-"
-                        },
-                        {
-                            "name": "outerBottomSlot",
-                            "desc": "渲染在弹出层底部，与 optionList 平级的自定义 slot",
-                            "type": "ReactNode",
-                            "default": "-"
-                        },
-                        {
-                            "name": "outerTopSlot",
-                            "desc": "渲染在弹出层顶部，与 optionList 平级的自定义 slot，注意如果开启了 filterTreeNode 会取代搜索框，可以通过 search 方法来自行处理",
-                            "type": "ReactNode",
-                            "default": "-"
-                        },
-                        {
-                            "name": "placeholder",
-                            "desc": "选择框默认文字",
-                            "type": "string",
-                            "default": "-"
-                        },
-                        {
-                            "name": "position",
-                            "desc": "下拉菜单位置，可选值参考 Tooltip position。v2.25.0后提供",
-                            "type": "string",
-                            "default": "bottomLeft"
-                        },
-                        {
-                            "name": "prefix",
-                            "desc": "前缀标签",
-                            "type": "ReactNode",
-                            "default": "-"
-                        },
-                        {
-                            "name": "preventScroll",
-                            "desc": "指示浏览器是否应滚动文档以显示新聚焦的元素，作用于组件内的 focus 方法",
-                            "type": "boolean",
-                            "default": "-"
-                        },
-                        {
-                            "name": "renderFullLabel",
-                            "desc": "完全自定义label的渲染函数，入参及用法详见",
-                            "type": "(obj) => ReactNode",
-                            "default": "-"
-                        },
-                        {
-                            "name": "renderLabel",
-                            "desc": "自定义label的渲染函数，searchWord 参数自 2.65.0 开始支持。入参及用法详见",
-                            "type": "ReactNode'>(label, data, searchWord) => ReactNode",
-                            "default": "-"
-                        },
-                        {
-                            "name": "renderSelectedItem",
-                            "desc": "自定义渲染已选项",
-                            "type": "Function",
-                            "default": "-"
-                        },
-                        {
-                            "name": "restTagsPopoverProps",
-                            "desc": "Popover 的配置属性，可以控制 position、zIndex、trigger 等，具体参考Popover 。v2.22.0后提供",
-                            "type": "PopoverProps",
-                            "default": "{}"
-                        },
-                        {
-                            "name": "searchAutoFocus",
-                            "desc": "搜索框自动聚焦",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "searchPlaceholder",
-                            "desc": "搜索框默认文字",
-                            "type": "string",
-                            "default": "-"
-                        },
-                        {
-                            "name": "searchPosition",
-                            "desc": "设置搜索框的位置，可选: dropdown、trigger",
-                            "type": "string",
-                            "default": "dropdown"
-                        },
-                        {
-                            "name": "triggerTagWrap",
-                            "desc": "是否允许在 trigger 内将多选标签换行展示。仅在 multiple 且 filterTreeNode 开启、并且 searchPosition=\"trigger\" 时生效",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "showClear",
-                            "desc": "当值不为空时，trigger 是否展示清除按钮",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "showFilteredOnly",
-                            "desc": "搜索状态下是否只展示过滤后的结果",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "showLine",
-                            "desc": "选项面板中选项显示连接线。v2.50.0后提供",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "showRestTagsPopover",
-                            "desc": "当超过 maxTagCount，hover 到 +N 时，是否通过 Popover 显示剩余内容。v2.22.0后提供",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "showSearchClear",
-                            "desc": "是否显示搜索框的清除按钮",
-                            "type": "boolean",
-                            "default": "true"
-                        },
-                        {
-                            "name": "size",
-                            "desc": "选择框大小，可选 large，small，default",
-                            "type": "string",
-                            "default": "default"
-                        },
-                        {
-                            "name": "style",
-                            "desc": "选择框的样式",
-                            "type": "CSSProperties",
-                            "default": "-"
-                        },
-                        {
-                            "name": "suffix",
-                            "desc": "后缀标签",
-                            "type": "ReactNode",
-                            "default": "-"
-                        },
-                        {
-                            "name": "treeData",
-                            "desc": "treeNodes 数据，如果设置则不需要手动构造 TreeNode 节点（key 值在整个树范围内唯一）",
-                            "type": "TreeNodeData[]",
-                            "default": "\\[]"
-                        },
-                        {
-                            "name": "treeNodeFilterProp",
-                            "desc": "搜索时输入项过滤对应的 TreeNodeData 属性",
-                            "type": "string",
-                            "default": "label"
+                            "desc": "字段名映射：{key, label, value, children, …}",
+                            "type": "var",
+                            "default": "({})"
                         },
                         {
                             "name": "treeNodeLabelProp",
-                            "desc": "作为显示的 prop 设置",
+                            "desc": "节点取值字段（配合 keyMaps）",
                             "type": "string",
-                            "default": "label"
-                        },
-                        {
-                            "name": "triggerRender",
-                            "desc": "自定义触发器渲染方法",
-                            "type": "(props: TriggerRenderProps) => ReactNode",
-                            "default": "-"
-                        },
-                        {
-                            "name": "validateStatus",
-                            "desc": "校验结果，可选 warning、error、 default（只影响样式背景色）",
-                            "type": "string",
-                            "default": "-"
+                            "default": "\"label\""
                         },
                         {
                             "name": "value",
-                            "desc": "当前选中的节点的value值，传入该值时将作为受控组件",
-                            "type": "ValueType",
+                            "desc": "受控值：单选标量，多选数组",
+                            "type": "var",
                             "default": "-"
                         },
                         {
-                            "name": "virtualize",
-                            "desc": "列表虚拟化，用于大量树节点的情况，由 height, width, itemSize 组成，参考 Tree - Virtualize Object。开启后将关闭动画效果。",
-                            "type": "object",
-                            "default": "-"
-                        },
-                        {
-                            "name": "zIndex",
-                            "desc": "treeSelect下拉菜单的zIndex",
-                            "type": "number",
-                            "default": "1030"
-                        },
-                        {
-                            "name": "onBlur",
-                            "desc": "失去焦点时的回调",
-                            "type": "Function(event)",
-                            "default": "-"
-                        },
-                        {
-                            "name": "onChange",
-                            "desc": "选中树节点时调用此函数，默认返回值为当前所有选中项的value值及节点属性；如果是通过tag关闭，event参数为null",
-                            "type": "Function",
+                            "name": "defaultValue",
+                            "desc": "非受控初值",
+                            "type": "var",
                             "default": "-"
                         },
                         {
                             "name": "onChangeWithObject",
-                            "desc": "是否将选中项 option 的其他属性作为回调。设为 true 时，onChange 的入参类型Function(node|node[], e) 此时如果是受控，也需要把 value 设置成 object，且必须含有 value 的键值；defaultValue同理。",
-                            "type": "boolean",
+                            "desc": "信号给节点对象而不是 key",
+                            "type": "bool",
                             "default": "false"
                         },
                         {
-                            "name": "onClear",
-                            "desc": "点击清除按钮时触发的回调。v2.52.0后提供",
-                            "type": "(e: Event) => void",
+                            "name": "multiple",
+                            "desc": "多选",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "checkRelation",
+                            "desc": "多选关联：related 联动 / unRelated 独立",
+                            "type": "string",
+                            "default": "\"related\""
+                        },
+                        {
+                            "name": "leafOnly",
+                            "desc": "只能选叶子",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "autoMergeValue",
+                            "desc": "取值时合并父子",
+                            "type": "bool",
+                            "default": "true"
+                        },
+                        {
+                            "name": "disabled",
+                            "desc": "禁用",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "disableStrictly",
+                            "desc": "禁用项不参与级联",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "showClear",
+                            "desc": "有值时可清除",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "showSearchClear",
+                            "desc": "搜索框可清除",
+                            "type": "bool",
+                            "default": "true"
+                        },
+                        {
+                            "name": "placeholder",
+                            "desc": "占位文字",
+                            "type": "string",
+                            "default": "qsTr(\"请选择\")"
+                        },
+                        {
+                            "name": "searchPlaceholder",
+                            "desc": "搜索框占位文字",
+                            "type": "string",
+                            "default": "\"\""
+                        },
+                        {
+                            "name": "emptyContent",
+                            "desc": "空态：undefined 用缺省文案，\"\" 不画",
+                            "type": "var",
                             "default": "-"
                         },
                         {
-                            "name": "onExpand",
-                            "desc": "展示节点时调用",
-                            "type": "void'>(expandedKeys, object) => void",
+                            "name": "size",
+                            "desc": "尺寸：Enums.Size",
+                            "type": "int",
+                            "default": "Enums.Default"
+                        },
+                        {
+                            "name": "validateStatus",
+                            "desc": "校验态：Enums.StatusType",
+                            "type": "int",
+                            "default": "Enums.StatusDefault"
+                        },
+                        {
+                            "name": "borderless",
+                            "desc": "无边框",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "filterTreeNode",
+                            "desc": "过滤：false 或 (input, label, node) => bool",
+                            "type": "var",
+                            "default": "false"
+                        },
+                        {
+                            "name": "treeNodeFilterProp",
+                            "desc": "过滤取值字段",
+                            "type": "string",
+                            "default": "\"label\""
+                        },
+                        {
+                            "name": "showFilteredOnly",
+                            "desc": "只显示命中的节点",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "remote",
+                            "desc": "远程搜索",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "searchPosition",
+                            "desc": "搜索框位置：dropdown / trigger",
+                            "type": "string",
+                            "default": "\"dropdown\""
+                        },
+                        {
+                            "name": "triggerTagWrap",
+                            "desc": "触发器里的标签换行",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "searchAutoFocus",
+                            "desc": "打开即聚焦搜索框",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "expandAll",
+                            "desc": "全展开（受控）",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "defaultExpandAll",
+                            "desc": "非受控初值全展开",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "defaultExpandedKeys",
+                            "desc": "非受控的初始展开 key",
+                            "type": "var",
                             "default": "-"
                         },
                         {
-                            "name": "onFocus",
-                            "desc": "聚焦时的回调",
-                            "type": "Function(event)",
+                            "name": "expandedKeys",
+                            "desc": "受控的展开 key",
+                            "type": "var",
                             "default": "-"
                         },
                         {
-                            "name": "onLoad",
-                            "desc": "节点加载完毕时触发的回调",
-                            "type": ", treeNode: TreeNodeData) => void'>(loadedKeys, treeNode) => void",
+                            "name": "autoExpandParent",
+                            "desc": "选中时自动展开父级",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "motion",
+                            "desc": "展开收起动画",
+                            "type": "bool",
+                            "default": "true"
+                        },
+                        {
+                            "name": "motionExpand",
+                            "desc": "展开收起是否过动画（缺省 true）",
+                            "type": "bool",
+                            "default": "true"
+                        },
+                        {
+                            "name": "loadData",
+                            "desc": "异步加载：(node, done)",
+                            "type": "var",
+                            "default": "null"
+                        },
+                        {
+                            "name": "loadedKeys",
+                            "desc": "已加载过的 key（配合 loadData）",
+                            "type": "var",
+                            "default": "-"
+                        },
+                        {
+                            "name": "maxTagCount",
+                            "desc": "触发器最多显示几个标签；-1 不限",
+                            "type": "int",
+                            "default": "-1"
+                        },
+                        {
+                            "name": "showRestTagsPopover",
+                            "desc": "悬浮 +N 弹剩余标签",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "restTagsPopoverProps",
+                            "desc": "那张 Popover 的参数",
+                            "type": "var",
+                            "default": "({})"
+                        },
+                        {
+                            "name": "dropdownMatchSelectWidth",
+                            "desc": "浮层与触发器同宽",
+                            "type": "bool",
+                            "default": "true"
+                        },
+                        {
+                            "name": "virtualize",
+                            "desc": "虚拟化：{itemSize, height, width}",
+                            "type": "var",
+                            "default": "({})"
+                        },
+                        {
+                            "name": "defaultOpen",
+                            "desc": "非受控的初值是开着",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "clickToHide",
+                            "desc": "点浮层外收起",
+                            "type": "bool",
+                            "default": "true"
+                        },
+                        {
+                            "name": "clickTriggerToHide",
+                            "desc": "点触发器本身也收起（官方缺省 true）",
+                            "type": "bool",
+                            "default": "true"
+                        },
+                        {
+                            "name": "labelEllipsis",
+                            "desc": "标签超长省略",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "insetLabel",
+                            "desc": "前置文字（贴在触发器内）",
+                            "type": "string",
+                            "default": "\"\""
+                        },
+                        {
+                            "name": "prefixIcon",
+                            "desc": "前缀图标名",
+                            "type": "string",
+                            "default": "\"\""
+                        },
+                        {
+                            "name": "suffixIcon",
+                            "desc": "后缀图标名",
+                            "type": "string",
+                            "default": "\"\""
+                        },
+                        {
+                            "name": "ariaLabel",
+                            "desc": "无障碍标签",
+                            "type": "string",
+                            "default": "\"TreeSelect\""
+                        },
+                        {
+                            "name": "renderSelectedItem",
+                            "desc": "选中项渲染：Component",
+                            "type": "Component",
+                            "default": "null"
+                        },
+                        {
+                            "name": "triggerRender",
+                            "desc": "触发器自定义内容：Component",
+                            "type": "Component",
+                            "default": "null"
+                        },
+                        {
+                            "name": "outerTopSlot",
+                            "desc": "浮层外顶部插槽：Component",
+                            "type": "Component",
+                            "default": "null"
+                        },
+                        {
+                            "name": "outerBottomSlot",
+                            "desc": "浮层外底部插槽：Component",
+                            "type": "Component",
+                            "default": "null"
+                        },
+                        {
+                            "name": "topLeftRadius",
+                            "desc": "上左圆角（转给触发器）",
+                            "type": "alias",
+                            "default": "-"
+                        },
+                        {
+                            "name": "topRightRadius",
+                            "desc": "上右圆角（转给触发器）",
+                            "type": "alias",
+                            "default": "-"
+                        },
+                        {
+                            "name": "bottomLeftRadius",
+                            "desc": "下左圆角（转给触发器）",
+                            "type": "alias",
+                            "default": "-"
+                        },
+                        {
+                            "name": "bottomRightRadius",
+                            "desc": "下右圆角（转给触发器）",
+                            "type": "alias",
+                            "default": "-"
+                        },
+                        {
+                            "name": "onChange",
+                            "desc": "值变化：(valueOrNodes, nodes)",
+                            "type": "signal change(var valueOrNodes, var nodes)",
+                            "default": "-"
+                        },
+                        {
+                            "name": "onSelect",
+                            "desc": "勾选单个节点：(key, selected, node)",
+                            "type": "signal select(string selectedKey, bool selected, var selectedNode)",
                             "default": "-"
                         },
                         {
                             "name": "onSearch",
-                            "desc": "文本框值变化时回调。 入参 filteredExpandedKeys 表示因为搜索或 value / defaultValue 而展开的节点的 key, 可以配合 expandedKeys 受控时使用。filteredExpandedKeys 在 2.6.0 中新增； 入参 filteredNodes 是搜索命中的节点。filteredNodes 在 2.57.0 中新增",
-                            "type": "(input, filteredExpandedKeys, filteredNodes)=>void",
-                            "default": ""
+                            "desc": "搜索：(input, filteredExpandedKeys, filteredNodes)",
+                            "type": "signal search(string input, var filteredExpandedKeys, var filteredNodes)",
+                            "default": "-"
                         },
                         {
-                            "name": "onSelect",
-                            "desc": "被选中时调用，返回值为当前事件选项的key值",
-                            "type": "void'>(selectedKey, selected, selectedNode)=>void",
+                            "name": "onExpand",
+                            "desc": "展开变化：(expandedKeys, info)",
+                            "type": "signal expand(var expandedKeys, var info)",
+                            "default": "-"
+                        },
+                        {
+                            "name": "onClear",
+                            "desc": "点清除时发",
+                            "type": "signal",
+                            "default": "-"
+                        },
+                        {
+                            "name": "onLoad",
+                            "desc": "异步加载完成：(loadedKeys, node)",
+                            "type": "signal load(var loadedKeys, var node)",
                             "default": "-"
                         },
                         {
                             "name": "onVisibleChange",
-                            "desc": "弹出层展示/隐藏时触发的回调",
-                            "type": "Function(isVisible:boolean)",
-                            "default": ""
-                        },
-                        {
-                            "name": "— TreeNodeData —",
-                            "desc": "",
-                            "type": "",
-                            "default": ""
-                        },
-                        {
-                            "name": "value",
-                            "desc": "属性值",
-                            "type": "string|number",
+                            "desc": "显隐变化时发",
+                            "type": "signal visibleChange(bool isOpen)",
                             "default": "-"
                         },
                         {
-                            "name": "label",
-                            "desc": "展示的文本",
-                            "type": "string|ReactNode",
+                            "name": "onFocused",
+                            "desc": "获得焦点时发",
+                            "type": "signal",
                             "default": "-"
                         },
                         {
-                            "name": "icon",
-                            "desc": "自定义图标",
-                            "type": "ReactNode",
-                            "default": "-"
-                        },
-                        {
-                            "name": "disabled",
-                            "desc": "是否禁用，多选状态下支持",
-                            "type": "boolean",
-                            "default": "false"
-                        },
-                        {
-                            "name": "key",
-                            "desc": "required且要求唯一",
-                            "type": "string",
-                            "default": "-"
-                        },
-                        {
-                            "name": "isLeaf",
-                            "desc": "是否为叶子节点",
-                            "type": "boolean",
-                            "default": "-"
-                        },
-                        {
-                            "name": "— Methods —",
-                            "desc": "",
-                            "type": "",
-                            "default": ""
-                        },
-                        {
-                            "name": "search()",
-                            "desc": "如果需要在外部自定义搜索框，可以在自定义搜索框值变更时主动调用该方法，改变筛选结果",
-                            "type": "(sugInput: string) => void",
+                            "name": "onBlurred",
+                            "desc": "失去焦点时发",
+                            "type": "signal",
                             "default": "-"
                         }
                     ],
@@ -7380,13 +6906,13 @@
                             "name": "name",
                             "desc": "上传表单的字段名",
                             "type": "string",
-                            "default": "\"\"                      // 上传表单字段名"
+                            "default": "\"\""
                         },
                         {
                             "name": "fileName",
                             "desc": "name 的别名（避开与 Form 的 name 冲突）",
                             "type": "string",
-                            "default": "\"\"                  // name 的别名，避开 Form 的 name 冲突"
+                            "default": "\"\""
                         },
                         {
                             "name": "fileList",
@@ -7404,13 +6930,13 @@
                             "name": "listType",
                             "desc": "列表形态：list / picture / none",
                             "type": "string",
-                            "default": "\"list\"              // list / picture / none"
+                            "default": "\"list\""
                         },
                         {
                             "name": "uploadTrigger",
                             "desc": "auto 选完就传；custom 由按钮触发",
                             "type": "string",
-                            "default": "\"auto\"         // auto / custom"
+                            "default": "\"auto\""
                         },
                         {
                             "name": "showUploadList",
@@ -7452,7 +6978,7 @@
                             "name": "hotSpotLocation",
                             "desc": "拖拽高亮位置：start / end",
                             "type": "string",
-                            "default": "\"end\"        // start / end"
+                            "default": "\"end\""
                         },
                         {
                             "name": "validateMessage",
@@ -7464,7 +6990,7 @@
                             "name": "validateStatus",
                             "desc": "校验态：官方四个值都没样式，纯挂点",
                             "type": "string",
-                            "default": "\"default\"     // 官方四个值都没有样式，纯挂点"
+                            "default": "\"default\""
                         },
                         {
                             "name": "multiple",
@@ -7494,7 +7020,7 @@
                             "name": "accept",
                             "desc": "文件类型过滤",
                             "type": "string",
-                            "default": "\"\"                    // 空串等价官方 undefined"
+                            "default": "\"\""
                         },
                         {
                             "name": "limit",
@@ -7524,7 +7050,7 @@
                             "name": "promptPosition",
                             "desc": "提示位置：left / right / bottom",
                             "type": "string",
-                            "default": "\"right\"       // left / right / bottom"
+                            "default": "\"right\""
                         },
                         {
                             "name": "itemStyle",
@@ -7554,13 +7080,13 @@
                             "name": "dragIcon",
                             "desc": "拖拽区图标名",
                             "type": "string",
-                            "default": "\"\"                  // 图标名，空则官方默认 upload"
+                            "default": "\"\""
                         },
                         {
                             "name": "dragMainText",
                             "desc": "拖拽区主文案",
                             "type": "string",
-                            "default": "\"\"              // 空则官方文案「点击上传文件或拖拽文件到这里」"
+                            "default": "\"\""
                         },
                         {
                             "name": "dragSubText",
