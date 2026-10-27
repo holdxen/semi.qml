@@ -2157,6 +2157,9 @@ Item {
                 sourceComponent: control.outerBottomSlot
             }
         }
+        TapHandler {
+            gesturePolicy: TapHandler.ReleaseWithinBounds
+        }
     }
 
     // 点到「触发器与弹层之外」才收起 —— 官方那套 clickOutside 把触发器算作 reference。
@@ -2258,6 +2261,9 @@ Item {
                     text: String(modelData)
                 }
             }
+        }
+        TapHandler {
+            gesturePolicy: TapHandler.ReleaseWithinBounds
         }
     }
 

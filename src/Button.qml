@@ -311,6 +311,7 @@ Rectangle {
 
     TapHandler {
         id: tap
+        gesturePolicy: TapHandler.ReleaseWithinBounds
         enabled: control.enabled && !control.loading
         // 官方 onMouseDown 直挂在 <button> 上（Button.tsx:131）；按下即发、
         // 不等抬起。disabled / loading 档上游是原生 disabled / pointer-events: none，

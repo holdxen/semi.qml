@@ -223,6 +223,7 @@ Item {
 
     TapHandler {
         id: pointer
+        gesturePolicy: TapHandler.ReleaseWithinBounds
 
         enabled: !control._off
         onTapped: control.toggleNow()

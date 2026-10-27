@@ -565,6 +565,8 @@ Item {
 
         TapHandler {
             id: triggerPress
+            gesturePolicy: TapHandler.ReleaseWithinBounds
+
             enabled: control.enabled && !control.disabled
             onTapped: {
                 if (control.filter) {
@@ -897,6 +899,10 @@ Item {
             width: 1
             height: Theme.current.spacingExtraTight
         }
+
+        TapHandler {
+            gesturePolicy: TapHandler.ReleaseWithinBounds
+        }
     }
 
     // +N 剩余标签 Popover
@@ -937,6 +943,10 @@ Item {
                     onTapped: control.choose(modelData)
                 }
             }
+        }
+
+        TapHandler {
+            gesturePolicy: TapHandler.ReleaseWithinBounds
         }
     }
 
