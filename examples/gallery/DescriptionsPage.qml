@@ -180,6 +180,9 @@ Item {
                             required property var modelData
 
                             width: 320
+                            // 官方这一节四张卡是 `<Card shadows='always'>` 包的（content/show/descriptions/index.md:65-75），
+                            // Descriptions 自己没有阴影规则 —— 少了这行就是 gallery 比官方淡一圈。
+                            shadows: "always"
 
                             Descriptions {
                                 width: 288
@@ -319,6 +322,11 @@ Item {
                         required property var modelData
 
                         width: 640
+                        // 官方这一节没有 Card，是往 Descriptions 外面套了一个自绘 div：
+                        // `boxShadow: 'var(--semi-shadow-elevated)'` + bg-2 + radius 4 + padding 10
+                        // （content/show/descriptions/index.md:187-194）。端口用 Card 顶替那层 div，
+                        // 所以那条 boxShadow 也得落在 Card 的 shadows 上，否则这一节又是没阴影。
+                        shadows: "always"
 
                         Descriptions {
                             width: 620
