@@ -200,6 +200,39 @@ TestCase {
         sel.destroy()
     }
 
+    // 接着上面那条的场景：弹层**已经开着**的时候标签才变多。触发器长高，锚点的
+    // top/left 一点没动，PopupBase 的帧轮询原先只比这两个值 ⇒ 弹层停在旧下边界上，
+    // 直接盖住长高的触发器。这里盯的是用户实际看到的那条不变式。
+    function test_selectPopupFollowsTriggerGrow() {
+        const sel = make("Select { multiple: true; width: 200 }")
+        sel.options = [
+            { label: "标签甲", value: "a" }, { label: "标签乙", value: "b" },
+            { label: "标签丙", value: "c" }, { label: "标签丁", value: "d" }
+        ]
+        sel.values = ["a"]
+        sel.open()
+        wait(50)
+        const popup = sel._popup
+        const trigger = popup.anchor
+        verify(trigger !== null, "弹层锚点没接上，测试会失去意义")
+        if (trigger === null) {
+            sel.destroy()
+            return
+        }
+        const h0 = sel.height
+        verify(popup.y >= trigger.mapToItem(popup.parent, 0, 0).y + h0 + popup.gap,
+               "起手就没避开触发器")
+
+        sel.values = ["a", "b", "c", "d"]               // 换行 → 触发器长高
+        wait(50)
+        verify(sel.height > h0, "标签换行后触发器没长高（" + h0 + " → " + sel.height + "），用例失效")
+        const o = trigger.mapToItem(popup.parent, 0, 0)
+        verify(popup.y >= o.y + trigger.height + popup.gap,
+               "触发器长高后弹层应跟着下移，实际 popup.y=" + popup.y
+               + " 触发器底边=" + (o.y + trigger.height))
+        sel.destroy()
+    }
+
     // 弹层被 closePolicy（点外 / Esc）关掉时，Select 必须跟着知道。
     // 曾经 _popupOpen 是自维护的布尔，停在 true 上 —— 之后第一次点击走
     // toggle() 的关闭分支，表现为「要点两次才能重新打开」。

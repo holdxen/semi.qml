@@ -214,4 +214,137 @@ TestCase {
                "上下都放不下时应保持下方，实际 popup.y=" + p.y + " anchor.bottom=" + a.bottom)
         host.destroy()
     }
+
+    // 锚点在弹层打开期间**长高**（Select 多选标签换行把触发器撑高就是这一型）。
+    // 帧轮询原先只比 anchor 的 top/left，尺寸变化整个漏掉 —— 弹层停在旧的下边界上，
+    // 直接盖住长高的锚点。这里盯的是不变式本身：弹层顶边必须跟到新的下边界。
+    function test_popupFollowsAnchorGrowHeight() {
+        const host = make("Item {\n"
+                + "width: 200\n"
+                + "height: 200\n"
+                + "property alias a: a\n"
+                + "property alias p: p\n"
+                + "Rectangle { id: a; x: 20; y: 20; width: 120; height: 30 }\n"
+                + "PopupBase {\n"
+                + "id: p\n"
+                + "anchor: a\n"
+                + "placement: Enums.BottomLeft\n"
+                + "gap: 4\n"
+                + "padding: 0\n"
+                + "Item { width: 120; height: 60 }\n"
+                + "}\n"
+                + "}\n")
+        host.p.open()
+        wait(50)
+        const before = host.p.y
+        compare(before, anchorsInPopupCoords(host).bottom + host.p.gap, "起手位置")
+
+        host.a.height = 90
+        wait(50)
+        const a = anchorsInPopupCoords(host)
+        verify(host.p.y >= a.bottom + host.p.gap,
+               "锚点长高后弹层应跟着下移，实际 popup.y=" + host.p.y + " anchor.bottom=" + a.bottom)
+        compare(host.p.y, a.bottom + host.p.gap, "弹层顶边应正好贴在新的锚点下边界 + gap")
+        verify(host.p.y !== before, "y 没动说明这一条根本没走重定位")
+        host.destroy()
+    }
+
+    // 同一型缺陷的水平档：BottomRight 的 x 取自锚点**右**边界，锚点变宽而 left 不变时，
+    // 只比 top/left 同样漏 —— 弹层右端会脱离锚点。
+    function test_popupFollowsAnchorGrowWidth() {
+        const host = make("Item {\n"
+                + "width: 300\n"
+                + "height: 200\n"
+                + "property alias a: a\n"
+                + "property alias p: p\n"
+                + "Rectangle { id: a; x: 20; y: 20; width: 120; height: 30 }\n"
+                + "PopupBase {\n"
+                + "id: p\n"
+                + "anchor: a\n"
+                + "placement: Enums.BottomRight\n"
+                + "gap: 4\n"
+                + "padding: 0\n"
+                + "Item { width: 120; height: 60 }\n"
+                + "}\n"
+                + "}\n")
+        host.p.open()
+        wait(50)
+        const before = host.p.x
+
+        host.a.width = 200
+        wait(50)
+        const o = host.a.mapToItem(host.p.parent, 0, 0)
+        const right = o.x + host.a.width
+        const expected = Math.round(right - host.p.width)
+        compare(host.p.x, expected, "弹层右端应跟到新的锚点右边界")
+        verify(host.p.x !== before, "x 没动说明这一条根本没走重定位")
+        host.destroy()
+    }
+
+    // 上面两条都同时动了底边/右边，所以「只比 top/left」那一支被它们盖住。
+    // 这一对把 top 与 left 单独钉住：锚点**远端那条边不动**、只有近端在移
+    // （向上/向左展开的弹层正好只看得到近端 —— 卡片贴在锚点的上边线/左边线上）。
+
+    // 向上展开 + 锚点边下移边变矮（底边不动）：只有 top 变了
+    function test_popupFollowsAnchorTopEdge() {
+        const host = make("Item {\n"
+                + "width: 300\n"
+                + "height: 300\n"
+                + "property alias a: a\n"
+                + "property alias p: p\n"
+                + "Rectangle { id: a; x: 20; y: 100; width: 120; height: 100 }\n"
+                + "PopupBase {\n"
+                + "id: p\n"
+                + "anchor: a\n"
+                + "placement: Enums.TopLeft\n"
+                + "gap: 4\n"
+                + "padding: 0\n"
+                + "Item { width: 120; height: 60 }\n"
+                + "}\n"
+                + "}\n")
+        host.p.open()
+        wait(50)
+        compare(host.p.y, 100 - host.p.height - host.p.gap, "起手贴在锚点上边线")
+
+        host.a.y = 130                                  // 底边仍是 200
+        host.a.height = 70
+        wait(50)
+        const o = host.a.mapToItem(host.p.parent, 0, 0)
+        compare(o.y + host.a.height, 200, "夹具走形了：底边该钉在 200")
+        compare(host.p.y, Math.round(o.y - host.p.height - host.p.gap),
+                "锚点上边线下移后卡片要跟着下移（只有 top 在动）")
+        host.destroy()
+    }
+
+    // 向左展开 + 锚点右边不动、左边右移：只有 left 变了
+    function test_popupFollowsAnchorLeftEdge() {
+        const host = make("Item {\n"
+                + "width: 400\n"
+                + "height: 300\n"
+                + "property alias a: a\n"
+                + "property alias p: p\n"
+                + "Rectangle { id: a; x: 200; y: 60; width: 120; height: 30 }\n"
+                + "PopupBase {\n"
+                + "id: p\n"
+                + "anchor: a\n"
+                + "placement: Enums.LeftTop\n"
+                + "gap: 4\n"
+                + "padding: 0\n"
+                + "Item { width: 120; height: 60 }\n"
+                + "}\n"
+                + "}\n")
+        host.p.open()
+        wait(50)
+        compare(host.p.effectivePlacement, Enums.LeftTop, "左边空间够，不该翻面")
+        compare(host.p.x, 200 - host.p.width - host.p.gap, "起手贴在锚点左边线")
+
+        host.a.x = 230                                  // 右边仍是 320
+        host.a.width = 90
+        wait(50)
+        const o = host.a.mapToItem(host.p.parent, 0, 0)
+        compare(o.x + host.a.width, 320, "夹具走形了：右边该钉在 320")
+        compare(host.p.x, Math.round(o.x - host.p.width - host.p.gap),
+                "锚点左边线右移后卡片要跟着右移（只有 left 在动）")
+        host.destroy()
+    }
 }

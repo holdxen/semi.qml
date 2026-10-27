@@ -1,3 +1,4 @@
+.pragma library
 // Chat 的 markdown 预处理小工具。
 //
 // escapeHtmlInMarkdown 移植自 semi-foundation/utils/escapeHtml.ts：

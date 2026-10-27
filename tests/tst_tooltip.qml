@@ -1428,8 +1428,9 @@ TestCase {
         moved.destroy()
     }
 
-    function test_rePosKeyRepositionsOnTargetResize() {
-        // 基座只轮询 target 的左上角，尺寸变化它看不见 —— 这一档正好归 rePosKey
+    function test_followsTargetResize() {
+        // 基座轮询的是 target 的**整个矩形**，尺寸那一型（top/left 不动、宽高变了，
+        // Select 多选标签换行撑高触发器就是这个形状）也看得见 ⇒ 不用碰 rePosKey 就要跟着挪。
         const host = makeHost('text: "hi"; position: Enums.Top; mouseEnterDelay: 0', "")
         const tip = tipOf(host)
         tip.open()
@@ -1437,10 +1438,29 @@ TestCase {
         const before = tip.x
         host.tgtRef.width = 220
         wait(80)
-        compare(tip.x, before, "光改尺寸、不动 rePosKey：位置不变")
+        verify(tip.x !== before, "target 变宽后弹层要跟着挪，实际 x 仍是 " + before)
+        const o = originInLayer(tip, host.tgtRef)
+        fuzzyCompare(tip.x + tip.width / 2, o.x + host.tgtRef.width / 2, 1,
+                     "卡片中心没对齐变宽后的 target")
+        tip.destroy()
+        host.destroy()
+    }
+
+    function test_rePosKeyForcesRecompute() {
+        // rePosKey 是官方的手动重算口，基座能自己看见尺寸变化之后它仍然要有用：
+        // 这条不动 target 的几何（帧轮询因此不会插手），只把卡片摆歪，
+        // key 一变就得自己回到该在的位置 —— 摘掉 onRePosKeyChanged 立刻红。
+        const host = makeHost('text: "hi"; position: Enums.Top; mouseEnterDelay: 0', "")
+        const tip = tipOf(host)
+        tip.open()
+        wait(60)
+        const atRest = tip.x
+        tip.x = atRest + 40
+        wait(60)
+        compare(tip.x, atRest + 40, "没动 target 也没动 key 时，帧轮询不该把卡片摆回去")
         tip.rePosKey = "v2"
-        wait(80)
-        verify(tip.x !== before, "rePosKey 一变就要重算位置")
+        wait(60)
+        verify(tip.x !== atRest + 40, "rePosKey 一变就要重算位置")
         const o = originInLayer(tip, host.tgtRef)
         fuzzyCompare(tip.x + tip.width / 2, o.x + host.tgtRef.width / 2, 1)
         tip.destroy()

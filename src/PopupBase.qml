@@ -232,8 +232,14 @@ C.Popup {
     // JS 表达式里取不到（`anchor.SceneTransform.x` 只会拿到 undefined，已知坑 23
     // 的一般情形），只能轮询。开销很小：仅弹层可见时跑，每帧一次 mapToItem，
     // 位置没动就不重算。
+    //
+    // 盯的是**整个矩形**（四条边），不是左上角：锚点自己长高变宽时 top/left 一动不动，
+    // Select 多选标签换行把触发器撑高就是这一型 —— 原先只比 top/left，弹层会停在旧的
+    // 下边界上直接盖住锚点。
     property real _lastAnchorTop: NaN
     property real _lastAnchorLeft: NaN
+    property real _lastAnchorBottom: NaN
+    property real _lastAnchorRight: NaN
 
     FrameAnimation {
         running: control.visible && control.anchor !== null
@@ -241,9 +247,12 @@ C.Popup {
             const r = control.anchorRect();
             if (!r)
                 return;
-            if (r.top !== control._lastAnchorTop || r.left !== control._lastAnchorLeft) {
+            if (r.top !== control._lastAnchorTop || r.left !== control._lastAnchorLeft
+                || r.bottom !== control._lastAnchorBottom || r.right !== control._lastAnchorRight) {
                 control._lastAnchorTop = r.top;
                 control._lastAnchorLeft = r.left;
+                control._lastAnchorBottom = r.bottom;
+                control._lastAnchorRight = r.right;
                 control.reposition();
             }
         }
