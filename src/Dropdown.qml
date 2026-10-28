@@ -445,4 +445,8 @@ Tooltip {
         }
     }
 
+    TapHandler {
+        gesturePolicy: TapHandler.ReleaseWithinBounds
+    }
+
 }
