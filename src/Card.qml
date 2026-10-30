@@ -130,13 +130,13 @@ Item {
         || (control.shadows === "hover" && cardHover.hovered)
 
     // ---- 令牌 ----
-    readonly property real sectionPadding: Theme.current.spacingBaseLoose      // $spacing-card-padding
-    readonly property real innerGap: Theme.current.spacingBaseLoose            // $spacing-card-margin
-    readonly property real actionsItemGap: Theme.current.spacingBaseTight      // index.tsx 写死 12
-    readonly property real seamW: Theme.current.borderThicknessControl         // $width-card-border
-    readonly property real borderW: control.bordered ? Theme.current.borderThicknessControl : 0
-    readonly property real cornerRadius: control.cardGroupGrid ? 0 : Theme.current.radiusMedium
-    readonly property real lineHeight: 20                                      // $font-card_default-lineHeight
+    property real sectionPadding: Theme.current.spacingBaseLoose      // $spacing-card-padding
+    property real innerGap: Theme.current.spacingBaseLoose            // $spacing-card-margin
+    property real actionsItemGap: Theme.current.spacingBaseTight      // index.tsx 写死 12
+    property real seamW: Theme.current.borderThicknessControl         // $width-card-border
+    property real borderW: control.bordered ? Theme.current.borderThicknessControl : 0
+    property real cornerRadius: control.cardGroupGrid ? 0 : Theme.current.radiusMedium
+    property real lineHeight: 20                                      // $font-card_default-lineHeight
 
     // ---- 各段的内容高 ----
     readonly property real headerNodeHeight: control.customHeader
