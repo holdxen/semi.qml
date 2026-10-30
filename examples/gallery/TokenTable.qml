@@ -2,6 +2,10 @@ pragma ComponentBehavior: Bound
 
 import QtQuick
 import Semi
+// 静态检查认不出这条跨模块的绝对路径 import（运行时是好的），用到的那一行单独放行
+// qmllint disable missing-property
+import "qrc:/qt/qml/Semi/CssGradient.js" as CssGradient
+// qmllint enable missing-property
 
 // 令牌表，照官网 src/components/DesignToken/index.tsx 的 TokenTable：
 // 三列「变量 / 默认值 / 用法」，用 semi-ui 的 Table 渲染（官方也是 Table），
@@ -45,7 +49,11 @@ Item {
                 key: t.key,
                 value: t.value,
                 comment: t.comment === undefined ? "" : t.comment,
-                swatch: control.isColorToken(t.key) && t.color !== undefined ? t.color : "",
+                swatch: control.isColorToken(t.key) && control.isPaintable(t.color) ? t.color : "",
+                // qmllint disable missing-property
+                swatchStops: control.isColorToken(t.key) && control.isGradient(t.color)
+                    ? CssGradient.horizontalStops(t.color) : null,
+                // qmllint enable missing-property
                 copyText: t.accessor === undefined || t.accessor === null
                     ? "" : "Theme.current." + t.accessor,
                 refKey: control.refKeyOf(t.value),
@@ -62,6 +70,17 @@ Item {
     // 官网的判据：key 以 --semi-color 开头才挂色片
     function isColorToken(key) {
         return String(key).indexOf("--semi-color") === 0;
+    }
+
+    // AI 那几条语义色的值是整段 linear-gradient(...)：给 Rectangle.color 会得到纯黑，
+    // 必须走 gradient 那一档（拆法与 Button / Tag 共用 CssGradient.js）
+    function isGradient(color) {
+        return color !== undefined && color !== null
+            && String(color).indexOf("linear-gradient") === 0;
+    }
+
+    function isPaintable(color) {
+        return color !== undefined && color !== null && !control.isGradient(color);
     }
 
     // JumpLink:51-56 —— 只有**整串以 var( 开头**才算链接：`rgba(var(--semi-blue-5), 1)`
@@ -145,16 +164,44 @@ Item {
             spacing: Theme.current.spacingTight
 
             Rectangle {
-                visible: keyCell.record !== null && keyCell.record.swatch !== ""
+                id: chip
+
+                readonly property var stops: keyCell.record !== null ? keyCell.record.swatchStops : null
+                // Rectangle 本身就有 gradient 属性，这里别重名
+                readonly property bool gradientChip: stops !== null && stops !== undefined
+
+                function stopColor(i) {
+                    return i < stops.length ? stops[i].color : "transparent";
+                }
+
+                function stopPosition(i) {
+                    return i < stops.length ? stops[i].position : 1;
+                }
+
+                visible: keyCell.record !== null
+                    && (keyCell.record.swatch !== "" || chip.gradientChip)
                 anchors.verticalCenter: row.verticalCenter
                 width: 16
                 height: 16
                 radius: 3
                 // 色片画的是**这一档自己那套值**，不受站点主题影响
                 // （官网给那枚片子挂了 semi-always-light / semi-always-dark）
-                color: keyCell.record === null ? "transparent" : keyCell.record.swatch
+                color: chip.gradientChip ? "transparent"
+                    : (keyCell.record === null ? "transparent" : keyCell.record.swatch)
+                gradient: chip.gradientChip ? chipGradient : null
                 border.width: 1
                 border.color: Theme.current.colorBorder
+
+                Gradient {
+                    id: chipGradient
+
+                    orientation: Gradient.Horizontal
+
+                    GradientStop { position: chip.stopPosition(0); color: chip.stopColor(0) }
+                    GradientStop { position: chip.stopPosition(1); color: chip.stopColor(1) }
+                    GradientStop { position: chip.stopPosition(2); color: chip.stopColor(2) }
+                    GradientStop { position: chip.stopPosition(3); color: chip.stopColor(3) }
+                }
             }
 
             Text {

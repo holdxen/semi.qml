@@ -150,7 +150,13 @@ def resolve_color(value, palette_map):
     if m:
         r, g, b = (int(m.group(i)) for i in (1, 2, 3))
         a = float(m.group(4)) if m.group(4) else 1.0
-        return f"#{r:02X}{g:02X}{b:02X}" if a >= 1 else f"rgba({r}, {g}, {b}, {a})"
+        # **不能给 rgba(...) 串**：QML 的字符串隐式转 color 只认 #RGB / #ARGB /
+        # #RRGGBB / #AARRGGBB 与颜色名，收到 "rgba(26, 29, 33, 0.05)" 会得到纯黑
+        # （fill-0/1/2、color-shadow、overlay-bg 这些带 alpha 的令牌整列画黑）。
+        # Qt 的八位档是 **AARRGGBB**，alpha 在前。
+        if a >= 1:
+            return f"#{r:02X}{g:02X}{b:02X}"
+        return f"#{round(max(0.0, min(1.0, a)) * 255):02X}{r:02X}{g:02X}{b:02X}"
     if re.match(r"^#[0-9a-fA-F]{3,8}$", expanded):
         return expanded
     return None
@@ -216,6 +222,12 @@ def self_check(data, header_path):
     zmodal = find(g["normal"], "$z-modal")
     chk("$z-modal accessor", (zmodal or {}).get("accessor"), "zModal")
     chk("font-family 无 accessor", find(g["global"]["light"], "font-family")["accessor"], None)
+    fill0 = find(g["global"]["light"], "--semi-color-fill-0")
+    chk("fill-0 落成 #AARRGGBB", (fill0 or {}).get("color"), "#0D2E3238")   # grey-8 = 46,50,56，alpha .05 → 0x0D
+    bad_alpha = sorted({t["key"] for grp in (g["global"]["light"], g["global"]["dark"],
+                                             g["palette"]["light"], g["palette"]["dark"])
+                        for t in grp if t["color"] and t["color"].startswith("rgba(")})
+    chk("color 里不留 rgba( 串", bad_alpha, [])
 
     # 声明顺序：primary 一族必须紧跟在 color-white/black 之后、secondary 之前
     names = [t["key"] for t in g["global"]["light"]]

@@ -227,7 +227,11 @@ Item {
                     continue;
                 if (!page.hit(def.name) && !page.hit(t.key) && !page.hit(t.value))
                     continue;
-                blocks.push(page.makeBlock(t, def.name + " " + m[1], mode === "dark", t.key.indexOf("ai-general") === 0));
+                // 判渐变要看**带前缀的键名**：`--semi-ai-general-0`。
+                // 早先写的是 indexOf("ai-general") === 0，那永远不成立 ⇒ isGradient 恒 false
+                // ⇒ 整段 linear-gradient(...) 被当色值赋给 Rectangle.color，解析失败就是黑。
+                blocks.push(page.makeBlock(t, def.name + " " + m[1], mode === "dark",
+                    String(t.key).indexOf("--semi-ai-general-") === 0));
             }
             if (blocks.length > 0)
                 out.push({ name: def.name, blocks: blocks });
