@@ -28,6 +28,9 @@ qt_add_qml_module(semi-gallery
         GalleryGuideline.qml
         GalleryApiTable.qml
         GalleryPlaceholder.qml
+        TokenColorBlock.qml
+        TokenTable.qml
+        TokenColor.js
         ${GALLERY_PAGES}
         Main.qml
     RESOURCES

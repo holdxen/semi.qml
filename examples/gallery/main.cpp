@@ -85,11 +85,16 @@ int main(int argc, char *argv[])
         });
     }
 
-    // --shot <file>：抓一张图就退出
+    // --shot <file>：抓一张图就退出。--shot-delay <ms> 把那一帧往后推 ——
+    // Tokens 这种一页几十个表格/页签的页面，2000ms 时进场动画还没停，拍到的是半透明中间态。
     const int shotIndex = args.indexOf("--shot");
+    int shotDelay = 2000;
+    const int delayIndex = args.indexOf("--shot-delay");
+    if (delayIndex > 0 && delayIndex + 1 < args.size())
+        shotDelay = args.at(delayIndex + 1).toInt();
     if (shotIndex > 0 && shotIndex + 1 < args.size()) {
         const QString out = args.at(shotIndex + 1);
-        QTimer::singleShot(2000, root, [root, out]() {
+        QTimer::singleShot(shotDelay, root, [root, out]() {
             auto *window = qobject_cast<QQuickWindow *>(root);
             if (!window) {
                 qWarning("root object is not a window");

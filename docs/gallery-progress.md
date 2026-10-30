@@ -45,13 +45,21 @@ examples/gallery/
   GalleryApiTable.qml      API 参考表
   GalleryPlaceholder.qml   跳过组件的占位
   ButtonPage.qml 等        组件页（69 个，放在模块根，不是子目录）
-  TokensPage.qml           令牌页（色板 / 渐变 / 功能色 / 尺寸 / 动效 + 搜索）
+  TokensPage.qml           令牌页（小节与正则逐条照官网 content/basic/tokens/index.md）
+  TokenColorBlock.qml      色板那一格色块（160×64、悬浮放大 + WCAG 徽标 + 点击复制）
+  TokenTable.qml           令牌表（变量 / 默认值 / 用法 三列，本库 Table 渲染）
+  TokenColor.js            WCAG 对比度与 Lab 色差（对账见 build/check-token-color.mjs）
   Main.qml                 原有的 QML 预览应用，保留不动
   data/docs.json           说明文字 + 小节结构 + API 表 + 页尾章节
-  data/tokens.json         色板 + 语义色 + 尺寸 + 阴影 + 动效
+                           （没有代码演示的页 —— tokens —— 小节文字收在 prose 里）
+  data/tokens.json         形状照官网 designToken.json：global.global{light,dark}
+                           + global.palette{light,dark} + global.normal + global.animation，
+                           每行 { key, value, comment, category, raw } 再带端口自己的
+                           accessor（复制用，如 blue[5]）与 color（解出来的可画色）
   data/img/*.png           演示用示例图（示例图必须入库，见「已知问题」6）
-  build/parse-docs.py      content/**/index.md → docs.json
-  build/gen-tokens.py      scss → tokens.json
+  build/parse-docs.py      content/**/index.md → docs.json（--merge-prose-only 只补 prose）
+  build/gen-tokens.py      scss → tokens.json（自检含「accessor 必须在 SemiThemeValues 里」）
+  build/check-token-color.mjs  拿 node 跑 chroma-js + wcag-color，与 TokenColor.js 对账
 ```
 
 **跑法**：

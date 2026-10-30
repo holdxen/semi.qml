@@ -131,6 +131,32 @@ def split_sections(body):
     return sections
 
 
+# 官网 tokens 页那种「整页都是说明 + 组件短代码」的结构：没有 `## 代码演示`，
+# 小节文字挂在各级标题下面。短代码（<DesignToken/>、<FullPalette/> 等）在 QML 侧
+# 由页面自己按同名小节渲染，这里一律吃掉，免得标签壳漏到文字里。
+SITE_SHORTCODES = re.compile(
+    r"<(?:DesignToken|FullPalette|ColorConverter|JumpToToken|ApiType|ImageBox|Compare|"
+    r"ClickOpen|ChartContact)[^>]*/?>", re.S)
+
+
+def parse_prose(body):
+    """整页按 `##` / `###` 切出「标题 → 正文」，正文不含代码块与短代码。
+
+    只给**没有代码演示小节**的页用（tokens 页就是），其余页仍走 split_sections。
+    """
+    body = strip_code_fences(body)
+    body = SITE_SHORTCODES.sub("", body)
+    parts = re.split(r"^(#{2,3})\s+(.+)$", body, flags=re.M)
+    out = []
+    for i in range(1, len(parts), 3):
+        title = parts[i + 1].strip()
+        content = parts[i + 2] if i + 2 < len(parts) else ""
+        description = strip_markdown(content)
+        if description:
+            out.append({"title": title, "description": description})
+    return out
+
+
 # API 那一节的收口：官网 API 面底下常夹二级标题（table 页的 `## Table` / `## Column` /
 # `## 方法`，tree 页的 `## Methods`），真正的下一节只有这几个名字。
 API_STOP_HEADS = {"设计变量", "Accessibility", "文案规范", "FAQ", "FAQ:", "相关物料",
@@ -354,6 +380,8 @@ def parse_component(md_path, dir_name, page_map):
         "title": front.get("title", dir_name),
         "brief": front.get("brief", ""),
         "sections": split_sections(body),
+        # 没有代码演示小节的页（tokens 那种整页说明）把正文按标题收进 prose
+        "prose": parse_prose(body) if not split_sections(body) else [],
         "api": parse_api(body),
         "guidelines": parse_guidelines(body),
         "skipped": dir_name in SKIPPED,
@@ -406,6 +434,28 @@ def merge_api_rows(old, new):
     # 没被同名配上的旧行 = 手工补的行（解析器产不出来的那些），调用方据此决定整页动不动
     left = [r for q in queues.values() for r in q]
     return out, left
+
+
+def merge_prose_only(existing_path, categories):
+    """只给「没有 sections 的页」补 prose 键，其余一个字都不动。"""
+    doc = json.loads(Path(existing_path).read_text(encoding="utf-8"))
+    fresh = {c["page"]: c for cat in categories for c in cat["components"]}
+    changed = []
+    for cat in doc["categories"]:
+        for comp in cat["components"]:
+            if comp.get("sections"):
+                continue
+            new = (fresh.get(comp["page"]) or {}).get("prose") or []
+            if comp.get("prose") == new:
+                continue
+            comp["prose"] = new
+            changed.append((comp["page"], len(new)))
+    # 沿用原文件的缩进（docs.json 是 4 空格，写成 2 会把整份文件重排成三万行 diff）
+    existing = Path(existing_path).read_text(encoding="utf-8")
+    indent = 4 if re.match(r"^\{\n    \"", existing) else 2
+    Path(existing_path).write_text(
+        json.dumps(doc, ensure_ascii=False, indent=indent) + "\n", encoding="utf-8")
+    print("补 prose：%s（缩进 %d）" % (", ".join("%s(%d)" % c for c in changed) or "无变化", indent))
 
 
 def merge_api_only(existing_path, categories):
@@ -490,6 +540,8 @@ def main():
                         help="只把解析出的 api 数组并回这份 docs.json（其余字段不动）")
     parser.add_argument("--clean-markup-only", type=Path, default=None,
                         help="只洗这份 docs.json 里 sections / guidelines 残留的标签壳")
+    parser.add_argument("--merge-prose-only", type=Path, default=None,
+                        help="只把解析出的 prose 并回这份 docs.json（其余字段不动）")
     args = parser.parse_args()
 
     if args.clean_markup_only:
@@ -515,6 +567,10 @@ def main():
         if components:
             categories.append({"key": key, "name": name, "components": components})
             total += len(components)
+
+    if args.merge_prose_only:
+        merge_prose_only(args.merge_prose_only, categories)
+        return
 
     if args.merge_api_only:
         merge_api_only(args.merge_api_only, categories)

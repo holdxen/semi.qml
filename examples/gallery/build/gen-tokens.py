@@ -1,299 +1,313 @@
 #!/usr/bin/env python3
-"""从 Semi 的 scss 解析出 gallery 用的 tokens.json。
+"""从 Semi 的 scss 解析出 gallery Tokens 页用的 tokens.json。
 
-数据源（semi-design/packages/semi-theme-default/scss/）：
-  _palette.scss    色板，light / dark 两块
-  global.scss      语义色，值形如 rgba(var(--semi-blue-5), 1)
-  variables.scss   字号 / 字重 / 圆角 / 间距 / 尺寸 / z-index / 阴影
-  animation.scss   动效时长与曲线
+形状照官网那份 designToken.json（semi-design/scripts/designToken.js）来，
+这样页面可以按同样的方式渲染：一份扁平清单 + 每个小节一条正则，
+小节顺序与表格内容都由 scss 的**声明顺序**决定，不再自己排序、自己分组。
+
+    data = { "global": { "global": {"light": [T], "dark": [T]},
+                         "palette": {"light": [T], "dark": [T]},
+                         "normal": [T], "animation": [T] } }
+
+    T = { key, value, comment, category, raw, accessor, color }
+
+    key      带前缀的原名：`--semi-color-primary` / `$spacing-base-tight`
+             （global.scss 那两块里还有 `font-family` 与 `-webkit-font-smoothing`
+              两行不是自定义属性，官网也照样当令牌收，这里跟着收）
+    value    等号右边的原文，例如 `rgba(var(--semi-blue-5), 1)` —— 官网「默认值」列显示的就是它
+    comment  行尾 `//` 之后的说明 —— 官网「用法」列
+    category 首个词（`$color-x` → color），官网按它分档
+    raw      整行原文
+    accessor 端口新增：`Theme.current.` 后面那截，点复制用的
+             色阶给成 `blue[5]`；端口没有对应属性的（font-family 等）给 null
+    color    端口新增：把 var() 与 `R,G,B` 三元组解成可画的 CSS 色，解不出来给 null
 
 用法：
-    python3 gen-tokens.py [--scss <scss 目录>] [--out <tokens.json>]
+    python3 gen-tokens.py                       # 写 ../data/tokens.json
+    python3 gen-tokens.py --check               # 只与现有文件对账，不写
+    python3 gen-tokens.py --scss <dir> --out <file>
 """
 
 import argparse
+import importlib.util
 import json
+import pathlib
 import re
-from pathlib import Path
+import sys
 
-DEFAULT_SCSS = Path.home() / "Documents/Code/Html/semi-design/packages/semi-theme-default/scss"
-DEFAULT_OUT = Path(__file__).resolve().parent.parent / "data" / "tokens.json"
+HERE = pathlib.Path(__file__).resolve().parent
+DEFAULT_SCSS = pathlib.Path.home() / "Documents/Code/Html/semi-design/packages/semi-theme-default/scss"
+DEFAULT_OUT = HERE.parent / "data" / "tokens.json"
+REPO_ROOT = HERE.parents[2]
+DEFAULT_HEADER = REPO_ROOT / "src" / "SemiThemeValues.h"
 
-# 语义色的分组顺序与中文名，照官网 tokens 页
-SEMANTIC_GROUPS = [
-    ("primary", "主要颜色 primary"),
-    ("secondary", "次要颜色 secondary"),
-    ("tertiary", "第三颜色 tertiary"),
-    ("info", "信息 info"),
-    ("success", "成功 success"),
-    ("warning", "警示 warning"),
-    ("danger", "危险 danger"),
-    ("ai", "AI 颜色"),
-    ("text", "文本与图标 text"),
-    ("link", "链接色 link"),
-    ("bg", "背景色 bg"),
-    ("fill", "填充色 fill"),
-    ("border", "描边色 border"),
-    ("disabled", "禁用态 disabled"),
-    ("static", "常量色 static"),
-    ("shadow", "拟阴影色 shadow"),
-    ("other", "其他"),
-]
+# 端口自己的顺序偏好：官网把 animation.scss 的 34 条平铺在「动画」一节里，
+# 页面按 `--semi_transition_(x)-` 分档页签；顺序仍取文件声明序。
+CATEGORY_WORDS = {"color", "width", "height", "spacing", "radius", "font",
+                  "motion", "animation", "transition"}
 
 
-def rgb_to_hex(value):
-    parts = [p.strip() for p in value.split(",")]
-    if len(parts) != 3:
+def qml_mapping():
+    """复用 scripts/gen-theme-tokens.py 里的名字映射，避免两处各写一遍规则。"""
+    path = REPO_ROOT / "scripts" / "gen-theme-tokens.py"
+    spec = importlib.util.spec_from_file_location("gen_theme_tokens", path)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+def is_comment(line):
+    return line.startswith("//") or line.startswith("/*")
+
+
+def split_token(line):
+    """官网 codeLineSplit：按 : 与注释切，key 保留 $ / --semi- 前缀。"""
+    parts = [p.strip() for p in re.split(r":|//|/\*", line)]
+    parts = [p for p in parts if p]
+    if len(parts) < 2:
         return None
-    try:
-        return "#{:02X}{:02X}{:02X}".format(*(int(p) for p in parts))
-    except ValueError:
-        return None
+    key, value = parts[0], parts[1]
+    comment = parts[2] if len(parts) > 2 else ""
+    m = re.match(r"\$([\w\W]+?)[-_]", key)
+    first = (m.group(1).lower() if m else None)
+    category = (first if first in CATEGORY_WORDS else "other") if first else "other"
+    if category == "transition":
+        category = "animation"
+    return {"key": key, "value": value.rstrip(";").strip(), "comment": comment,
+            "category": category, "raw": line}
 
 
-def parse_palette(path):
-    """返回 (light, dark) 两个 dict，键是去掉 --semi- 前缀的名字。"""
-    text = path.read_text(encoding="utf-8")
-    # 按块头切分：第一块是 light，带 semi-always-dark 的那块是 dark
-    blocks = re.split(r"^(?=\S.*\{$)", text, flags=re.M)
-    light, dark = {}, {}
-    for block in blocks:
-        head = block.split("{", 1)[0]
-        target = dark if "semi-always-dark" in head else light
-        for m in re.finditer(r"--semi-([\w-]+):\s*([^;]+);", block):
-            name, value = m.group(1), m.group(2).strip()
-            if name.startswith("color-"):
-                continue                      # 那是语义色，在 global.scss 里
-            if value.startswith("linear-gradient"):
-                target[name] = value
-            else:
-                hex_value = rgb_to_hex(value)
-                if hex_value:
-                    target[name] = hex_value
-    return light, dark
+def parse_modes(path):
+    """按 `body` 行切 light / dark 两块（带 semi-always-dark 的那块是 dark）。"""
+    lines = [l.strip() for l in path.read_text(encoding="utf-8").split("\n")]
+    lines = [l for l in lines if l and not is_comment(l)
+             and not l.startswith("}") and not l.startswith("@")]
+    out = {"light": [], "dark": []}
+    mode = "light"
+    for line in lines:
+        if "body" in line:
+            if "semi-always-dark" in line:
+                mode = "dark"
+            continue
+        token = split_token(line)
+        if token is not None:
+            out[mode].append(token)
+    return out
 
 
-def expand_semantic(value, palette):
-    """把 rgba(var(--semi-blue-5), 1) 展开成十六进制；解析不了就原样返回。"""
-    m = re.search(r"var\(--semi-([\w-]+)\)", value)
+def merge_comments(content):
+    """dark 行常常不带注释，官网把 light 的注释补过去，这里同口径。"""
+    by_key = {t["key"]: t for t in content["light"]}
+    for t in content["dark"]:
+        src = by_key.get(t["key"])
+        if src is not None and not t["comment"]:
+            t["comment"] = src["comment"]
+    return content
+
+
+def parse_flat(path):
+    """variables.scss 与 animation.scss：不分明暗。"""
+    lines = [l.strip() for l in path.read_text(encoding="utf-8").split("\n")]
+    lines = [l for l in lines if l and not is_comment(l)
+             and not l.startswith("}") and not l.startswith("@") and not l.startswith("body")]
+    return [t for t in (split_token(l) for l in lines) if t is not None]
+
+
+# --------------------------------------------------------------------------
+# 端口字段：accessor 与 color
+# --------------------------------------------------------------------------
+
+def bare_key(key):
+    """去掉 --semi- / $ 前缀，得到 gen-theme-tokens.py 那套名字。"""
+    if key.startswith("--semi-"):
+        return key[len("--semi-"):]
+    if key.startswith("$"):
+        return key[1:]
+    return None
+
+
+def make_accessor(key, mod):
+    name = bare_key(key)
+    if name is None:
+        return None                     # font-family 这类没有前缀的行，端口无对应属性
+    m = re.match(r"^([a-z]+(?:-[a-z]+)*)-(\d+)$", name)
+    if m and m.group(1) in mod.SCALE_HUES:
+        return f"{mod.camel(m.group(1))}[{m.group(2)}]"
+    return mod.qml_field(name)
+
+
+def resolve_color(value, palette_map):
+    """把 var(--semi-x) 与 `R,G,B` 解成能直接画的颜色串；解不出来给 None。"""
+    text = value.strip()
+    expanded = re.sub(r"var\(--semi-([\w-]+)\)",
+                      lambda m: palette_map.get(m.group(1), m.group(0)), text)
+    if expanded.startswith("linear-gradient"):
+        return expanded
+    m = re.match(r"^(\d+)\s*,\s*(\d+)\s*,\s*(\d+)$", expanded)
     if m:
-        name = m.group(1)
-        if name in palette:
-            return palette[name]
-    if value.startswith("linear-gradient"):
-        return value
-    if value.startswith("#") or value.startswith("rgba(") or value.startswith("rgb("):
-        return value
-    return value
+        return "#{:02X}{:02X}{:02X}".format(*(int(g) for g in m.groups()))
+    m = re.match(r"^rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*(?:,\s*([\d.]+))?\s*\)$", expanded)
+    if m:
+        r, g, b = (int(m.group(i)) for i in (1, 2, 3))
+        a = float(m.group(4)) if m.group(4) else 1.0
+        return f"#{r:02X}{g:02X}{b:02X}" if a >= 1 else f"rgba({r}, {g}, {b}, {a})"
+    if re.match(r"^#[0-9a-fA-F]{3,8}$", expanded):
+        return expanded
+    return None
 
 
-def parse_semantic(path, light_palette, dark_palette):
+def decorate(tokens, palette_map, mod, props):
+    for t in tokens:
+        candidate = make_accessor(t["key"], mod)
+        # 端口没有对应属性的就留空（font-family 一族、ai-general 的 40 个色标、
+        # 以及 variables.scss 那条多行声明被按行切出来的残片）—— 页面上这些行不给复制
+        t["accessor"] = candidate if candidate and candidate.split("[")[0] in props else None
+        t["color"] = resolve_color(t["value"], palette_map)
+    return tokens
+
+
+# --------------------------------------------------------------------------
+# 自检
+# --------------------------------------------------------------------------
+
+def header_properties(path):
     text = path.read_text(encoding="utf-8")
-    blocks = re.split(r"^(?=\S.*\{$)", text, flags=re.M)
-    light, dark = {}, {}
-    for block in blocks:
-        head = block.split("{", 1)[0]
-        target = dark if "semi-always-dark" in head else light
-        palette = dark_palette if target is dark else light_palette
-        for m in re.finditer(r"--semi-([\w-]+):\s*([^;]+);\s*(?://\s*(.*))?", block):
-            name, value, desc = m.group(1), m.group(2).strip(), (m.group(3) or "").strip()
-            target[name] = {
-                "value": expand_semantic(value, palette),
-                "desc": desc,
-            }
-    return light, dark
+    return set(re.findall(r"Q_PROPERTY\([A-Za-z_<> ]+ (\w+) READ", text))
 
 
-def group_of(name):
-    if not name.startswith("color-"):
-        return "other"
-    body = name[len("color-"):]
-    for key, _ in SEMANTIC_GROUPS:
-        if key == "other":
-            continue
-        if body == key or body.startswith(key + "-"):
-            return key
-    return "other"
+def self_check(data, header_path):
+    props = header_properties(header_path)
+    ok = True
+
+    def chk(label, got, want):
+        nonlocal ok
+        hit = got == want
+        ok = ok and hit
+        print(f"  [{'OK ' if hit else 'FAIL'}] {label}: {got}" + ("" if hit else f"  期望 {want}"))
+
+    g = data["global"]
+    # 条数是实测值。global 每档 121 行里有 119 条 `--semi-*`，另外两行
+    # （`font-family` 与 `-webkit-font-smoothing`）是块里的普通 CSS 声明 ——
+    # 官网那份 designToken.json 也照收（scripts/designToken.js 是按行切的），这里跟着收。
+    chk("global.scss light 条数", len(g["global"]["light"]), 121)
+    chk("global.scss dark 条数", len(g["global"]["dark"]), 121)
+    chk("_palette.scss light 条数", len(g["palette"]["light"]), 222)
+    chk("animation 条数", len(g["animation"]), 34)
+    chk("variables 条数", len(g["normal"]), 52)
+
+    def find(tokens, key):
+        for t in tokens:
+            if t["key"] == key:
+                return t
+        return None
+
+    blue5 = find(g["palette"]["light"], "--semi-blue-5")
+    chk("blue-5 light", (blue5 or {}).get("color"), "#0064FA")
+    chk("blue-5 accessor", (blue5 or {}).get("accessor"), "blue[5]")
+    primary = find(g["global"]["light"], "--semi-color-primary")
+    chk("color-primary 原文", (primary or {}).get("value"), "rgba(var(--semi-blue-5), 1)")
+    chk("color-primary 解析", (primary or {}).get("color"), "#0064FA")
+    chk("color-primary accessor", (primary or {}).get("accessor"), "colorPrimary")
+    chk("color-primary 用法", (primary or {}).get("comment"), "主要颜色。仅在需要非常强调的情况下使用。")
+    radius = find(g["global"]["light"], "--semi-border-radius-medium")
+    chk("border-radius-medium accessor", (radius or {}).get("accessor"), "radiusMedium")
+    duration = find(g["animation"], "--semi-transition_duration-fast")
+    chk("transition_duration-fast accessor", (duration or {}).get("accessor"), "durationFast")
+    zmodal = find(g["normal"], "$z-modal")
+    chk("$z-modal accessor", (zmodal or {}).get("accessor"), "zModal")
+    chk("font-family 无 accessor", find(g["global"]["light"], "font-family")["accessor"], None)
+
+    # 声明顺序：primary 一族必须紧跟在 color-white/black 之后、secondary 之前
+    names = [t["key"] for t in g["global"]["light"]]
+    chk("声明顺序（primary 在 secondary 前）",
+        names.index("--semi-color-primary") < names.index("--semi-color-secondary"), True)
+
+    all_tokens = g["global"]["light"] + g["global"]["dark"] + g["palette"]["light"] \
+        + g["palette"]["dark"] + g["normal"] + g["animation"]
+    chk("accessor 全部落在 SemiThemeValues 的属性上",
+        sorted({t["accessor"].split("[")[0] for t in all_tokens
+                if t["accessor"] and t["accessor"].split("[")[0] not in props}), [])
+
+    # 端口没有对应属性的那几类，逐条登记；新增一条就说明 scss 变了而端口没跟上
+    no_accessor = sorted({t["key"] for t in all_tokens if t["accessor"] is None})
+    expected_no = sorted({"font-family", "-webkit-font-smoothing", "$prefix",
+                          "Helvetica, Arial, sans-serif;", "$font-family-regular"}
+                         | {f"--semi-ai-general-{i}-{j}" for i in range(10) for j in range(4)})
+    chk("无 accessor 的键集合", no_accessor, expected_no)
+    return ok
 
 
-def parse_sass_vars(path):
-    """解析 $name: value; // 说明 形式的变量。"""
-    text = path.read_text(encoding="utf-8")
-    result = {}
-    for line in text.splitlines():
-        line = line.strip()
-        if line.startswith("//") or not line.startswith("$"):
-            continue
-        m = re.match(r"\$([\w-]+):\s*([^;]+);\s*(?://\s*(.*))?$", line)
-        if not m:
-            continue
-        result[m.group(1)] = {
-            "value": m.group(2).strip(),
-            "desc": (m.group(3) or "").strip(),
+# --------------------------------------------------------------------------
+# 主流程
+# --------------------------------------------------------------------------
+
+def build(scss_dir, header_path=DEFAULT_HEADER):
+    mod = qml_mapping()
+    props = header_properties(pathlib.Path(header_path))
+    for f in ("global.scss", "_palette.scss", "variables.scss", "animation.scss"):
+        if not (scss_dir / f).exists():
+            sys.exit(f"找不到 {scss_dir / f}")
+
+    palette = merge_comments(parse_modes(scss_dir / "_palette.scss"))
+    # 三元组与渐变色标都要能当 var() 的解引用目标
+    palette_map = {}
+    for mode in ("light", "dark"):
+        for t in palette[mode]:
+            name = bare_key(t["key"])
+            if name:
+                palette_map.setdefault(name, t["value"])
+
+    data = {
+        "global": {
+            "global": {mode: decorate(merge_comments(parse_modes(scss_dir / "global.scss"))[mode],
+                                      palette_map, mod, props) for mode in ("light", "dark")},
+            "palette": {mode: decorate(palette[mode], palette_map, mod, props) for mode in ("light", "dark")},
+            "normal": decorate(parse_flat(scss_dir / "variables.scss"), palette_map, mod, props),
+            "animation": decorate(parse_flat(scss_dir / "animation.scss"), palette_map, mod, props),
         }
-    return result
+    }
+    return data
 
 
-def parse_css_vars(path):
-    """解析 --semi-x: value; 形式的 CSS 自定义属性，跳过注释行。
-
-    animation.scss 里放的是 CSS 变量而不是 Sass 变量，所以不能拿
-    parse_sass_vars 读它 —— 那个只认 $ 开头的行，结果是动效一直被解析成空数组。
-    注释行必须整行跳过：文件里那套「has animation」的备选值是注释掉的。
-    """
-    result = {}
-    for line in path.read_text(encoding="utf-8").splitlines():
-        line = line.strip()
-        if not line or line.startswith(("//", "/*", "*")):
-            continue
-        m = re.match(r"--semi-([\w-]+)\s*:\s*([^;]+);\s*(?://\s*(.*))?$", line)
-        if not m:
-            continue
-        result[m.group(1)] = {
-            "value": m.group(2).strip(),
-            "desc": (m.group(3) or "").strip(),
-        }
-    return result
-
-
-def pick(variables, prefix, out_key=None):
-    """按前缀挑变量，返回 [{name, value, desc}]。"""
-    items = []
-    for name, info in variables.items():
-        if name.startswith(prefix):
-            items.append({"name": name, "value": info["value"], "desc": info["desc"]})
-    items.sort(key=lambda x: x["name"])
-    return items
+def summarize(data):
+    g = data["global"]
+    print(f"  global.scss light/dark {len(g['global']['light'])} / {len(g['global']['dark'])}")
+    print(f"  _palette.scss light/dark {len(g['palette']['light'])} / {len(g['palette']['dark'])}")
+    print(f"  variables.scss {len(g['normal'])}  animation.scss {len(g['animation'])}")
+    total = sum(len(v) if isinstance(v, list) else len(v["light"]) + len(v["dark"])
+                for v in (g["global"], g["palette"], g["normal"], g["animation"]))
+    print(f"  合计 {total} 条")
 
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--scss", type=Path, default=DEFAULT_SCSS)
-    parser.add_argument("--out", type=Path, default=DEFAULT_OUT)
-    args = parser.parse_args()
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--scss", type=pathlib.Path, default=DEFAULT_SCSS)
+    ap.add_argument("--out", type=pathlib.Path, default=DEFAULT_OUT)
+    ap.add_argument("--header", type=pathlib.Path, default=DEFAULT_HEADER)
+    ap.add_argument("--check", action="store_true", help="只与现有文件对账，不写出")
+    args = ap.parse_args()
 
     if not args.scss.is_dir():
-        raise SystemExit(f"找不到 scss 目录：{args.scss}")
+        sys.exit(f"找不到 scss 目录：{args.scss}")
 
-    light_palette, dark_palette = parse_palette(args.scss / "_palette.scss")
-    light_semantic, dark_semantic = parse_semantic(
-        args.scss / "global.scss", light_palette, dark_palette)
+    data = build(args.scss)
 
-    # 色板按色相分组：red / pink / ... / ai-purple，外加渐变
-    hues = {}
-    gradients = []
-    for name in light_palette:
-        # ai-general-N 是渐变本体，ai-general-N-M 是它的色标，不算独立条目
-        if re.fullmatch(r"ai-general-\d+", name):
-            gradients.append({
-                "name": name,
-                "light": light_palette.get(name, ""),
-                "dark": dark_palette.get(name, ""),
-            })
-            continue
-        if name.startswith("ai-general"):
-            continue
-        m = re.match(r"([a-z-]+)-(\d+)$", name)
-        if m:
-            hues.setdefault(m.group(1), {})[int(m.group(2))] = {
-                "light": light_palette.get(name, ""),
-                "dark": dark_palette.get(name, ""),
-            }
+    print("自检：")
+    if not self_check(data, args.header):
+        sys.exit("自检失败，已中止生成")
 
-    palette_groups = []
-    for hue in sorted(hues):
-        steps = [dict(index=i, **hues[hue][i]) for i in sorted(hues[hue])]
-        palette_groups.append({"hue": hue, "steps": steps})
-    gradients.sort(key=lambda x: x["name"])
+    print("\n产出：")
+    summarize(data)
 
-    # 语义色分组
-    groups = []
-    for key, display in SEMANTIC_GROUPS:
-        tokens = []
-        for name in sorted(light_semantic):
-            if not name.startswith("color-"):
-                continue
-            if group_of(name) != key:
-                continue
-            light_info = light_semantic[name]
-            dark_info = dark_semantic.get(name, {})
-            tokens.append({
-                "name": name,
-                "light": light_info["value"],
-                "dark": dark_info.get("value", light_info["value"]),
-                "desc": light_info["desc"],
-            })
-        if tokens:
-            groups.append({"key": key, "name": display, "tokens": tokens})
-
-    variables = parse_sass_vars(args.scss / "variables.scss")
-    animation = parse_css_vars(args.scss / "animation.scss")
-
-    # 圆角是 global.scss 里的 CSS 变量，不在 variables.scss
-    radius_tokens = []
-    seen_radius = set()
-    for name, info in sorted(light_semantic.items()):
-        if name.startswith("border-radius-") and name not in seen_radius:
-            seen_radius.add(name)
-            radius_tokens.append({
-                "name": name,
-                "value": info["value"],
-                "desc": info["desc"],
-            })
-
-    # 阴影同理：也是 global.scss 里的 CSS 变量（variables.scss 里没有 shadow-*），
-    # 而且明暗两套值不一样，所以带上 dark
-    shadow_tokens = []
-    for name in sorted(light_semantic):
-        if not name.startswith("shadow-"):
-            continue
-        light_info = light_semantic[name]
-        shadow_tokens.append({
-            "name": name,
-            "value": light_info["value"],
-            "dark": dark_semantic.get(name, {}).get("value", light_info["value"]),
-            "desc": light_info["desc"],
-        })
-
-    sizing = {
-        "fontSize": pick(variables, "font-size-"),
-        "fontWeight": pick(variables, "font-weight-"),
-        "radius": radius_tokens,
-        "spacing": pick(variables, "spacing-"),
-        "width": pick(variables, "width-"),
-        "height": pick(variables, "height-"),
-        "zIndex": pick(variables, "z-"),
-        "shadow": shadow_tokens,
-    }
-    # 动效按「时长 → 延迟 → 缓动 → 缩放 → 旋转」排，比字典序好读：
-    # 字典序会把 transform-rotate-none（连字符）排到 transform_rotate-* 前面
-    MOTION_ORDER = ("transition_duration-", "transition_delay-",
-                    "transition_function-", "transform_scale-", "transform")
-    motion = []
-    for name in sorted(animation, key=lambda n: (next(
-            (i for i, p in enumerate(MOTION_ORDER) if n.startswith(p)), len(MOTION_ORDER)), n)):
-        motion.append({
-            "name": name,
-            "value": animation[name]["value"],
-            "desc": animation[name]["desc"],
-        })
-
-    data = {
-        "palette": {"groups": palette_groups, "gradients": gradients},
-        "semantic": {"groups": groups},
-        "sizing": sizing,
-        "motion": motion,
-    }
+    text = json.dumps(data, ensure_ascii=False, indent=1)
+    if args.check:
+        old = args.out.read_text(encoding="utf-8") if args.out.exists() else ""
+        print(f"\n--check：{'与现有文件一致' if old.strip() == text.strip() else '与现有文件不一致（未写出）'}")
+        return
 
     args.out.parent.mkdir(parents=True, exist_ok=True)
-    args.out.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
-
-    print(f"写出 {args.out}")
-    print(f"  色相 {len(palette_groups)} 组 / 渐变 {len(gradients)} 条")
-    print(f"  语义色 {sum(len(g['tokens']) for g in groups)} 个，分 {len(groups)} 组")
-    for key, items in sizing.items():
-        print(f"  {key}: {len(items)}")
-    print(f"  动效: {len(motion)}")
+    args.out.write_text(text, encoding="utf-8")
+    print(f"-> {args.out}")
 
 
 if __name__ == "__main__":

@@ -58,13 +58,23 @@ Item {
     }
 
     // 某个小节的说明文字（GallerySection 用它）
+    //
+    // tokens 那种整页都是说明、没有 `## 代码演示` 的页，正文由 parse-docs.py 收在 prose 里
     function sectionDescription(title) {
         if (control.currentComponent === null)
             return "";
         const sections = control.currentComponent.sections;
-        for (let i = 0; i < sections.length; ++i)
-            if (sections[i].title === title)
-                return sections[i].description;
+        if (sections !== undefined && sections !== null) {
+            for (let i = 0; i < sections.length; ++i)
+                if (sections[i].title === title)
+                    return sections[i].description;
+        }
+        const prose = control.currentComponent.prose;
+        if (prose === undefined || prose === null)
+            return "";
+        for (let j = 0; j < prose.length; ++j)
+            if (prose[j].title === title)
+                return prose[j].description;
         return "";
     }
 
@@ -144,6 +154,18 @@ Item {
             return;
         const limit = Math.max(0, contentScroll.contentHeight - contentScroll.height);
         scrollAnimation.to = Math.max(0, Math.min(control.anchorList[index].y - 16, limit));
+        scrollAnimation.restart();
+    }
+
+    /// 把页面里的某个节点滚到视口中间（Tokens 页点「默认值」里的 var 引用时用它，
+    /// 对应官网 JumpToToken 的 scrollIntoView({ block: 'center' })）
+    function scrollItemIntoView(item) {
+        if (item === null || item === undefined)
+            return;
+        const y = item.mapToItem(contentScroll.contentItem, 0, 0).y;
+        const target = y - (contentScroll.height - item.height) / 2;
+        const limit = Math.max(0, contentScroll.contentHeight - contentScroll.height);
+        scrollAnimation.to = Math.max(0, Math.min(target, limit));
         scrollAnimation.restart();
     }
 
