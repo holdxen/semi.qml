@@ -4,7 +4,8 @@ import QtQuick
 import Semi
 
 // Card 卡片。官方 `content/show/card/index.md` 的「代码演示」一共 14 节，加「如何引入」
-// 这里一共 15 个小节，逐节摆齐：基础卡片 / 简洁卡片 / 封面 / 边线和外边框 / 阴影 /
+// 与末尾一节端口新增的「撑满剩余高度」，这里一共 16 个小节，官方那 14 节逐节摆齐：
+// 基础卡片 / 简洁卡片 / 封面 / 边线和外边框 / 阴影 /
 // 更灵活的内容展示 / 内部卡片 / 栅格卡片 / 内置预加载 / 更丰富的预加载效果 /
 // 带页签的卡片 / 卡片操作区 / 卡片组 / 网格型卡片组。
 //
@@ -19,6 +20,8 @@ import Semi
 //   · 封面的图官方用远端地址，端口换成仓库里的 sample1.png（离线也要能画）。
 //   · 官方 loading 的占位是 `Skeleton.Title` + `<br/>` + `Skeleton.Paragraph rows={3}`，
 //     卡片本体没有内间距那条规则同样照抄 ⇒ 正文之间要自己包 Column。
+//   · `bodyFill` 是**端口新增能力**（官方 `-card-body` 只有 padding，没有 flex:1 那一档），
+//     只有末尾那一节演示它；四条边界写在 src/Card.qml 的属性注释与那一节的 Note 里。
 Item {
     id: page
 
@@ -109,7 +112,7 @@ Item {
                         + " `header` / `headerLine` / `headerStyle` / `loading` / `shadows` / `style` /"
                         + " `title`，外加 a11y 的 `aria-label`。缺省是 `bordered: true`、"
                         + "`headerLine: true`、`footerLine: false`、`loading: false`；`shadows` 没有缺省值，"
-                        + "只有 `hover` 与 `always` 两档。")
+                        + "只有 `hover` 与 `always` 两档。端口另加一条官方没有的 `bodyFill`（见最后那节）。")
                 }
 
                 Note {
@@ -903,6 +906,66 @@ Item {
                 text: qsTr("`type: 'grid'` 会把 `spacing` 强制清 0，另外 card.scss 还有两条后代规则："
                     + "成员卡圆角清 0、每张 `margin-left / margin-top: -1px` ⇒ 相邻两张重叠 1 像素、"
                     + "两条描边合成一条。端口没有 CSS，圆角那条由 CardGroup 逐张下发 `cardGroupGrid`。")
+            }
+        }
+
+        GallerySection {
+            title: "撑满剩余高度（端口新增，官方没有对应 prop）"
+
+            Row {
+                spacing: 20
+
+                Card {
+                    width: 260
+                    height: 300
+                    title: "bodyFill 关（缺省）"
+                    footer: "页脚"
+
+                    Text {
+                        width: parent.width
+                        text: qsTr("卡片给了定高，正文仍按内容排 ⇒ 底部一片空白，页脚悬在中间。")
+                        color: Theme.current.colorText1
+                        font.pixelSize: Theme.current.fontSizeRegular
+                        lineHeight: 20
+                        lineHeightMode: Text.FixedHeight
+                        wrapMode: Text.WordWrap
+                    }
+                }
+
+                Card {
+                    width: 260
+                    height: 300
+                    bodyFill: true
+                    title: "bodyFill 开"
+                    footer: "页脚"
+
+                    Rectangle {
+                        width: parent.width
+                        height: parent.height
+                        radius: Theme.current.radiusSmall
+                        color: Theme.current.colorFill1
+
+                        Text {
+                            anchors.centerIn: parent
+                            text: qsTr("正文那一格吃满剩余")
+                            color: Theme.current.colorText0
+                            font.pixelSize: Theme.current.fontSizeRegular
+                        }
+                    }
+                }
+            }
+
+            Note {
+                text: qsTr("端口新增能力：官方 `-card-body` 只有 `padding: 20`，没有 `flex: 1` 那一档"
+                    + "（官方 demo 要铺满是自己写 `style` 的 height）。开了 `bodyFill` 之后，"
+                    + "`height` 比「其它三段 + 正文那 40」高出来的部分会落到正文那一格（`cardBodyZone`），"
+                    + "于是里面的子项写 `width: parent.width; height: parent.height` 拿到的就是剩余高，"
+                    + "而不是塌成 0；页脚也因此贴到底边。四条边界："
+                    + "① 要和 `height` 一起用，没给定高时剩余算出来是 0，等价于没开；"
+                    + "② 正文里别用 `anchors.fill` —— 位置器不许子项带 fill/上下锚，会直接放弃排布并警告；"
+                    + "③ 剩余不足一格时不夹到内容自然高（与 CSS flex 的 automatic minimum size 不同），"
+                    + "溢出由本体的 `overflow: hidden` 挡住；"
+                    + "④ 与 `loading` 同开时这一档不生效，占位件按自然高排。")
             }
         }
     }

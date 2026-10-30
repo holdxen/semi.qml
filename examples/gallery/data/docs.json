@@ -10399,6 +10399,54 @@
                             "default": "-"
                         },
                         {
+                            "name": "bodyFill",
+                            "desc": "端口新增：正文吃满剩余高",
+                            "type": "bool",
+                            "default": "false"
+                        },
+                        {
+                            "name": "sectionPadding",
+                            "desc": "各段内边距（缺省 20）",
+                            "type": "real",
+                            "default": "spacingBaseLoose"
+                        },
+                        {
+                            "name": "innerGap",
+                            "desc": "标题右/操作区上（缺省 20）",
+                            "type": "real",
+                            "default": "spacingBaseLoose"
+                        },
+                        {
+                            "name": "actionsItemGap",
+                            "desc": "操作区条目间距（12）",
+                            "type": "real",
+                            "default": "spacingBaseTight"
+                        },
+                        {
+                            "name": "seamW",
+                            "desc": "分隔线粗（1）",
+                            "type": "real",
+                            "default": "borderThicknessControl"
+                        },
+                        {
+                            "name": "borderW",
+                            "desc": "外框描边粗（0 或 1）",
+                            "type": "real",
+                            "default": "control.bordered ? Theme.current.borderThicknessControl : 0"
+                        },
+                        {
+                            "name": "cornerRadius",
+                            "desc": "圆角（grid 组里清 0）",
+                            "type": "real",
+                            "default": "control.cardGroupGrid ? 0 : Theme.current.radiusMedium"
+                        },
+                        {
+                            "name": "lineHeight",
+                            "desc": "正文行高（20）",
+                            "type": "real",
+                            "default": "20"
+                        },
+                        {
                             "name": "— CardMeta —",
                             "desc": "",
                             "type": "",

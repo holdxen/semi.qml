@@ -1208,4 +1208,133 @@ TestCase {
         near(g.implicitWidth, 0, "max-content 也是 0");
         g.destroy();
     }
+
+    // ---------------- bodyFill（端口新增能力，官方 `-card-body` 没有 flex:1 那一档）----------------
+
+    function test_bodyFillOffKeepsContentSizedBody() {
+        const c = make("Card { width: 300; height: 300; Text { objectName: 't'; text: 'x' } }");
+        wait(80);
+        compare(c.bodyFill, false, "缺省关 ⇒ 保持「内容撑容器」，与官方口径一致");
+        near(c.bodyFillTarget, 0);
+        near(c.bodyNodeHeight, part(c, "t").height, "正文那一格还是内容高");
+        near(c.implicitHeight, testCase.seam * 2 + testCase.pad * 2 + c.bodyNodeHeight);
+        verify(c.height > c.implicitHeight, "定高比内容高 ⇒ 底部留白，body 不吃剩余");
+        c.destroy();
+    }
+
+    function test_bodyFillGivesRemainingHeightToBodyZone() {
+        const c = make("Card { width: 300; height: 300; bodyFill: true;"
+                       + " Text { objectName: 't'; text: 'x' } }");
+        wait(80);
+        near(c.bodyFillTarget, 300 - testCase.seam * 2 - testCase.pad * 2, "剩余全给正文那一格");
+        const zone = part(c, "cardBodyZone");
+        near(zone.height, c.bodyFillTarget);
+        near(c.bodyNodeHeight, c.bodyFillTarget, "Skeleton 的 childrenRect 接上这一格的高");
+        near(part(c, "cardBodyPaddingBox").height, c.bodyFillTarget);
+        near(c.implicitHeight, 300, "撑完剩余后隐式高与定高相等");
+        c.destroy();
+    }
+
+    function test_bodyFillChildSeesTheRemainingHeight() {
+        // 这条是这一档存在的理由：正文里 `height: parent.height` 拿到的是剩余高，不是塌成 0
+        const c = make("Card { width: 300; height: 300; bodyFill: true;"
+                       + " Rectangle { objectName: 'q'; width: parent.width; height: parent.height } }");
+        wait(80);
+        const q = part(c, "q");
+        near(q.width, 300 - testCase.seam * 2 - testCase.pad * 2);
+        near(q.height, c.bodyFillTarget);
+        verify(q.height > 200, "不能再塌成 0");
+        c.destroy();
+    }
+
+    function test_bodyFillSubtractsOtherSections() {
+        const c = make("Card { width: 300; height: 400; bodyFill: true; title: 'T'; footer: 'F';"
+                       + " footerLine: true; actions: ['a', 'b'];"
+                       + " Text { objectName: 't'; text: 'x' } }");
+        wait(80);
+        near(c.bodyFillTarget, 400 - c.borderW * 2 - c.headerHeight - c.coverHeight
+             - c.footerHeight - testCase.pad * 2 - c.actionsHeight,
+             "扣掉其它三段、自己那 40 与操作区");
+        const footer = part(c, "cardFooter");
+        near(footer.y + footer.height + c.borderW * 2, c.height, "footer 贴底（含上下两笔描边）");
+        near(part(c, "cardActions").y, testCase.pad + c.bodyFillTarget + testCase.gap,
+             "操作区跟在撑高的正文之后");
+        c.destroy();
+    }
+
+    function test_bodyFillWithoutExplicitHeightIsNoOp() {
+        const c = make("Card { width: 300; bodyFill: true;"
+                       + " Text { objectName: 't'; text: 'x'; font.pixelSize: 30 } }");
+        wait(80);
+        near(c.height, c.implicitHeight, "没给定高 ⇒ height 就是内容档");
+        near(c.bodyNodeHeight, part(c, "t").height, "剩余算出来不超过内容高 ⇒ 正文不被压");
+        near(c.implicitHeight, testCase.seam * 2 + testCase.pad * 2 + c.bodyNodeHeight);
+        c.destroy();
+    }
+
+    function test_bodyFillFallsBackWhenSectionsAlreadyFillIt() {
+        // header 63 + footer 60 + 40 + 描边 2 > 60 ⇒ 剩余是 0 ⇒ 回落内容档（不是压成 0）
+        const c = make("Card { width: 300; height: 60; bodyFill: true; title: 'T'; footer: 'F';"
+                       + " Text { objectName: 't'; text: 'x' } }");
+        wait(80);
+        verify(c.headerHeight + c.footerHeight + testCase.pad * 2 > c.height, "这档就是「剩余算负数」");
+        near(c.bodyFillTarget, 0);
+        near(c.bodyNodeHeight, part(c, "t").height, "回落到内容档");
+        c.destroy();
+    }
+
+    function test_bodyFillUnderheightDoesNotClampToContent() {
+        // 剩余不足一格时不夹到内容自然高 —— 与 CSS flex 的 automatic minimum size 不同，
+        // 溢出交给本体的 overflow:hidden 那半挡
+        const c = make("Card { width: 300; height: 60; bodyFill: true;"
+                       + " Text { objectName: 't'; text: 'x'; font.pixelSize: 40 } }");
+        wait(80);
+        near(c.bodyFillTarget, 60 - testCase.seam * 2 - testCase.pad * 2);
+        verify(part(c, "t").height > c.bodyFillTarget, "正文比剩余高 ⇒ 溢出");
+        compare(part(c, "cardContentClip").clip, true);
+        c.destroy();
+    }
+
+    function test_bodyFillIgnoredWhileLoading() {
+        const c = make("Card { width: 300; height: 300; bodyFill: true; loading: true;"
+                       + " Text { objectName: 't'; text: 'x' } }");
+        wait(80);
+        compare(c.skeletonOn, true);
+        near(c.bodyNodeHeight, part(c, "cardLoadingPlaceholder").height,
+             "loading 那一档不撑，占位按自然高排");
+        near(part(c, "cardBodyZone").height, part(c, "t").height, "正文那一格维持内容高");
+        c.destroy();
+    }
+
+    function test_bodyFillTogglesBothWays() {
+        const c = make("Card { width: 300; height: 300; bodyFill: true;"
+                       + " Text { objectName: 't'; text: 'x' } }");
+        wait(80);
+        verify(c.bodyFillTarget > 200);
+        c.bodyFill = false;
+        wait(80);
+        near(c.bodyFillTarget, 0);
+        near(c.bodyNodeHeight, part(c, "t").height, "关掉就回内容档");
+        c.bodyFill = true;
+        wait(80);
+        near(c.bodyNodeHeight, c.bodyFillTarget, "再开又撑起来");
+        near(c.implicitHeight, 300);
+        c.destroy();
+    }
+
+    function test_bodyFillTracksSectionAndHeightChanges() {
+        const c = make("Card { width: 300; height: 400; bodyFill: true;"
+                       + " Text { objectName: 't'; text: 'x' } }");
+        wait(80);
+        const before = c.bodyFillTarget;
+        near(before, 400 - c.borderW * 2 - testCase.pad * 2, "起手就把全部剩余给正文");
+        c.title = "标题来了";
+        wait(80);
+        near(c.bodyFillTarget, before - c.headerHeight, "补上 header 后剩余跟着扣");
+        c.height = 500;
+        wait(80);
+        near(c.bodyFillTarget, 500 - c.borderW * 2 - c.headerHeight - testCase.pad * 2,
+             "改定高也重算");
+        c.destroy();
+    }
 }

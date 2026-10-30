@@ -109,6 +109,18 @@ Item {
     /// 由 onChildrenChanged 记进普通属性。
     property int declaredCount: 0
 
+    /// **端口新增能力，官方没有对应物**（`-card-body` 只有 `padding: 20`，没有 `flex: 1` 那一档，
+    /// 官方 demo 要铺满是自己写 `style={{height:'100%'}}`）。打开后，卡片给了定高且比内容高时，
+    /// 剩余高度落到正文那一格（`cardBodyZone` 的 `height`），于是里面的子项写
+    /// `width: parent.width; height: parent.height` 拿到的就是剩余高，而不是塌成 0。
+    /// · 要和 `height` 一起用：没给定高时 `height` 就是内容档，剩余算出来是 0 ⇒ 这一档等价于没开。
+    /// · 正文里别用 `anchors.fill` —— 位置器不允许子项带 fill/上下锚，会直接放弃排布并警告
+    ///   「Cannot specify top, bottom, verticalCenter, fill or centerIn anchors for items inside Column」。
+    /// · 剩余不足一格（定高小于其它段之和）时不夹到内容自然高，正文会溢出并被 `overflow:hidden` 裁掉
+    ///   —— 这一点与 CSS flex 的 automatic minimum size 不同。
+    /// · 与 `loading` 同开时这一档不生效：占位件（112 那一坨）按自然高排，正文那一格维持内容高。
+    property bool bodyFill: false
+
     /// 网格型卡片组下发给成员卡的（官方是 `.semi-card-group-grid .semi-card{border-radius:0}`
     /// 那条后代选择器，端口没有 CSS ⇒ 由 CardGroup 逐张写）
     property bool cardGroupGrid: false
@@ -518,6 +530,12 @@ Item {
                         objectName: "cardBodyZone"
 
                         width: parent.width
+                        // fill 档把剩余高钉在这一格上，里面的子项才拿得到 `height: parent.height`
+                        // 而不是塌成 0；Skeleton 这一层用 `childrenRect` 跟着这一格的高走，
+                        // 于是 bodyNodeHeight / footer 的落点自动接上。剩余为 0（没给定高、
+                        // 或已被其它段占满）时维持内容档；loading 那一档不撑（占位件是定死的）。
+                        height: control.bodyFillTarget > 0 && !control.skeletonOn
+                            ? control.bodyFillTarget : implicitHeight
                         spacing: 0
 
                         onChildrenChanged: control.declaredCount = bodyZone.children.length
@@ -629,9 +647,13 @@ Item {
     property var actionNodes: []
 
     onActionsChanged: control.syncActions()
+    onBodyFillChanged: control.syncBodyFill()
+    onHeightChanged: control.syncBodyFill()
+    onBodyOtherSectionsChanged: control.syncBodyFill()
     Component.onCompleted: {
         control.declaredCount = bodyZone.children.length;
         control.syncActions();
+        control.syncBodyFill();
     }
 
     function syncActions() {
@@ -660,6 +682,34 @@ Item {
                 node.sourceComponent = value;
             control.actionNodes.push(node);
         }
+    }
+
+    // ------------------------------------------------------------------ bodyFill（端口新增能力）
+    /// 除正文以外的一切占高（描边两笔 + header + cover + footer + 正文自己的 40 + 操作区）。
+    /// 单列出来是给 `syncBodyFill()` 用，并且让它当变化的闸门：标题、页脚、actions 中途改了，
+    /// 剩余高要重算。
+    readonly property real bodyOtherSections: control.borderW * 2 + control.headerHeight
+        + control.coverHeight + control.footerHeight
+        + control.sectionPadding * 2 + control.actionsHeight
+
+    /// 写给正文那一格的剩余高。**刻意用命令式而不是绑定**：绑定要读 `control.height`，而
+    /// `height` 没显式给时会回落 `implicitHeight`，`implicitHeight` 又正是正文那一格算出来的
+    /// ⇒ 实测报 `QML Card: Binding loop detected for property "bodyNodeHeight"`（值还是对的）。
+    /// 落成普通属性后，`bodyZone.height` 只依赖这一条，链断掉。库里 `List.stretchPinned`
+    /// 是同一手法（容器把高写给子项，而不是让子项回头读容器）。
+    property real bodyFillTarget: 0
+
+    function syncBodyFill() {
+        if (!control.bodyFill) {
+            if (control.bodyFillTarget !== 0)
+                control.bodyFillTarget = 0;
+            return;
+        }
+        // 没给定高时 height == implicitHeight == 内容档 ⇒ 剩余算出来是 0，正文按内容排，
+        // 也就是这一档等价于没开（不会把内容压成 0）。
+        const rest = Math.max(0, control.height - control.bodyOtherSections);
+        if (control.bodyFillTarget !== rest)
+            control.bodyFillTarget = rest;
     }
 
     Component {
