@@ -21,7 +21,7 @@ Item {
     // 少数图标自带品牌色/渐变（AI 系列），置 false 跳过着色、按原样显示
     property bool tinted: true
 
-    readonly property url source: root.name
+    property url source: root.name
         ? "qrc:/qt/qml/Semi/icons/" + root.name + ".svg"
         : ""
 
