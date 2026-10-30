@@ -170,12 +170,16 @@ Item {
                 // Rectangle 本身就有 gradient 属性，这里别重名
                 readonly property bool gradientChip: stops !== null && stops !== undefined
 
+                // Gradient 是色片的常驻子节点：`gradient: null` 也挡不住它那四个
+                // GradientStop 求值，所以非渐变的那几百格照样会读到这里 ⇒ 必须自己判空。
                 function stopColor(i) {
-                    return i < stops.length ? stops[i].color : "transparent";
+                    return stops !== null && stops !== undefined && i < stops.length
+                        ? stops[i].color : "transparent";
                 }
 
                 function stopPosition(i) {
-                    return i < stops.length ? stops[i].position : 1;
+                    return stops !== null && stops !== undefined && i < stops.length
+                        ? stops[i].position : 1;
                 }
 
                 visible: keyCell.record !== null
