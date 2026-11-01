@@ -2,6 +2,11 @@
 # 全量打包约 2MB，不值得为省这点体积维护一份挑拣清单
 file(GLOB SEMI_ICON_SVGS CONFIGURE_DEPENDS RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" "icons/*.svg")
 
+# Icons.qml 由 scripts/gen-icons.py 生成：523 枚 svg 的 qrc URL 单例。
+# qmldir 里那行 singleton 靠这个源文件属性决定（Qt6QmlMacros.cmake 只读 QT_QML_SINGLETON_TYPE，
+# 不看文件里的 pragma Singleton），少了它 QML 侧 import Semi 之后取不到 Icons。
+set_source_files_properties(Icons.qml PROPERTIES QT_QML_SINGLETON_TYPE TRUE)
+
 qt_add_qml_module(semi
     URI Semi
     VERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
@@ -79,6 +84,7 @@ qt_add_qml_module(semi
         Highlight.qml
         HotKeys.qml
         Icon.qml
+        Icons.qml
         IconButton.qml
         ImagePreview.qml
         ImagePreviewInner.qml

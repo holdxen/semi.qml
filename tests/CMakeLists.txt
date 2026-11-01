@@ -32,6 +32,7 @@ set(SEMI_TEST_FILES
     tst_theme.qml
     tst_appearance.qml
     tst_icon.qml
+    tst_icons.qml
     tst_form.qml
     tst_misc.qml
     tst_display.qml

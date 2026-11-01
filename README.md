@@ -57,6 +57,17 @@ Button {
 }
 ```
 
+图标有两种写法：`Icon` 按名字取（名字就是 semi-icons 的文件名），`Icons` 单例直接给 qrc URL
+（523 枚，属性名是文件名的 camelCase，拼错 qmllint 当场报）：
+
+```qml
+import Semi
+
+Icon  { name: "chevron_up"; size: 20 }
+Image { source: Icons.chevronUp }                  // 喂直接吃 url 的控件
+Image { source: Icons.resolve(row.iconName) }       // 名字来自数据时，认不出回空串
+```
+
 ### 在 CMake 工程里用
 
 ```cmake

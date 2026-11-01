@@ -96,12 +96,19 @@ Theme.light.blue = blue          // colorPrimary 随即变成 #7c3aed
 src/
   SemiThemeValues.h/.cpp   生成物：383 个令牌属性 + 派生逻辑
   Theme.h/.cpp             单例：light / dark / current / customize / reset
+  Icons.qml                生成物：单例，523 枚 svg 的 qrc URL
   Button.qml Card.qml Switch.qml
 examples/gallery/          预览应用（含主题定制演示）
 tests/                     Qt Quick Test
 scripts/gen-theme-tokens.py
+scripts/gen-icons.py
 docs/                      计划与令牌清单（本地起 http.server 预览）
 ```
+
+图标那一份的口径：`Icons.chevronUp` 就是 `Icon { name: "chevron_up" }` 拼出来的那个 URL，
+两种写法由 `tests/tst_icons.qml` 钉在同一值上。名字来自数据时用 `Icons.resolve(name)`
+（文件名、属性名两种拼法都吃，认不出回空串）。重新生成 `python3 scripts/gen-icons.py`，
+`--check` 只报与 `src/icons/` 是否脱节。7 枚属性名被 Qt 自己的规矩改写过，见坑 144。
 
 ## 组件
 
