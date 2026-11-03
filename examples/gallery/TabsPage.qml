@@ -201,7 +201,11 @@ Item {
                 }
 
                 Note {
-                    text: qsTr("官方图标是 16px 的 `.semi-icon` + `margin-right: 8; top: 3px`（CSS:21914-21920），"
+                    text: qsTr("官方图标是 16px 的 `.semi-icon` + `margin-right: 8; top: 3px`（CSS:21914-21920）。"
+                        + "那句 `top` 补的是 inline-block 掉到基线上的那一截：浏览器实测官方图标盒落在内容框 3..19，"
+                        + "图标墨心 11 对文字墨心 11.69 —— 落到画面上就是「墨迹同中心」。"
+                        + "同一行盒里 Qt 的 CJK 字比 Chrome 高约 3px，照盒子数字抄会把图标画低 2.25px，"
+                        + "所以端口按墨心摆：行盒居中再抬 1.5（`TabItem.iconTop()`）。"
                         + "颜色阶梯是 text-2 → 悬浮 text-0 → 选中 primary。"
                         + "官方 demo 用的是 IconDoc / IconLight / IconHelp，semi-icons 里没有同名件，"
                         + "端口取形状最接近的三个。图标那层官方挂的 `semi-tabs-bar-icon` 是死类名（0 条规则）。")

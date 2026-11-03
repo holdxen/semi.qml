@@ -83,6 +83,23 @@ Item {
     readonly property real slashWidth: control.hostType === "slash" && !control.hostLast ? 16 + 8 : 0
     readonly property real borderWidth: control.indicatorWidth + control.sideBorderWidth
 
+    /// Qt 的 CJK 墨迹中心比行盒中心高的那一截。**cocoa 逐点实测**（14px、行盒 20、"甲乙丙丁"）：
+    /// 墨迹 2.5..14.5 ⇒ 墨心 8.5，比盒中心 10 高 1.5px。Chrome 同一行盒里墨迹是 5.41..17.97
+    /// （墨心 11.69，比盒中心**低** 1.69）—— 两个引擎对 CJK 的落笔位置差约 3.2px，
+    /// 所以官方那个「图标盒顶 = 内容框顶 + 3」在端口照抄会低 2.25px，用户看着就是没对齐。
+    readonly property real inkRise: 1.5
+
+    /// 图标盒的 y —— 判据是**图标墨迹中心 = 文字墨迹中心**（±0.5px），也就是官方那一屏的效果：
+    /// 浏览器实测官方图标墨心 11 vs 文字墨心 11.69，差 −0.69px，肉眼读作「居中」。
+    /// 官方机制是「inline-block 底边贴基线 + CSS `top: 3px`」，但端口照搬基线关系只能对上半截：
+    /// Qt 的基线（盒内 15.9）与 Chrome（16.5）只差 0.6，墨迹却差 3.2 —— 误差在字身，不在基线。
+    /// 所以这里按墨心摆：盒心 = 行盒中心 − inkRise。
+    /// 拉丁档同一规则实测也是重合的（"Overview" 墨迹带与这颗图标的墨迹带同为 10.5 高 ⇒ 墨心差 0.00）；
+    /// 官方对拉丁是图标比文字墨心高 2.4px，方向一致（它靠基线摆，本来就随字身走）。
+    function iconTop(size: real): real {
+        return control.padTop + (control.textHeight - size) / 2 - control.inkRise;
+    }
+
     /// 2px 那条指示边（line 档独有），横排在下、竖排在左
     readonly property real indicatorWidth: control.hostType === "line" ? 2 : 0
     /// card 档那 1px 实边框（选中才有颜色，未选中是 transparent 但**照样占位**）
@@ -262,14 +279,17 @@ Item {
     }
 
     // ================================================================ 内容：图标 + 文字 + ×
-    // 官方图标是 `.semi-icon` + `position: relative; top: 3px; margin-right: 8px`（CSS:21914-21920）
+    // 官方 `.semi-tabs-tab .semi-icon` 是 `position: relative; top: 3px; margin-right: 8`（CSS:21914-21920），
+    // 但那是给 **inline-block 的基线对齐**补的偏移，不是「在行盒里居中再往下 3px」——
+    // 抄成后者把同一笔 3px 算了两遍，图标就比文字低 2px（用户报「带图标的 tabpane 图标和文字没对齐」）。
+    // 实测口径见 `iconTop()`。
     Loader {
         id: iconLoader
 
         objectName: "tabItemIconComponent"
 
         x: control.padLeft
-        y: control.padTop + (control.textHeight - 16) / 2 + 3
+        y: control.iconTop(16)
         visible: control.hasIcon && control.iconIsComponent
         sourceComponent: control.iconIsComponent ? control.iconValue : null
         onLoaded: {
@@ -285,7 +305,7 @@ Item {
         objectName: "tabItemIconName"
 
         x: control.padLeft
-        y: control.padTop + (control.textHeight - 16) / 2 + 3
+        y: control.iconTop(16)
         visible: control.hasIcon && control.iconIsString
         name: control.iconIsString ? String(control.iconValue) : ""
         size: 16
@@ -345,7 +365,7 @@ Item {
         objectName: "tabItemClose"
 
         x: control.padLeft + control.iconBoxWidth + control.textWidth + 10
-        y: control.padTop + (control.textHeight - 14) / 2
+        y: control.iconTop(14)
         visible: control.closable
         name: "close"
         size: 14

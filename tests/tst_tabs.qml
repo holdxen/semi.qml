@@ -57,6 +57,30 @@ TestCase {
         return found;
     }
 
+    // host 坐标里这一段区间的「非白像素」行分布（cocoa 像素档用）
+    function inkBand(img, host, item, grow, dpr) {
+        const p = item.mapToItem(host, 0, 0);
+        let top = -1, bottom = -1, count = 0;
+        for (let y = Math.round((p.y - grow) * dpr); y < Math.round((p.y + item.height + grow) * dpr); ++y) {
+            for (let x = Math.round((p.x - 1) * dpr); x < Math.round((p.x + item.width + 1) * dpr); ++x) {
+                if (x < 0 || y < 0 || x >= img.width || y >= img.height)
+                    continue;
+                const s = img.pixel(x, y);
+                if (s === undefined || s === "")
+                    continue;               // 越界或这一档读不出色，都不算墨
+                const c = Qt.color(s);
+                if (c.r < 0.9 || c.g < 0.9 || c.b < 0.9) {
+                    count++;
+                    if (top < 0)
+                        top = y;
+                    bottom = y;
+                }
+            }
+        }
+        return count === 0 ? null
+            : { center: (top + bottom) / 2 / dpr, height: (bottom - top) / dpr, count: count };
+    }
+
     function paneOf(t, i) {
         verify(i < t.count, "要有第 " + i + " 项");
         return t.items[i].pane;
@@ -349,6 +373,7 @@ TestCase {
         const mark = part(c, "tabItemClose");
         compare(mark.size, 14, "CSS:21923 font-size 14 ⇒ 14×14");
         near(mark.x, c.padLeft + c.textWidth + 10, "margin-left 10");
+        near(mark.y, c.padTop + 1.5, "14 的 × 与 16 的图标同一档抬法（盒心 = 行盒中心 − 1.5）");
         compare(mark.color, Theme.current.colorText2,
             "选中那格的 × 被显式钉回 text-2，不跟文字变 primary（CSS:21948-21950）");
         t.destroy();
@@ -569,12 +594,39 @@ TestCase {
         const idle = cell(t, 1);
         compare(part(sel, "tabItemIconName").size, 16, "缺省 em 盒 16");
         near(part(sel, "tabItemIconName").x, sel.padLeft);
-        near(part(sel, "tabItemIconName").y, sel.padTop + 2 + 3, "top:3px 那点相对位移");
+        // 判据是**墨迹对墨迹**（cocoa 逐点实测：图标墨心与文字墨心差 0.25px 以内），
+        // 落成的几何式是「行盒居中再抬 1.5」—— 那 1.5 是 Qt 的 CJK 墨迹比行盒中心高的一截（见坑 145）。
+        // 官方 CSS 的盒顶 +3 在这里不能用：同一行盒里 Qt 的字比 Chrome 高约 3px，照抄就低 2.25px。
+        near(part(sel, "tabItemIconName").y, sel.padTop + 0.5, "16 的图标：居中抬 1.5");
+        near(part(sel, "tabItemIconName").y + 8 - (part(sel, "tabItemLabel").y + 10), -1.5,
+            "图标盒心比文字行盒中心高 1.5（= 与文字墨迹同中心）");
         near(part(sel, "tabItemLabel").x - part(sel, "tabItemIconName").x, 24,
             "图标 16 + margin-right 8");
         compare(part(sel, "tabItemIconName").color, Theme.current.colorPrimary,
             "选中那格的图标染 primary（CSS:21945-21947）");
         compare(part(idle, "tabItemIconName").color, Theme.current.colorText2);
+        t.destroy();
+    }
+
+    // 像素档：图标墨迹中心与文字墨迹中心是否同一条水平线 —— 用户眼里那条「对齐」就是这个。
+    // 只有 cocoa 量得到（offscreen 画不出 MultiEffect 染色的图标，坑 71），抓不到就 skip；
+    // 顺带钉「墨迹带高度合理」，免得底色不浅时整幅都是墨、两心自然相等假绿。
+    function test_iconInkCenteredOnTextInk() {
+        const t = make('Tabs { width: 600; tabList: ['
+            + '{ itemKey: "a", tab: "甲乙丙丁", icon: "mail_stroked" }] }');
+        const icon = part(cell(t, 0), "tabItemIconName");
+        const label = part(cell(t, 0), "tabItemLabel");
+        wait(400);                                  // SVG 解码 + 着色一层
+        const img = grabImage(testCase);            // 按 root 抓（本仓 cocoa 档验证过的取法）
+        const dpr = img === undefined || img === null ? 0 : img.width / testCase.width;
+        const a = dpr === 0 ? null : inkBand(img, testCase, icon, 8, dpr);
+        const b = dpr === 0 ? null : inkBand(img, testCase, label, 6, dpr);
+        if (a === null || b === null)
+            skip("这一档读不出墨迹（窗口没上屏 / 底色不浅），几何档已钉同一条关系");
+        verify(a.height > 6 && a.height < 18, "16 图标盒里该有 10 左右的墨迹带，实得 " + a.height);
+        verify(b.height > 6 && b.height < 18, "14 字该有 10 上下的墨迹带，实得 " + b.height);
+        verify(Math.abs(a.center - b.center) <= 1.0,
+            "图标墨心 " + a.center + " 与文字墨心 " + b.center + " 要同一条水平线");
         t.destroy();
     }
 
