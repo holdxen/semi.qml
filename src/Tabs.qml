@@ -142,8 +142,8 @@ Item {
     /// 基线归属：line 与 card 有，button 与 slash 没有（CSS:22109 / 22144 / 22189 / 22210）
     readonly property bool hasBaseline: control.type === "line" || control.type === "card"
     /// `.semi-tabs-content` 的 padding：横排 5px 0、竖排 0 5px（CSS:22306-22313）
-    readonly property real contentPadX: control.vertical ? 5 : 0
-    readonly property real contentPadY: control.vertical ? 0 : 5
+    property real contentPadX: control.vertical ? 5 : 0
+    property real contentPadY: control.vertical ? 0 : 5
     /// extra 槽：只有 line 档有高度（50，small 档 36），padding 恒 0 5px（CSS:21871、22176-22183）
     readonly property real extraHeight: control.type === "line" ? (control.size === "small" ? 36 : 50) : 0
     readonly property real extraPadX: 5
