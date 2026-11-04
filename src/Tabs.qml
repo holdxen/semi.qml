@@ -136,7 +136,7 @@ Item {
         : (control.type === "line" ? (control.size === "small" ? 36 : (control.size === "medium" ? 44 : 52))
             : (control.type === "card" ? 37 : (control.type === "button" ? 36 : 44)))
     /// 格与格之间：line/top 24、card 与 button 8、slash 16、line/left 0（竖排没有 margin 规则）
-    readonly property real itemGap: control.vertical
+    property real itemGap: control.vertical
         ? (control.type === "line" ? 0 : 8)
         : (control.type === "line" ? 24 : (control.type === "slash" ? 16 : 8))
     /// 基线归属：line 与 card 有，button 与 slash 没有（CSS:22109 / 22144 / 22189 / 22210）
