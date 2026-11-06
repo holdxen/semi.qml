@@ -98,12 +98,12 @@ Item {
 
     // ---- 令牌 ----
     /// 普通档 th 的右内边距（$spacing-descriptions_th-paddingRight = $spacing-loose）
-    readonly property real thPaddingRight: Theme.current.spacingLoose
+    property real thPaddingRight: Theme.current.spacingLoose
     /// 双行档 item 的右内边距（48 / 60 / 80）
-    readonly property real doubleGap: control.size === "small" ? 48
+    property real doubleGap: control.size === "small" ? 48
         : (control.size === "large" ? 80 : 60)
     /// 普通档 `-item` 的下内边距（双行档被 -double 重赋成 0）
-    readonly property real itemPaddingBottom: Theme.current.spacingBaseTight
+    property real itemPaddingBottom: Theme.current.spacingBaseTight
 
     // ---- 名单 ----
     /// [{ item, units, spanGiven, hidden, keyNatural, valueNatural }]，普通数组、没有 NOTIFY
