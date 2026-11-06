@@ -93,11 +93,11 @@ Item {
     readonly property bool stacked: control.hostRow && !control.plainMode
 
     /// plain 档那条 8（$spacing-descriptions_value_plain-paddingLeft），双行档不套
-    readonly property real plainGap: control.hostRow ? 0 : Theme.current.spacingExtraTight * 2
+    property real plainGap: control.hostRow ? 0 : Theme.current.spacingExtraTight * 2
     /// 普通档 th 的右内边距（$spacing-descriptions_th-paddingRight = $spacing-loose = 24）。
     /// 它是 **padding**，在文字盒之外 ⇒ key 那个 Text 只能占 `keyColumnWidth − 24`，
     /// 否则右对齐的 key 会正好贴在 value 脸上（center 档实测就是这个）。
-    readonly property real thPaddingRight: Theme.current.spacingLoose
+    property real thPaddingRight: Theme.current.spacingLoose
 
     // ---- 字号与行高（双行档分三档，普通档恒 regular）----
     readonly property real keyFont: control.hostRow && control.hostSize === "small"
